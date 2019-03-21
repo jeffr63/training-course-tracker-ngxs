@@ -1,0 +1,22 @@
+<section class="container">
+  <section class="card">
+    <form *ngIf="source$ | async as source">
+      <fieldset class="form-group row">
+        <label class="col-form-label col-sm-2" for="name">Source Name</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="name" [(ngModel)]="source.name"
+            placeholder="Enter source name" />
+        </div>
+      </fieldset>
+
+      <div class="form-group row form-buttons">
+        <button class="btn btn-primary mr-sm-2" (click)="save()" title="Save">
+          <fa-icon [icon]="faSave"></fa-icon> Save
+        </button>
+        <a class="btn btn-secondary" [routerLink]="['/admin/sources']" title="Cancel">
+          <fa-icon [icon]="faBan"></fa-icon> Cancel
+        </a>
+      </div>
+    </form>
+  </section>
+</section>
