@@ -3,104 +3,104 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { NgxsModule, Store } from '@ngxs/store';
 
-import { PathsState, PathsStateModel } from './paths.state';
-import { PathsService } from '../services/paths.service';
-import { Path } from '../services/paths';
+import { SourcesState, SourcesStateModel } from './sources.state';
+import { SourcesService } from '../services/sources.service';
+import { Source } from '../services/sources';
 import {
   DeleteFail, DeleteSuccess, GetFail, GetSuccess,
-  LoadFail, LoadSuccess, NewPath, SaveFail, SaveSuccess
-} from './paths.actions';
+  LoadFail, LoadSuccess, NewSource, SaveFail, SaveSuccess
+} from './sources.actions';
 
-const pathsArray: Path[] = [
+const sourceArray: Source[] = [
   { id: 1, name: 'ABC' },
   { id: 2, name: 'DEF' },
   { id: 3, name: 'GHI' }
 ];
 
-const currentPath = {
+const currentSource = {
   id: 1, name: 'ABC'
 };
 
 interface AppModel {
-  readonly paths: PathsStateModel;
+  readonly sources: SourcesStateModel;
 }
 
-describe('Paths', () => {
+describe('sources', () => {
   let store: Store;
-  let service: PathsService;
+  let service: SourcesService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        NgxsModule.forRoot([PathsState]),
+        NgxsModule.forRoot([SourcesState]),
         HttpClientModule
       ],
       providers: []
     }).compileComponents();
     store = TestBed.get(Store);
-    service = TestBed.get(PathsService);
+    service = TestBed.get(SourcesService);
   }));
 
   it('should initialize values', () => {
-    const pathsState: PathsStateModel = {
-      paths: pathsArray,
+    const sourcesState: SourcesStateModel = {
+      sources: sourceArray,
       error: '',
-      currentPath: null
+      currentSource: null
     };
-    store.reset(pathsState);
+    store.reset(sourcesState);
 
     store
-      .selectOnce((state: PathsStateModel) => state.paths)
-      .subscribe((paths: Path[]) => {
-        expect(paths).toEqual(pathsArray);
+      .selectOnce((state: SourcesStateModel) => state.sources)
+      .subscribe((sources: Source[]) => {
+        expect(sources).toEqual(sourceArray);
       });
   });
 
   describe('Selector', () => {
 
-    describe('getPaths', () => {
+    describe('getSources', () => {
 
-      it('should return an array of Paths', async(() => {
+      it('should return an array of Sources', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: pathsArray,
+          sources: {
+            sources: sourceArray,
             error: '',
-            currentPath: null
+            currentSource: null
           }
         };
         store.reset(appState);
 
-        expect(PathsState.getPaths(appState.paths)).toEqual(pathsArray);
+        expect(SourcesState.getSources(appState.sources)).toEqual(sourceArray);
       }));
     });
 
-    describe('getCurrentPath', () => {
+    describe('getcurrentSource', () => {
       it('should return an object', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: [],
+          sources: {
+            sources: [],
             error: '',
-            currentPath: currentPath
+            currentSource: currentSource
           }
         };
         store.reset(appState);
 
-        expect(PathsState.getCurrentPath(appState.paths)).toEqual(currentPath);
+        expect(SourcesState.getCurrentSource(appState.sources)).toEqual(currentSource);
       }));
     });
 
     describe('getError', () => {
       it('should return an string', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: [],
+          sources: {
+            sources: [],
             error: 'Error',
-            currentPath: null
+            currentSource: null
           }
         };
         store.reset(appState);
 
-        expect(PathsState.getError(appState.paths)).toEqual('Error');
+        expect(SourcesState.getError(appState.sources)).toEqual('Error');
       }));
     });
 
@@ -111,10 +111,10 @@ describe('Paths', () => {
     describe('DeleteFail', () => {
       it('should return string in Error', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: [],
+          sources: {
+            sources: [],
             error: '',
-            currentPath: currentPath
+            currentSource: currentSource
           }
         };
         store.reset(appState);
@@ -122,21 +122,21 @@ describe('Paths', () => {
         store.dispatch(new DeleteFail('Error'));
 
         store
-          .selectOnce((state: AppModel) => state.paths)
+          .selectOnce((state: AppModel) => state.sources)
           .subscribe(actual => {
             expect(actual.error).toEqual('Error');
-            expect(actual.currentPath).toEqual(null);
+            expect(actual.currentSource).toEqual(null);
           });
       }));
     });
 
     describe('DeleteSuccess', () => {
-      it('should remove requested item from paths array', async(() => {
+      it('should remove requested item from sources array', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: pathsArray,
+          sources: {
+            sources: sourceArray,
             error: '',
-            currentPath: currentPath
+            currentSource: currentSource
           }
         };
         store.reset(appState);
@@ -144,12 +144,12 @@ describe('Paths', () => {
         store.dispatch(new DeleteSuccess(3));
 
         store
-          .selectOnce((state: AppModel) => state.paths)
+          .selectOnce((state: AppModel) => state.sources)
           .subscribe(actual => {
-            expect(actual.paths.length).toEqual(2);
-            expect(actual.paths[0].id).toBe(1);
-            expect(actual.paths[1].id).toBe(2);
-            expect(actual.currentPath).toEqual(null);
+            expect(actual.sources.length).toEqual(2);
+            expect(actual.sources[0].id).toBe(1);
+            expect(actual.sources[1].id).toBe(2);
+            expect(actual.currentSource).toEqual(null);
           });
       }));
     });
@@ -157,10 +157,10 @@ describe('Paths', () => {
     describe('GetFail', () => {
       it('should return string in Error', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: [],
+          sources: {
+            sources: [],
             error: '',
-            currentPath: currentPath
+            currentSource: currentSource
           }
         };
         store.reset(appState);
@@ -168,51 +168,51 @@ describe('Paths', () => {
         store.dispatch(new GetFail('Error'));
 
         store
-          .selectOnce((state: AppModel) => state.paths)
+          .selectOnce((state: AppModel) => state.sources)
           .subscribe(actual => {
             expect(actual.error).toEqual('Error');
-            expect(actual.currentPath).toEqual(null);
+            expect(actual.currentSource).toEqual(null);
           });
       }));
     });
 
     describe('GetSuccess', () => {
-      it('should set currentPath with requested record and clear error', async(() => {
+      it('should set currentSource with requested record and clear error', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: [],
+          sources: {
+            sources: [],
             error: 'Test',
-            currentPath: null
+            currentSource: null
           }
         };
         store.reset(appState);
 
-        store.dispatch(new GetSuccess(currentPath));
+        store.dispatch(new GetSuccess(currentSource));
 
         store
-          .selectOnce((state: AppModel) => state.paths)
+          .selectOnce((state: AppModel) => state.sources)
           .subscribe(actual => {
-            expect(actual.currentPath).toEqual(currentPath);
+            expect(actual.currentSource).toEqual(currentSource);
             expect(actual.error).toEqual('');
           });
       }));
     });
 
-    describe('New Path', () => {
-      it('should initialize currentPath values for a new record', async(() => {
+    describe('New Source', () => {
+      it('should initialize currentSource values for a new record', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: [],
+          sources: {
+            sources: [],
             error: '',
-            currentPath: null
+            currentSource: null
           }
         };
         store.reset(appState);
 
-        store.dispatch(new NewPath());
+        store.dispatch(new NewSource());
 
         store
-          .selectOnce((state: AppModel) => state.paths.currentPath)
+          .selectOnce((state: AppModel) => state.sources.currentSource)
           .subscribe(current => {
             expect(current.id).toEqual(null);
             expect(current.name).toEqual('');
@@ -223,10 +223,10 @@ describe('Paths', () => {
     describe('LoadFail', () => {
       it('should return string in Error', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: pathsArray,
+          sources: {
+            sources: sourceArray,
             error: '',
-            currentPath: null
+            currentSource: null
           }
         };
         store.reset(appState);
@@ -234,31 +234,31 @@ describe('Paths', () => {
         store.dispatch(new LoadFail('Error'));
 
         store
-          .selectOnce((state: AppModel) => state.paths)
+          .selectOnce((state: AppModel) => state.sources)
           .subscribe(actual => {
-            expect(actual.paths.length).toEqual(0);
+            expect(actual.sources.length).toEqual(0);
             expect(actual.error).toEqual('Error');
           });
       }));
     });
 
     describe('LoadSuccess', () => {
-      it('should set the paths array to returned values and clear error', async(() => {
+      it('should set the sources array to returned values and clear error', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: [],
+          sources: {
+            sources: [],
             error: 'Test',
-            currentPath: null
+            currentSource: null
           }
         };
         store.reset(appState);
 
-        store.dispatch(new LoadSuccess(pathsArray));
+        store.dispatch(new LoadSuccess(sourceArray));
 
         store
-          .selectOnce((state: AppModel) => state.paths)
+          .selectOnce((state: AppModel) => state.sources)
           .subscribe(actual => {
-            expect(actual.paths).toEqual(pathsArray);
+            expect(actual.sources).toEqual(sourceArray);
             expect(actual.error).toEqual('');
           });
       }));
@@ -267,10 +267,10 @@ describe('Paths', () => {
     describe('SaveFail', () => {
       it('should return string in Error', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: [],
+          sources: {
+            sources: [],
             error: '',
-            currentPath: null
+            currentSource: null
           }
         };
         store.reset(appState);
@@ -278,7 +278,7 @@ describe('Paths', () => {
         store.dispatch(new SaveFail('Error'));
 
         store
-          .selectOnce((state: AppModel) => state.paths)
+          .selectOnce((state: AppModel) => state.sources)
           .subscribe(actual => {
             expect(actual.error).toEqual('Error');
           });
@@ -286,29 +286,29 @@ describe('Paths', () => {
     });
 
     describe('SaveSuccess', () => {
-      it('should update the path array with new value', async(() => {
+      it('should update the source array with new value', async(() => {
         const appState: AppModel = {
-          paths: {
-            paths: pathsArray,
+          sources: {
+            sources: sourceArray,
             error: 'Test',
-            currentPath: currentPath
+            currentSource: currentSource
           }
         };
         store.reset(appState);
 
-        const expected: Path = {
+        const expected: Source = {
           id: 3,
           name: 'XYZ'
         };
         store.dispatch(new SaveSuccess(expected));
 
         store
-          .selectOnce((state: AppModel) => state.paths)
+          .selectOnce((state: AppModel) => state.sources)
           .subscribe(actual => {
-            expect(actual.paths.length).toEqual(pathsArray.length);
-            expect(actual.paths[2]).toEqual(expected);
+            expect(actual.sources.length).toEqual(sourceArray.length);
+            expect(actual.sources[2]).toEqual(expected);
             expect(actual.error).toEqual('');
-            expect(actual.currentPath).toEqual(null);
+            expect(actual.currentSource).toEqual(null);
           });
       }));
     });
