@@ -1,10 +1,10 @@
-# Training Course Tracker
+# Training Course Tracker - Ngxs
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.1.
 
 ## Technologies included
 
-Angular, RxJs, NgRx, jasmine-marbles, lodash, auth0, ng-bootstrap, angular-fontawesome, fontawesome
+Angular, RxJs, Ngxs, lodash, auth0, ng-bootstrap, angular-fontawesome, fontawesome
 
 ## JSON-SERVER
 
