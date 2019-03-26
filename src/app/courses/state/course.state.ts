@@ -71,16 +71,14 @@ export class CoursesState {
   }
 
   @Action(DeleteFail)
-  public deleteFail({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: DeleteFail) {
-    const state = getState();
+  public deleteFail({ patchState }: StateContext<CoursesStateModel>, { payload }: DeleteFail) {
     patchState({
       error: payload
     });
   }
 
   @Action(DeleteSuccess)
-  public deleteSuccess({ getState, patchState }: StateContext<CoursesStateModel>) {
-    const state = getState();
+  public deleteSuccess({ patchState }: StateContext<CoursesStateModel>) {
     patchState({
       error: ''
     });
@@ -102,8 +100,7 @@ export class CoursesState {
   }
 
   @Action(GetCourseFail)
-  public getCourseFail({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: GetCourseFail) {
-    const state = getState();
+  public getCourseFail({ patchState }: StateContext<CoursesStateModel>, { payload }: GetCourseFail) {
     patchState({
       currentCourse: null,
       error: payload
@@ -111,8 +108,7 @@ export class CoursesState {
   }
 
   @Action(GetCourseSuccess)
-  public getCourseSuccess({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: GetCourseSuccess) {
-    const state = getState();
+  public getCourseSuccess({ patchState }: StateContext<CoursesStateModel>, { payload }: GetCourseSuccess) {
     patchState({
       currentCourse: payload,
       error: ''
@@ -135,8 +131,7 @@ export class CoursesState {
   }
 
   @Action(GetTotalFail)
-  public getTotalFail({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: GetTotalFail) {
-    const state = getState();
+  public getTotalFail({ patchState }: StateContext<CoursesStateModel>, { payload }: GetTotalFail) {
     patchState({
       totalCourses: 0,
       error: payload
@@ -144,8 +139,7 @@ export class CoursesState {
   }
 
   @Action(GetTotalSuccess)
-  public getTotalSuccess({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: GetTotalSuccess) {
-    const state = getState();
+  public getTotalSuccess({ patchState }: StateContext<CoursesStateModel>, { payload }: GetTotalSuccess) {
     patchState({
       totalCourses: payload,
       error: ''
@@ -168,8 +162,7 @@ export class CoursesState {
   }
 
   @Action(LoadFail)
-  public loadFail({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: LoadFail) {
-    const state = getState();
+  public loadFail({ patchState }: StateContext<CoursesStateModel>, { payload }: LoadFail) {
     patchState({
       courses: [],
       error: payload
@@ -177,8 +170,7 @@ export class CoursesState {
   }
 
   @Action(LoadSuccess)
-  public loadSuccess({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: LoadSuccess) {
-    const state = getState();
+  public loadSuccess({ patchState }: StateContext<CoursesStateModel>, { payload }: LoadSuccess) {
     patchState({
       courses: payload,
       error: ''
@@ -219,8 +211,7 @@ export class CoursesState {
   }
 
   @Action(SaveFail)
-  public saveFail({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: SaveFail) {
-    const state = getState();
+  public saveFail({ patchState }: StateContext<CoursesStateModel>, { payload }: SaveFail) {
     patchState({
       courses: [],
       error: payload

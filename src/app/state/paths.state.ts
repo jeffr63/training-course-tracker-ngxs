@@ -59,8 +59,7 @@ export class PathsState {
   }
 
   @Action(DeleteFail)
-  public deleteFail({ getState, patchState }: StateContext<PathsStateModel>, { payload }: DeleteFail) {
-    const state = getState();
+  public deleteFail({ patchState }: StateContext<PathsStateModel>, { payload }: DeleteFail) {
     patchState({
       currentPath: null,
       error: payload
@@ -92,8 +91,7 @@ export class PathsState {
   }
 
   @Action(GetFail)
-  public getFail({ getState, patchState }: StateContext<PathsStateModel>, { payload }: GetFail) {
-    const state = getState();
+  public getFail({ patchState }: StateContext<PathsStateModel>, { payload }: GetFail) {
     patchState({
       currentPath: null,
       error: payload
@@ -101,8 +99,7 @@ export class PathsState {
   }
 
   @Action(GetSuccess)
-  public getSuccess({ getState, patchState }: StateContext<PathsStateModel>, { payload }: GetSuccess) {
-    const state = getState();
+  public getSuccess({ patchState }: StateContext<PathsStateModel>, { payload }: GetSuccess) {
     patchState({
       currentPath: payload,
       error: ''
@@ -136,8 +133,7 @@ export class PathsState {
   }
 
   @Action(LoadFail)
-  public loadFail({ getState, patchState }: StateContext<PathsStateModel>, { payload }: LoadFail) {
-    const state = getState();
+  public loadFail({ patchState }: StateContext<PathsStateModel>, { payload }: LoadFail) {
     patchState({
       paths: [],
       error: payload
@@ -145,8 +141,7 @@ export class PathsState {
   }
 
   @Action(LoadSuccess)
-  public loadSuccess({ getState, patchState }: StateContext<PathsStateModel>, { payload }: LoadSuccess) {
-    const state = getState();
+  public loadSuccess({ patchState }: StateContext<PathsStateModel>, { payload }: LoadSuccess) {
     patchState({
       paths: payload,
       error: ''
@@ -173,8 +168,7 @@ export class PathsState {
   }
 
   @Action(SaveFail)
-  public saveFail({ getState, patchState }: StateContext<PathsStateModel>, { payload }: SaveFail) {
-    const state = getState();
+  public saveFail({ patchState }: StateContext<PathsStateModel>, { payload }: SaveFail) {
     patchState({
       error: payload
     });

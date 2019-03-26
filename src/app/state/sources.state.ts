@@ -59,8 +59,7 @@ export class SourcesState {
   }
 
   @Action(DeleteFail)
-  public deleteFail({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: DeleteFail) {
-    const state = getState();
+  public deleteFail({ patchState }: StateContext<SourcesStateModel>, { payload }: DeleteFail) {
     patchState({
       currentSource: null,
       error: payload
@@ -92,8 +91,7 @@ export class SourcesState {
   }
 
   @Action(GetFail)
-  public getFail({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: GetFail) {
-    const state = getState();
+  public getFail({ patchState }: StateContext<SourcesStateModel>, { payload }: GetFail) {
     patchState({
       currentSource: null,
       error: payload
@@ -101,8 +99,7 @@ export class SourcesState {
   }
 
   @Action(GetSuccess)
-  public getSuccess({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: GetSuccess) {
-    const state = getState();
+  public getSuccess({ patchState }: StateContext<SourcesStateModel>, { payload }: GetSuccess) {
     patchState({
       currentSource: payload,
       error: ''
@@ -125,8 +122,7 @@ export class SourcesState {
   }
 
   @Action(LoadFail)
-  public loadFail({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: LoadFail) {
-    const state = getState();
+  public loadFail({ patchState }: StateContext<SourcesStateModel>, { payload }: LoadFail) {
     patchState({
       sources: [],
       error: payload
@@ -134,8 +130,7 @@ export class SourcesState {
   }
 
   @Action(LoadSuccess)
-  public loadSuccess({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: LoadSuccess) {
-    const state = getState();
+  public loadSuccess({ patchState }: StateContext<SourcesStateModel>, { payload }: LoadSuccess) {
     patchState({
       sources: payload,
       error: ''
@@ -173,8 +168,7 @@ export class SourcesState {
   }
 
   @Action(SaveFail)
-  public saveFail({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: SaveFail) {
-    const state = getState();
+  public saveFail({ patchState }: StateContext<SourcesStateModel>, { payload }: SaveFail) {
     patchState({
       error: payload
     });
