@@ -1,15 +1,15 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { Course } from './../../course';
-import { CoursesService } from './../../courses.service';
+import { Course } from '../course';
+import { CoursesService } from '../courses.service';
 import {
   Delete, DeleteSuccess, DeleteFail,
   GetCourse, GetCourseSuccess, GetCourseFail,
   GetTotal, GetTotalSuccess, GetTotalFail,
   Load, LoadSuccess, LoadFail,
   Save, SaveSuccess, SaveFail, NewCourse,
-} from './../actions/course.actions';
+} from './course.actions';
 
 export interface CoursesStateModel {
   courses: Course[];

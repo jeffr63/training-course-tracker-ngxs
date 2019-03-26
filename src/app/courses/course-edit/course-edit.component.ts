@@ -1,18 +1,18 @@
-import { CoursesState } from './../store/state/course.state';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { faSave, faBan, faAddressBook } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Course } from '../course';
-import { PathsState } from './../../store/state/paths.state';
-import { SourcesState } from './../../store/state/sources.state';
-import * as courseActions from '../store/actions/course.actions';
-import * as fromPaths from '../../store/actions/paths.actions';
-import * as fromSources from '../../store/actions/sources.actions';
+import { CoursesState } from '../state/course.state';
+import { PathsState } from '../../state/paths.state';
+import { SourcesState } from '../../state/sources.state';
+import * as courseActions from '../state/course.actions';
+import * as fromPaths from '../../state/paths.actions';
+import * as fromSources from '../../state/sources.actions';
 
 
 @Component({

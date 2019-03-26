@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Path } from './../../services/paths';
-import { PathsState } from './../../store/state/paths.state';
-import { Get, Save, NewPath } from './../../store/actions/paths.actions';
+import { PathsState } from './../../state/paths.state';
+import { Get, Save, NewPath } from './../../state/paths.actions';
 
 @Component({
   selector: 'app-path-edit',

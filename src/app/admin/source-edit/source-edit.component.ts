@@ -7,8 +7,8 @@ import { Store, Select } from '@ngxs/store';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Source } from '../../services/sources';
-import { SourcesState } from './../../store/state/sources.state';
-import { Get, Save, NewSource } from './../../store/actions/sources.actions';
+import { SourcesState } from './../../state/sources.state';
+import { Get, Save, NewSource } from './../../state/sources.actions';
 
 @Component({
   selector: 'app-source-edit',

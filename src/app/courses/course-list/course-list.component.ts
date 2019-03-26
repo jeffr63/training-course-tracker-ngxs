@@ -7,8 +7,8 @@ import { faPencilAlt, faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-
 
 import { AuthService } from './../../auth/auth.service';
 import { Course } from './../course';
-import { CoursesState } from './../store/state/course.state';
-import { Load, GetTotal, Delete } from './../store/actions/course.actions';
+import { CoursesState } from '../state/course.state';
+import { Load, GetTotal, Delete } from '../state/course.actions';
 
 @Component({
   selector: 'app-course-list',

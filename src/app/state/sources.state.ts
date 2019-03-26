@@ -1,14 +1,14 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { Source } from './../../services/sources';
-import { SourcesService } from './../../services/sources.service';
+import { Source } from '../services/sources';
+import { SourcesService } from '../services/sources.service';
 import {
   Delete, DeleteSuccess, DeleteFail,
   Get, GetSuccess, GetFail,
   Load, LoadSuccess, LoadFail,
   Save, SaveSuccess, SaveFail, NewSource
-} from '../actions/sources.actions';
+} from './sources.actions';
 
 export interface SourcesStateModel {
   sources: Source[];

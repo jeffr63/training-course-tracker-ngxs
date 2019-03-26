@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 import { faPencilAlt, faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Path } from './../../services/paths';
-import { PathsState } from './../../store/state/paths.state';
-import { Delete, Load } from './../../store/actions/paths.actions';
+import { PathsState } from './../../state/paths.state';
+import { Delete, Load } from './../../state/paths.actions';
 
 @Component({
   selector: 'app-path-list',

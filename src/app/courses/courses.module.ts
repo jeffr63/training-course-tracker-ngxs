@@ -10,7 +10,7 @@ import { NgxsModule } from '@ngxs/store';
 import { CanActivateEdit } from '../auth/canActiveateEdit.guard';
 import { CourseEditComponent } from './course-edit/course-edit.component';
 import { CourseListComponent } from './course-list/course-list.component';
-import { CoursesState } from './store/state/course.state';
+import { CoursesState } from './state/course.state';
 
 const routes = [
   { path: 'courses', component: CourseListComponent },

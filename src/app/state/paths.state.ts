@@ -1,14 +1,14 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { Path } from './../../services/paths';
-import { PathsService } from './../../services/paths.service';
+import { Path } from '../services/paths';
+import { PathsService } from '../services/paths.service';
 import {
   Delete, DeleteSuccess, DeleteFail,
   Get, GetSuccess, GetFail,
   Load, LoadSuccess, LoadFail,
   Save, SaveSuccess, SaveFail, NewPath
-} from '../actions/paths.actions';
+} from './paths.actions';
 
 export interface PathsStateModel {
   paths: Path[];

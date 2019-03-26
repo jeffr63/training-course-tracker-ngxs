@@ -15,8 +15,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { CoursesModule } from './courses/courses.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
-import { PathsState } from './store/state/paths.state';
-import { SourcesState } from './store/state/sources.state';
+import { PathsState } from './state/paths.state';
+import { SourcesState } from './state/sources.state';
 import { CallbackComponent } from './callback.component';
 
 @NgModule({
