@@ -157,8 +157,8 @@ export class PathsState {
     return this.pathsService.save(state.currentPath).pipe(
       map((path: Path) => {
         return dispatch([
-          new Load(),
-          new SaveSuccess(state.currentPath)
+          new SaveSuccess(state.currentPath),
+          new Load()
         ]);
       }),
       catchError(err => {

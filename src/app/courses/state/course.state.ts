@@ -59,10 +59,10 @@ export class CoursesState {
     return this.coursesService.deleteCourse(payload.id).pipe(
       map(_course => {
         return dispatch([
+          new DeleteSuccess(),
           new Load({ current: payload.current, pageSize: payload.pageSize }),
-          new GetTotal(),
-          new DeleteSuccess()]
-        );
+          new GetTotal()
+        ]);
       }),
       catchError(error => {
         return dispatch(new DeleteFail(error));
@@ -200,12 +200,12 @@ export class CoursesState {
     return this.coursesService.saveCourse(state.currentCourse).pipe(
       map((course: Course) => {
         return dispatch([
-          new GetTotal(),
-          new SaveSuccess(course)
-        ]),
-          catchError(error => {
-            return dispatch(new SaveFail(error));
-          });
+          new SaveSuccess(course),
+          new GetTotal()
+        ]);
+      }),
+      catchError(error => {
+        return dispatch(new SaveFail(error));
       })
     );
   }

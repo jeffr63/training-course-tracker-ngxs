@@ -1,15 +1,16 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
-import { NgxsModule, Store } from '@ngxs/store';
+import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { PathsState, PathsStateModel } from './paths.state';
 import { PathsService } from '../services/paths.service';
 import { Path } from '../services/paths';
 import {
-  DeleteFail, DeleteSuccess, GetFail, GetSuccess,
-  LoadFail, LoadSuccess, NewPath, SaveFail, SaveSuccess
+  Delete, DeleteFail, DeleteSuccess, Get, GetFail, GetSuccess,
+  Load, LoadFail, LoadSuccess, NewPath, Save, SaveFail, SaveSuccess
 } from './paths.actions';
+import { of, throwError } from 'rxjs';
 
 const pathsArray: Path[] = [
   { id: 1, name: 'ABC' },
@@ -28,6 +29,7 @@ interface AppModel {
 describe('Paths', () => {
   let store: Store;
   let service: PathsService;
+  let actions: Actions;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -39,6 +41,7 @@ describe('Paths', () => {
     }).compileComponents();
     store = TestBed.get(Store);
     service = TestBed.get(PathsService);
+    actions = TestBed.get(Actions);
   }));
 
   it('should initialize values', () => {
@@ -108,6 +111,51 @@ describe('Paths', () => {
 
   describe('Action', () => {
 
+    describe('Delete', () => {
+      it('should dispatch DeleteSuccess when successful', fakeAsync(() => {
+        // arrange
+        const action = new Delete(3);
+        const expected = new DeleteSuccess(3);
+        const callbacksCalled = [];
+
+        spyOn(service, 'delete').and.returnValue(of(currentPath));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(DeleteSuccess))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+
+      it('should dispatch DeleteFail when errors', fakeAsync(() => {
+        const action = new Delete(3);
+        const expected = new DeleteFail('Error');
+        const callbacksCalled = [];
+
+        spyOn(service, 'delete').and.returnValue(throwError('Error'));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(DeleteFail))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+    });
+
     describe('DeleteFail', () => {
       it('should return string in Error', async(() => {
         const appState: AppModel = {
@@ -154,8 +202,53 @@ describe('Paths', () => {
       }));
     });
 
+    describe('Get', () => {
+      it('should dispatch GetSuccusss when successful', fakeAsync(() => {
+        // arrange
+        const action = new Get(3);
+        const expected = new GetSuccess(currentPath);
+        const callbacksCalled = [];
+
+        spyOn(service, 'get').and.returnValue(of(currentPath));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(GetSuccess))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+
+      it('should dispatch GetFail when errors', fakeAsync(() => {
+        const action = new Get(3);
+        const expected = new GetFail('Error');
+        const callbacksCalled = [];
+
+        spyOn(service, 'get').and.returnValue(throwError('Error'));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(GetFail))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+    });
+
     describe('GetFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', fakeAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -220,6 +313,51 @@ describe('Paths', () => {
       }));
     });
 
+    describe('Load', () => {
+      it('should dispatch LoadSuccusss when successful', fakeAsync(() => {
+        // arrange
+        const action = new Load();
+        const expected = new LoadSuccess(pathsArray);
+        const callbacksCalled = [];
+
+        spyOn(service, 'load').and.returnValue(of(pathsArray));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(LoadSuccess))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+
+      it('should dispatch LoadFail when errors', fakeAsync(() => {
+        const action = new Load();
+        const expected = new LoadFail('Error');
+        const callbacksCalled = [];
+
+        spyOn(service, 'load').and.returnValue(throwError('Error'));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(LoadFail))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+    });
+
     describe('LoadFail', () => {
       it('should return string in Error', async(() => {
         const appState: AppModel = {
@@ -261,6 +399,60 @@ describe('Paths', () => {
             expect(actual.paths).toEqual(pathsArray);
             expect(actual.error).toEqual('');
           });
+      }));
+    });
+
+    describe('Save', () => {
+      it('should dispatch SaveSuccuss when successful', fakeAsync(() => {
+        // arrange
+        const appState: AppModel = {
+          paths: {
+            paths: [],
+            error: '',
+            currentPath: currentPath
+          }
+        };
+        store.reset(appState);
+        const action = new Save();
+        const expected = new SaveSuccess(currentPath);
+        const callbacksCalled = [];
+
+        spyOn(service, 'save').and.returnValue(of(currentPath));
+        spyOn(service, 'load').and.returnValue(of(pathsArray));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(SaveSuccess))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+
+      it('should dispatch SaveFail when errors', fakeAsync(() => {
+        const action = new Save();
+        const expected = new SaveFail('Error');
+        const callbacksCalled = [];
+
+        spyOn(service, 'save').and.returnValue(throwError('Error'));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(SaveFail))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
       }));
     });
 
@@ -314,5 +506,6 @@ describe('Paths', () => {
     });
 
   });
+
 
 });

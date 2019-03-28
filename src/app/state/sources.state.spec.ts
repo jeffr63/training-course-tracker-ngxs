@@ -1,15 +1,16 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
-import { NgxsModule, Store } from '@ngxs/store';
+import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { SourcesState, SourcesStateModel } from './sources.state';
 import { SourcesService } from '../services/sources.service';
 import { Source } from '../services/sources';
 import {
-  DeleteFail, DeleteSuccess, GetFail, GetSuccess,
-  LoadFail, LoadSuccess, NewSource, SaveFail, SaveSuccess
+  Delete, DeleteFail, DeleteSuccess, Get, GetFail, GetSuccess,
+  Load, LoadFail, LoadSuccess, NewSource, Save, SaveFail, SaveSuccess
 } from './sources.actions';
+import { of, throwError } from 'rxjs';
 
 const sourceArray: Source[] = [
   { id: 1, name: 'ABC' },
@@ -28,6 +29,7 @@ interface AppModel {
 describe('sources', () => {
   let store: Store;
   let service: SourcesService;
+  let actions: Actions;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -39,6 +41,7 @@ describe('sources', () => {
     }).compileComponents();
     store = TestBed.get(Store);
     service = TestBed.get(SourcesService);
+    actions = TestBed.get(Actions);
   }));
 
   it('should initialize values', () => {
@@ -108,6 +111,51 @@ describe('sources', () => {
 
   describe('Action', () => {
 
+    describe('Delete', () => {
+      it('should dispatch DeleteSuccess when successful', fakeAsync(() => {
+        // arrange
+        const action = new Delete(3);
+        const expected = new DeleteSuccess(3);
+        const callbacksCalled = [];
+
+        spyOn(service, 'delete').and.returnValue(of(currentSource));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(DeleteSuccess))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+
+      it('should dispatch DeleteFail when errors', fakeAsync(() => {
+        const action = new Delete(3);
+        const expected = new DeleteFail('Error');
+        const callbacksCalled = [];
+
+        spyOn(service, 'delete').and.returnValue(throwError('Error'));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(DeleteFail))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+    });
+
     describe('DeleteFail', () => {
       it('should return string in Error', async(() => {
         const appState: AppModel = {
@@ -151,6 +199,51 @@ describe('sources', () => {
             expect(actual.sources[1].id).toBe(2);
             expect(actual.currentSource).toEqual(null);
           });
+      }));
+    });
+
+    describe('Get', () => {
+      it('should dispatch GetSuccusss when successful', fakeAsync(() => {
+        // arrange
+        const action = new Get(3);
+        const expected = new GetSuccess(currentSource);
+        const callbacksCalled = [];
+
+        spyOn(service, 'get').and.returnValue(of(currentSource));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(GetSuccess))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+
+      it('should dispatch GetFail when errors', fakeAsync(() => {
+        const action = new Get(3);
+        const expected = new GetFail('Error');
+        const callbacksCalled = [];
+
+        spyOn(service, 'get').and.returnValue(throwError('Error'));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(GetFail))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
       }));
     });
 
@@ -220,6 +313,51 @@ describe('sources', () => {
       }));
     });
 
+    describe('Load', () => {
+      it('should dispatch LoadSuccusss when successful', fakeAsync(() => {
+        // arrange
+        const action = new Load();
+        const expected = new LoadSuccess(sourceArray);
+        const callbacksCalled = [];
+
+        spyOn(service, 'load').and.returnValue(of(sourceArray));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(LoadSuccess))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+
+      it('should dispatch LoadFail when errors', fakeAsync(() => {
+        const action = new Load();
+        const expected = new LoadFail('Error');
+        const callbacksCalled = [];
+
+        spyOn(service, 'load').and.returnValue(throwError('Error'));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(LoadFail))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+    });
+
     describe('LoadFail', () => {
       it('should return string in Error', async(() => {
         const appState: AppModel = {
@@ -261,6 +399,61 @@ describe('sources', () => {
             expect(actual.sources).toEqual(sourceArray);
             expect(actual.error).toEqual('');
           });
+      }));
+    });
+
+    describe('Save', () => {
+      it('should dispatch SaveSuccuss when successful', fakeAsync(() => {
+        // arrange
+        const appState: AppModel = {
+          sources: {
+            sources: [],
+            error: '',
+            currentSource: currentSource
+          }
+        };
+        store.reset(appState);
+        const action = new Save();
+        const expected = new SaveSuccess(currentSource);
+        const callbacksCalled = [];
+
+        spyOn(service, 'save').and.returnValue(of(currentSource));
+        spyOn(service, 'load').and.returnValue(of(sourceArray));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(SaveSuccess))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
+      }));
+
+      it('should dispatch SaveFail when errors', fakeAsync(() => {
+        // arrange
+        const action = new Save();
+        const expected = new SaveFail('Error');
+        const callbacksCalled = [];
+
+        spyOn(service, 'save').and.returnValue(throwError('Error'));
+
+        // action
+        actions
+          .pipe(ofActionSuccessful(SaveFail))
+          .subscribe(x => {
+            callbacksCalled.push(x);
+          });
+
+        store.dispatch(action);
+        tick(1);
+
+        // assert
+        expect(callbacksCalled).toEqual([expected]);
       }));
     });
 
