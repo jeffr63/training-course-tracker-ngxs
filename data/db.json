@@ -85,6 +85,13 @@
       "id": 12
     },
     {
+      "title": "Play by Play: HTML, CSS, and JavaScript with Lea Verou",
+      "instructor": "Geoffrey Grosenback and Lea Verou",
+      "path": "CSS",
+      "source": "Pluralsite",
+      "id": 13
+    },
+    {
       "title": "Java Fundamentals: The Core Platform",
       "instructor": "Jim Wilson",
       "path": "Java",
@@ -708,6 +715,13 @@
       "id": 102
     },
     {
+      "title": "React and Flux for Angular Developers",
+      "instructor": "Tony Alicea",
+      "path": "React",
+      "source": "Pluralsite",
+      "id": 103
+    },
+    {
       "title": "JavaScript Best Practices",
       "instructor": "Jonathan Mills",
       "path": "JavaScript",
@@ -734,6 +748,13 @@
       "path": "React",
       "source": "Pluralsite",
       "id": 107
+    },
+    {
+      "title": "RxJS: The Big Picture",
+      "instructor": "Brice WIlson",
+      "path": "RxJS",
+      "source": "Pluralsite",
+      "id": 108
     },
     {
       "title": "Securing React Apps with Auth0",
@@ -881,6 +902,83 @@
       "path": "Angular",
       "source": "Pluralsite",
       "id": 129
+    },
+    {
+      "title": "Developing Faster with Vue CLI",
+      "instructor": "John Papa",
+      "path": "Vue",
+      "source": "Pluralsite",
+      "id": 130
+    },
+    {
+      "title": "Vue.js: Getting Started",
+      "instructor": "Chad Campbell",
+      "path": "Vue",
+      "source": "Pluralsite",
+      "id": 131
+    },
+    {
+      "title": "Single Page Application with Vue.js",
+      "instructor": "Bill Stavroulakis",
+      "path": "Vue",
+      "source": "Pluralsite",
+      "id": 132
+    },
+    {
+      "title": "Creating a Site with CSS Grid and Bootstrap",
+      "instructor": "Maio Duillio",
+      "path": "Bootstrap",
+      "id": 133,
+      "source": "Pluralsite"
+    },
+    {
+      "title": "Bootstrap 3",
+      "instructor": "Shawn Wildermuth",
+      "path": "Bootstrap",
+      "source": "Pluralsite",
+      "id": 134
+    },
+    {
+      "title": "Extending Bootstrap with CSS, Javascript and jQuery",
+      "instructor": "Paul D. Sheriff",
+      "path": "Bootstrap",
+      "source": "Pluralsite",
+      "id": 135
+    },
+    {
+      "title": "Angular Forms",
+      "instructor": "Mark Zamoyta",
+      "path": "Angular",
+      "source": "Pluralsite",
+      "id": 136
+    },
+    {
+      "title": "Structuring Angular Applications with Angular Libraries",
+      "instructor": "Fabian GoseBrink",
+      "path": "Angular",
+      "source": "Pluralsite",
+      "id": 137
+    },
+    {
+      "title": "Web Accessibility: Getting Started",
+      "instructor": "Brain Treese",
+      "path": "HTML",
+      "source": "Pluralsite",
+      "id": 138
+    },
+    {
+      "title": "Play by Play: Angular Internationalization with John Papa and Brian Clark",
+      "instructor": "John Papa and Brian Clark",
+      "path": "AngularJS",
+      "source": "Pluralsite",
+      "id": 139
+    },
+    {
+      "title": "Vue Fundamentals",
+      "instructor": "Jim Cooper",
+      "path": "Vue",
+      "source": "Pluralsite",
+      "id": 140
     }
   ],
   "paths": [
