@@ -979,6 +979,76 @@
       "path": "Vue",
       "source": "Pluralsite",
       "id": 140
+    },
+    {
+      "title": "Building Business Applications with vue.js and MongoDB",
+      "instructor": "Mark Scott",
+      "path": "Vue",
+      "source": "Pluralsite",
+      "id": 141
+    },
+    {
+      "title": "Making a Web Form Accessible",
+      "instructor": "Fiona Holder",
+      "path": "HTML5",
+      "source": "Pluralsite",
+      "id": 142
+    },
+    {
+      "title": "Amazing Backends for Angular Devs with NestJS",
+      "instructor": "Ely Lucas",
+      "path": "NestJS",
+      "source": "YouTube",
+      "id": 143
+    },
+    {
+      "title": "A Deep Look at Angular Elements",
+      "instructor": "Manfred Steyer",
+      "path": "Angular",
+      "source": "YouTube",
+      "id": 144
+    },
+    {
+      "title": "Crash Course: Angular and ngrx",
+      "instructor": "Aspen Payton",
+      "path": "Angular",
+      "source": "YouTube",
+      "id": 145
+    },
+    {
+      "title": "Blast Off with Angular Material",
+      "instructor": "Rachel Noccioli",
+      "path": "Angular",
+      "source": "YouTube",
+      "id": 146
+    },
+    {
+      "title": "Building Progressive Web Apps with Ionic",
+      "instructor": "Michael Callaghan",
+      "path": "Ionic",
+      "source": "Pluralsite",
+      "id": 147
+    },
+    {
+      "title": "Ionic CLI",
+      "instructor": "Michael Callaghan",
+      "path": "Ionic",
+      "source": "Pluralsite",
+      "id": 148
+    },
+    {
+      "title": "NestJS Crash Course",
+      "instructor": "Travery Media",
+      "path": "NestJS",
+      "source": "YouTube",
+      "id": 149
+    },
+    {
+      "title": "Intro to NestJS Framework for Reliable Server-side Apss on NodeJS",
+      "instructor": "IPenywis",
+      "path": "NestJS",
+      "source": "YouTube",
+      "id": 150
     }
   ],
   "paths": [
