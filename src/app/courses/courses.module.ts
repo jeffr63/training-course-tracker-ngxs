@@ -13,8 +13,12 @@ import { CourseListComponent } from './course-list/course-list.component';
 import { CoursesState } from './state/course.state';
 
 const routes = [
-  { path: 'courses', component: CourseListComponent },
-  { path: 'courses/:id', component: CourseEditComponent, canActivate: [CanActivateEdit] }
+  {
+    path: '', children: [
+      { path: '', component: CourseListComponent },
+      { path: ':id', component: CourseEditComponent, canActivate: [CanActivateEdit] }
+    ]
+  }
 ];
 
 @NgModule({

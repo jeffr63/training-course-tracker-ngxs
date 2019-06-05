@@ -1049,6 +1049,13 @@
       "path": "NestJS",
       "source": "YouTube",
       "id": 150
+    },
+    {
+      "id": 151,
+      "title": "Creating Cross Platform Apps with Ionic and Electron",
+      "instructor": "Michael Callaghan",
+      "path": "Ionic",
+      "source": "Pluralsite"
     }
   ],
   "paths": [

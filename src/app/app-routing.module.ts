@@ -4,9 +4,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CallbackComponent } from './callback.component';
 
 const routes: Routes = [
-  { path: 'home', component: DashboardComponent },
-  { path: 'callback', component: CallbackComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
+  { path: 'callback', component: CallbackComponent },
+  { path: 'courses', loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule) },
+  { path: 'home', component: DashboardComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 

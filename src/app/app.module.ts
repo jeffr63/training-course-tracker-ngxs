@@ -9,10 +9,8 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 
 // custom components
-import { AdminModule } from './admin/admin.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { CoursesModule } from './courses/courses.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
 import { PathsState } from './state/paths.state';
@@ -27,9 +25,7 @@ import { CallbackComponent } from './callback.component';
     CallbackComponent,
   ],
   imports: [
-    AdminModule,
     BrowserModule,
-    CoursesModule,
     FontAwesomeModule,
     HttpClientModule,
     NgbModule.forRoot(),

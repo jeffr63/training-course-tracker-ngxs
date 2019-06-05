@@ -15,7 +15,7 @@ import { SourceEditComponent } from './source-edit/source-edit.component';
 
 const routes = [
   {
-    path: 'admin', children: [
+    path: '', children: [
       { path: '', component: AdminComponent },
       { path: 'sources', component: SourceListComponent },
       { path: 'sources/:id', component: SourceEditComponent },
