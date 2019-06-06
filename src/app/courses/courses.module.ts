@@ -5,12 +5,10 @@ import { RouterModule } from '@angular/router';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxsModule } from '@ngxs/store';
 
 import { CanActivateEdit } from '../auth/canActiveateEdit.guard';
 import { CourseEditComponent } from './course-edit/course-edit.component';
 import { CourseListComponent } from './course-list/course-list.component';
-import { CoursesState } from './state/course.state';
 
 const routes = [
   {
@@ -31,7 +29,6 @@ const routes = [
     FontAwesomeModule,
     FormsModule,
     NgbModule,
-    NgxsModule.forFeature([CoursesState]),
     RouterModule.forChild(routes)
   ]
 })

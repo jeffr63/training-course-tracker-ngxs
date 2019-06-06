@@ -5,7 +5,7 @@ import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { PathsState, PathsStateModel } from './paths.state';
 import { PathsService } from '../services/paths.service';
-import { Path } from '../services/paths';
+import { Path } from '../shared/paths';
 import {
   Delete, DeleteFail, DeleteSuccess, Get, GetFail, GetSuccess,
   Load, LoadFail, LoadSuccess, NewPath, Save, SaveFail, SaveSuccess

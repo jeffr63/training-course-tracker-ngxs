@@ -5,7 +5,7 @@ import { Store, Select } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { faPencilAlt, faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-solid-svg-icons';
 
-import { Source } from './../../services/sources';
+import { Source } from '../../shared/sources';
 import { SourcesState } from './../../state/sources.state';
 import { Load, Delete } from './../../state/sources.actions';
 

@@ -1,4 +1,4 @@
-import { Path } from '../services/paths';
+import { Path } from '../shared/paths';
 
 export class Delete {
   static readonly type = '[Paths] Delete Path';

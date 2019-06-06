@@ -11,25 +11,26 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 // custom components
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { CallbackComponent } from './callback.component';
+import { CoursesState } from './state/course.state';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
 import { PathsState } from './state/paths.state';
 import { SourcesState } from './state/sources.state';
-import { CallbackComponent } from './callback.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    CallbackComponent,
     DashboardComponent,
     MenuComponent,
-    CallbackComponent,
   ],
   imports: [
     BrowserModule,
     FontAwesomeModule,
     HttpClientModule,
     NgbModule.forRoot(),
-    NgxsModule.forRoot([SourcesState, PathsState]),
+    NgxsModule.forRoot([CoursesState, SourcesState, PathsState]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     AppRoutingModule,
   ],

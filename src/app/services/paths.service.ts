@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Path } from './paths';
+import { Path } from '../shared/paths';
 
 @Injectable({
   providedIn: 'root'

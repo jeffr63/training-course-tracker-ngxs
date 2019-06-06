@@ -4,8 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { CoursesState, CoursesStateModel } from './course.state';
-import { CoursesService } from './../courses.service';
-import { Course } from './../course';
+import { CoursesService } from '../services/courses.service';
+import { Course } from '../shared/course';
 import {
   Delete, DeleteFail, DeleteSuccess, GetCourse, GetCourseFail, GetCourseSuccess, GetTotal, GetTotalFail, GetTotalSuccess,
   Load, LoadFail, LoadSuccess, NewCourse, Save, SaveFail, SaveSuccess

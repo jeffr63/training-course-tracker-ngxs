@@ -6,11 +6,11 @@ import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
-import { Course } from '../course';
-import { CoursesState } from '../state/course.state';
+import { Course } from '../../shared/course';
+import { CoursesState } from '../../state/course.state';
 import { PathsState } from '../../state/paths.state';
 import { SourcesState } from '../../state/sources.state';
-import * as courseActions from '../state/course.actions';
+import * as courseActions from '../../state/course.actions';
 import * as fromPaths from '../../state/paths.actions';
 import * as fromSources from '../../state/sources.actions';
 

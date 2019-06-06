@@ -1,8 +1,8 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { Course } from '../course';
-import { CoursesService } from '../courses.service';
+import { Course } from '../shared/course';
+import { CoursesService } from '../services/courses.service';
 import {
   Delete, DeleteSuccess, DeleteFail,
   GetCourse, GetCourseSuccess, GetCourseFail,

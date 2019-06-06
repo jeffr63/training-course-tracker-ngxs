@@ -5,7 +5,7 @@ import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { SourcesState, SourcesStateModel } from './sources.state';
 import { SourcesService } from '../services/sources.service';
-import { Source } from '../services/sources';
+import { Source } from '../shared/sources';
 import {
   Delete, DeleteFail, DeleteSuccess, Get, GetFail, GetSuccess,
   Load, LoadFail, LoadSuccess, NewSource, Save, SaveFail, SaveSuccess

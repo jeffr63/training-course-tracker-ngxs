@@ -1,7 +1,7 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { Path } from '../services/paths';
+import { Path } from '../shared/paths';
 import { PathsService } from '../services/paths.service';
 import {
   Delete, DeleteSuccess, DeleteFail,

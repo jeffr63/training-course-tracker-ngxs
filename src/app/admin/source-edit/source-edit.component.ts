@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Store, Select } from '@ngxs/store';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
-import { Source } from '../../services/sources';
+import { Source } from '../../shared/sources';
 import { SourcesState } from './../../state/sources.state';
 import { Get, Save, NewSource } from './../../state/sources.actions';
 

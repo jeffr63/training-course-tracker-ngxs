@@ -6,7 +6,7 @@ import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
-import { Path } from './../../services/paths';
+import { Path } from '../../shared/paths';
 import { PathsState } from './../../state/paths.state';
 import { Get, Save, NewPath } from './../../state/paths.actions';
 

@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 import { faPencilAlt, faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from './../../auth/auth.service';
-import { Course } from './../course';
-import { CoursesState } from '../state/course.state';
-import { Load, GetTotal, Delete } from '../state/course.actions';
+import { Course } from '../../shared/course';
+import { CoursesState } from '../../state/course.state';
+import { Load, GetTotal, Delete } from '../../state/course.actions';
 
 @Component({
   selector: 'app-course-list',
