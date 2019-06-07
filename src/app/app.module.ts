@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
@@ -7,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 // custom components
 import { AppComponent } from './app.component';
@@ -27,9 +29,11 @@ import { SourcesState } from './state/sources.state';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FontAwesomeModule,
     HttpClientModule,
     NgbModule.forRoot(),
+    NgxChartsModule,
     NgxsModule.forRoot([CoursesState, SourcesState, PathsState]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     AppRoutingModule,

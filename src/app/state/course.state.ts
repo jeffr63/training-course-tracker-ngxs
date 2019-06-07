@@ -1,7 +1,8 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
+import * as _ from 'lodash';
 
-import { Course } from '../shared/course';
+import { Course, CourseData } from '../shared/course';
 import { CoursesService } from '../services/courses.service';
 import {
   Delete, DeleteSuccess, DeleteFail,
@@ -13,6 +14,8 @@ import {
 
 export interface CoursesStateModel {
   courses: Course[];
+  coursesByPath: CourseData[],
+  coursesBySource: CourseData[]
   currentCourse: Course;
   totalCourses: number;
   error: string;
@@ -22,6 +25,8 @@ export interface CoursesStateModel {
   name: 'courses',
   defaults: {
     courses: [],
+    coursesByPath: [],
+    coursesBySource: [],
     currentCourse: null,
     totalCourses: 0,
     error: '',
@@ -49,6 +54,16 @@ export class CoursesState {
   @Selector()
   static getTotalCourses(state: CoursesStateModel) {
     return state.totalCourses;
+  }
+
+  @Selector()
+  static getCoursesByPath(state: CoursesStateModel) {
+    return state.coursesByPath;
+  }
+
+  @Selector()
+  static getCoursesBySource(state: CoursesStateModel) {
+    return state.coursesBySource;
   }
 
   @Action(Delete)
@@ -122,7 +137,33 @@ export class CoursesState {
     });
     return this.coursesService.getCourses().pipe(
       map((courses: Course[]) => {
-        return dispatch(new GetTotalSuccess(courses.length));
+        let byPath = _.chain(courses)
+          .groupBy('path')
+          .map((values, key) => {
+            return {
+              'name': key,
+              'value': _.reduce(values, function (value, number) {
+                return value + 1
+              }, 0)
+            }
+          })
+          .value();
+        byPath = _.orderBy(byPath, 'value', 'desc');
+
+        let bySource = _.chain(courses)
+          .groupBy('source')
+          .map((values, key) => {
+            return {
+              'name': key,
+              'value': _.reduce(values, function (value, number) {
+                return value + 1
+              }, 0)
+            }
+          })
+          .value();
+        bySource = _.orderBy(bySource, 'value', 'desc');
+
+        return dispatch(new GetTotalSuccess({ 'total': courses.length, 'byPath': byPath, 'bySource': bySource }));
       }),
       catchError(error => {
         return dispatch(new GetTotalFail(error));
@@ -141,7 +182,9 @@ export class CoursesState {
   @Action(GetTotalSuccess)
   public getTotalSuccess({ patchState }: StateContext<CoursesStateModel>, { payload }: GetTotalSuccess) {
     patchState({
-      totalCourses: payload,
+      totalCourses: payload.total,
+      coursesByPath: payload.byPath,
+      coursesBySource: payload.bySource,
       error: ''
     });
   }

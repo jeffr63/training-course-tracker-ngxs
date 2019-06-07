@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
+
+import { Observable } from 'rxjs';
+import { Select, Store } from '@ngxs/store';
+
+import { CoursesState } from './../state/course.state';
+import { CourseData } from './../shared/course';
+import { GetTotal } from './../state/course.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,10 +13,14 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  @Select(CoursesState.getCoursesByPath) courses$: Observable<CourseData[]>;
+  @Select(CoursesState.getCoursesBySource) sources$: Observable<CourseData[]>;
 
-  constructor() { }
+  constructor(
+    private store: Store,
+  ) { }
 
   ngOnInit() {
+    this.store.dispatch(new GetTotal());
   }
-
 }

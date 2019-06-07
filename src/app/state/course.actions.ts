@@ -1,4 +1,4 @@
-import { Course } from '../shared/course';
+import { Course, CourseData } from '../shared/course';
 
 export class Delete {
   static readonly type = '[Courses] Delete Course';
@@ -40,7 +40,11 @@ export class GetTotalFail {
 
 export class GetTotalSuccess {
   static readonly type = '[Courses] Get Total Courses Success';
-  constructor(public payload: number) { }
+  constructor(public payload: {
+    'total': number,
+    'byPath': CourseData[],
+    'bySource': CourseData[]
+  }) { }
 }
 
 export class Load {

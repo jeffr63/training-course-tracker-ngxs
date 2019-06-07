@@ -5,3 +5,8 @@ export interface Course {
   path: string;
   source: string;
 }
+
+export interface CourseData {
+  name: string;
+  value: number
+}

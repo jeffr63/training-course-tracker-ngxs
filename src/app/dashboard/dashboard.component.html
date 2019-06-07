@@ -1,9 +1,23 @@
 <section>
-  <div class="jumbotron">
-    <h1 class="display-3">Training Courses Tracker</h1>
-    <hr class="my-4" />
-    <p>
-      Welcome to Training Course Tracker!
-    </p>
+  <div class="container-fluid">
+    <div class="row first-row">
+      <div class="card col-xm-12 col-sm-6">
+        <div class="card-body">
+          <h4 class="card-title">Completed Courses - Paths</h4>
+          <ngx-charts-pie-chart [view]="[400,400]" [results]="courses$ | async" [labels]="true" [doughnut]="true"
+            [arcWidth]="0.5">
+          </ngx-charts-pie-chart>
+        </div>
+      </div>
+
+      <div class="card col-xm-12 col-sm-6">
+        <div class="card-body">
+          <h4 class="card-title">Completed Courses - Sources</h4>
+          <ngx-charts-pie-chart [view]="[400,400]" [results]="sources$ | async" [labels]="true" [doughnut]="true"
+            [arcWidth]="0.5">
+          </ngx-charts-pie-chart>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
