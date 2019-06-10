@@ -5,5 +5,3 @@ npm WARN @ngxs/logger-plugin@3.4.3 requires a peer of @angular/core@>=5.0.0 <8.0
 npm WARN @ngxs/store@3.4.3 requires a peer of @angular/core@>=5.0.0 <8.0.0 but none is installed. You must install peer dependencies yourself.
 
 npm WARN ajv-keywords@3.4.0 requires a peer of ajv@^6.9.1 but none is installed. You must install peer dependencies yourself.
-npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.9 (node_modules\fsevents):
-npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.9: wanted {"os":"darwin","arch":"any"} (current: {"os":"win32","arch":"x64"})
