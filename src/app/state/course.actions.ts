@@ -29,27 +29,18 @@ export class GetCourseSuccess {
   constructor(public payload: Course) { }
 }
 
-export class GetTotal {
-  static readonly type = '[Courses] Get Total Courses';
+
+export class GetCourseData {
+  static readonly type = '[Courses] Get Courses Data';
 }
 
-export class GetTotalFail {
-  static readonly type = '[Courses] Get Total Courses Fail';
-  constructor(public payload: string) { }
-}
-
-export class GetTotalSuccess {
-  static readonly type = '[Courses] Get Total Courses Success';
-  constructor(public payload: {
-    'total': number,
-    'byPath': CourseData[],
-    'bySource': CourseData[]
-  }) { }
+export class GetPage {
+  static readonly type = '[Courses] Get Page';
+  constructor(public payload: { 'current': number, 'pageSize': number }) { }
 }
 
 export class Load {
   static readonly type = '[Courses] Load Courses';
-  constructor(public payload: { 'current': number, 'pageSize': number }) { }
 }
 
 export class LoadFail {

@@ -7,9 +7,9 @@ import { CoursesService } from '../services/courses.service';
 import {
   Delete, DeleteSuccess, DeleteFail,
   GetCourse, GetCourseSuccess, GetCourseFail,
-  GetTotal, GetTotalSuccess, GetTotalFail,
+  GetCourseData, GetPage, NewCourse,
   Load, LoadSuccess, LoadFail,
-  Save, SaveSuccess, SaveFail, NewCourse,
+  Save, SaveSuccess, SaveFail,
 } from './course.actions';
 
 export interface CoursesStateModel {
@@ -17,6 +17,7 @@ export interface CoursesStateModel {
   coursesByPath: CourseData[],
   coursesBySource: CourseData[]
   currentCourse: Course;
+  pagedCourses: Course[];
   totalCourses: number;
   error: string;
 }
@@ -28,6 +29,7 @@ export interface CoursesStateModel {
     coursesByPath: [],
     coursesBySource: [],
     currentCourse: null,
+    pagedCourses: [],
     totalCourses: 0,
     error: '',
   }
@@ -52,6 +54,11 @@ export class CoursesState {
   }
 
   @Selector()
+  static getPagedCourses(state: CoursesStateModel) {
+    return state.pagedCourses;
+  }
+
+  @Selector()
   static getTotalCourses(state: CoursesStateModel) {
     return state.totalCourses;
   }
@@ -73,11 +80,10 @@ export class CoursesState {
     });
     return this.coursesService.deleteCourse(payload.id).pipe(
       map(_course => {
-        return dispatch([
-          new DeleteSuccess(),
-          new Load({ current: payload.current, pageSize: payload.pageSize }),
-          new GetTotal()
-        ]);
+        dispatch(new Load()).subscribe(() => {
+          dispatch(new GetPage({ 'current': payload.current, 'pageSize': payload.pageSize }))
+        });
+        return dispatch(new DeleteSuccess());
       }),
       catchError(error => {
         return dispatch(new DeleteFail(error));
@@ -130,71 +136,58 @@ export class CoursesState {
     });
   }
 
-  @Action(GetTotal)
-  public getTotal({ dispatch, patchState }: StateContext<CoursesStateModel>) {
+  @Action(GetPage)
+  public getPage({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: GetPage) {
+    const state = getState();
+    const offset = (payload.current - 1) * payload.pageSize;
+    const courses = [...state.courses];
+    const pagedItems = _.drop(courses, offset).slice(0, payload.pageSize);
     patchState({
-      error: ''
+      pagedCourses: pagedItems
     });
-    return this.coursesService.getCourses().pipe(
-      map((courses: Course[]) => {
-        let byPath = _.chain(courses)
-          .groupBy('path')
-          .map((values, key) => {
-            return {
-              'name': key,
-              'value': _.reduce(values, function (value, number) {
-                return value + 1
-              }, 0)
-            }
-          })
-          .value();
-        byPath = _.orderBy(byPath, 'value', 'desc');
+  }
 
-        let bySource = _.chain(courses)
-          .groupBy('source')
-          .map((values, key) => {
-            return {
-              'name': key,
-              'value': _.reduce(values, function (value, number) {
-                return value + 1
-              }, 0)
-            }
-          })
-          .value();
-        bySource = _.orderBy(bySource, 'value', 'desc');
-
-        return dispatch(new GetTotalSuccess({ 'total': courses.length, 'byPath': byPath, 'bySource': bySource }));
-      }),
-      catchError(error => {
-        return dispatch(new GetTotalFail(error));
+  @Action(GetCourseData)
+  public getTotal({ getState, patchState }: StateContext<CoursesStateModel>) {
+    const state = getState();
+    const courses = [...state.courses];
+    let byPath = _.chain(courses)
+      .groupBy('path')
+      .map((values, key) => {
+        return {
+          'name': key,
+          'value': _.reduce(values, function (value, number) {
+            return value + 1
+          }, 0)
+        }
       })
-    );
-  }
+      .value();
+    byPath = _.orderBy(byPath, 'value', 'desc');
 
-  @Action(GetTotalFail)
-  public getTotalFail({ patchState }: StateContext<CoursesStateModel>, { payload }: GetTotalFail) {
+    let bySource = _.chain(courses)
+      .groupBy('source')
+      .map((values, key) => {
+        return {
+          'name': key,
+          'value': _.reduce(values, function (value, number) {
+            return value + 1
+          }, 0)
+        }
+      })
+      .value();
+    bySource = _.orderBy(bySource, 'value', 'desc');
     patchState({
-      totalCourses: 0,
-      error: payload
-    });
-  }
-
-  @Action(GetTotalSuccess)
-  public getTotalSuccess({ patchState }: StateContext<CoursesStateModel>, { payload }: GetTotalSuccess) {
-    patchState({
-      totalCourses: payload.total,
-      coursesByPath: payload.byPath,
-      coursesBySource: payload.bySource,
-      error: ''
-    });
+      coursesByPath: byPath,
+      coursesBySource: bySource,
+    })
   }
 
   @Action(Load)
-  public load({ dispatch, patchState }: StateContext<CoursesStateModel>, { payload }: Load) {
+  public load({ dispatch, patchState }: StateContext<CoursesStateModel>) {
     patchState({
       error: ''
     });
-    return this.coursesService.getCoursesPaged(payload.current, payload.pageSize).pipe(
+    return this.coursesService.getCoursesSorted().pipe(
       map((courses: Course[]) => {
         return dispatch(new LoadSuccess(courses));
       }),
@@ -216,6 +209,7 @@ export class CoursesState {
   public loadSuccess({ patchState }: StateContext<CoursesStateModel>, { payload }: LoadSuccess) {
     patchState({
       courses: payload,
+      totalCourses: payload.length,
       error: ''
     });
   }
@@ -242,10 +236,7 @@ export class CoursesState {
     const state = getState();
     return this.coursesService.saveCourse(state.currentCourse).pipe(
       map((course: Course) => {
-        return dispatch([
-          new SaveSuccess(course),
-          new GetTotal()
-        ]);
+        return dispatch(new SaveSuccess(course));
       }),
       catchError(error => {
         return dispatch(new SaveFail(error));

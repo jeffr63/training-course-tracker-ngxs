@@ -5,7 +5,7 @@ import { Select, Store } from '@ngxs/store';
 
 import { CoursesState } from './../state/course.state';
 import { CourseData } from './../shared/course';
-import { GetTotal } from './../state/course.actions';
+import { GetCourseData, Load } from './../state/course.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +21,8 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.dispatch(new GetTotal());
+    this.store.dispatch(new Load()).subscribe(() => {
+      this.store.dispatch(new GetCourseData());
+    });
   }
 }

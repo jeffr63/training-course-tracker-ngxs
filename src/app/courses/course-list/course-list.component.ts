@@ -8,7 +8,7 @@ import { faPencilAlt, faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-
 import { AuthService } from './../../auth/auth.service';
 import { Course } from '../../shared/course';
 import { CoursesState } from '../../state/course.state';
-import { Load, GetTotal, Delete } from '../../state/course.actions';
+import { Load, Delete, GetPage } from '../../state/course.actions';
 
 @Component({
   selector: 'app-course-list',
@@ -16,7 +16,7 @@ import { Load, GetTotal, Delete } from '../../state/course.actions';
   styleUrls: ['./course-list.component.scss']
 })
 export class CourseListComponent implements OnInit {
-  @Select(CoursesState.getCourses) courses$: Observable<Course[]>;
+  @Select(CoursesState.getPagedCourses) courses$: Observable<Course[]>;
   selectCourse = <Course>{};
   current = 1;
   loading = false;
@@ -35,8 +35,9 @@ export class CourseListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.dispatch(new Load({ 'current': this.current, 'pageSize': this.pageSize }));
-    this.store.dispatch(new GetTotal());
+    this.store.dispatch(new Load()).subscribe(() => {
+      this.refreshTable();
+    });
   }
 
   deleteCourse(id, deleteModal) {
@@ -49,6 +50,6 @@ export class CourseListComponent implements OnInit {
   }
 
   refreshTable() {
-    this.store.dispatch(new Load({ 'current': this.current, 'pageSize': this.pageSize }));
+    this.store.dispatch(new GetPage({ 'current': this.current, 'pageSize': this.pageSize }));
   }
 }
