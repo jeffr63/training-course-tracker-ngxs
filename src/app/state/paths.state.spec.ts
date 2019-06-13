@@ -2,15 +2,17 @@ import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
+import { of, throwError } from 'rxjs';
 
+import {
+  DeletePath, DeletePathFail, DeletePathSuccess,
+  GetPath, GetPathFail, GetPathSuccess,
+  LoadPaths, LoadPathsFail, LoadPathsSuccess, NewPath,
+  SavePath, SavePathFail, SavePathSuccess
+} from './paths.actions';
 import { PathsState, PathsStateModel } from './paths.state';
 import { PathsService } from '../services/paths.service';
 import { Path } from '../shared/paths';
-import {
-  Delete, DeleteFail, DeleteSuccess, Get, GetFail, GetSuccess,
-  Load, LoadFail, LoadSuccess, NewPath, Save, SaveFail, SaveSuccess
-} from './paths.actions';
-import { of, throwError } from 'rxjs';
 
 const pathsArray: Path[] = [
   { id: 1, name: 'ABC' },
@@ -114,15 +116,15 @@ describe('Paths', () => {
     describe('Delete', () => {
       it('should dispatch DeleteSuccess when successful', fakeAsync(() => {
         // arrange
-        const action = new Delete(3);
-        const expected = new DeleteSuccess(3);
+        const action = new DeletePath(3);
+        const expected = new DeletePathSuccess(3);
         const callbacksCalled = [];
 
         spyOn(service, 'delete').and.returnValue(of(currentPath));
 
         // action
         actions
-          .pipe(ofActionSuccessful(DeleteSuccess))
+          .pipe(ofActionSuccessful(DeletePathSuccess))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -135,15 +137,15 @@ describe('Paths', () => {
       }));
 
       it('should dispatch DeleteFail when errors', fakeAsync(() => {
-        const action = new Delete(3);
-        const expected = new DeleteFail('Error');
+        const action = new DeletePath(3);
+        const expected = new DeletePathFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'delete').and.returnValue(throwError('Error'));
 
         // action
         actions
-          .pipe(ofActionSuccessful(DeleteFail))
+          .pipe(ofActionSuccessful(DeletePathFail))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -167,7 +169,7 @@ describe('Paths', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new DeleteFail('Error'));
+        store.dispatch(new DeletePathFail('Error'));
 
         store
           .selectOnce((state: AppModel) => state.paths)
@@ -189,7 +191,7 @@ describe('Paths', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new DeleteSuccess(3));
+        store.dispatch(new DeletePathSuccess(3));
 
         store
           .selectOnce((state: AppModel) => state.paths)
@@ -205,15 +207,15 @@ describe('Paths', () => {
     describe('Get', () => {
       it('should dispatch GetSuccusss when successful', fakeAsync(() => {
         // arrange
-        const action = new Get(3);
-        const expected = new GetSuccess(currentPath);
+        const action = new GetPath(3);
+        const expected = new GetPathSuccess(currentPath);
         const callbacksCalled = [];
 
         spyOn(service, 'get').and.returnValue(of(currentPath));
 
         // action
         actions
-          .pipe(ofActionSuccessful(GetSuccess))
+          .pipe(ofActionSuccessful(GetPathSuccess))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -226,15 +228,15 @@ describe('Paths', () => {
       }));
 
       it('should dispatch GetFail when errors', fakeAsync(() => {
-        const action = new Get(3);
-        const expected = new GetFail('Error');
+        const action = new GetPath(3);
+        const expected = new GetPathFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'get').and.returnValue(throwError('Error'));
 
         // action
         actions
-          .pipe(ofActionSuccessful(GetFail))
+          .pipe(ofActionSuccessful(GetPathFail))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -258,7 +260,7 @@ describe('Paths', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new GetFail('Error'));
+        store.dispatch(new GetPathFail('Error'));
 
         store
           .selectOnce((state: AppModel) => state.paths)
@@ -280,7 +282,7 @@ describe('Paths', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new GetSuccess(currentPath));
+        store.dispatch(new GetPathSuccess(currentPath));
 
         store
           .selectOnce((state: AppModel) => state.paths)
@@ -316,15 +318,15 @@ describe('Paths', () => {
     describe('Load', () => {
       it('should dispatch LoadSuccusss when successful', fakeAsync(() => {
         // arrange
-        const action = new Load();
-        const expected = new LoadSuccess(pathsArray);
+        const action = new LoadPaths();
+        const expected = new LoadPathsSuccess(pathsArray);
         const callbacksCalled = [];
 
         spyOn(service, 'load').and.returnValue(of(pathsArray));
 
         // action
         actions
-          .pipe(ofActionSuccessful(LoadSuccess))
+          .pipe(ofActionSuccessful(LoadPathsSuccess))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -337,15 +339,15 @@ describe('Paths', () => {
       }));
 
       it('should dispatch LoadFail when errors', fakeAsync(() => {
-        const action = new Load();
-        const expected = new LoadFail('Error');
+        const action = new LoadPaths();
+        const expected = new LoadPathsFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'load').and.returnValue(throwError('Error'));
 
         // action
         actions
-          .pipe(ofActionSuccessful(LoadFail))
+          .pipe(ofActionSuccessful(LoadPathsFail))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -369,7 +371,7 @@ describe('Paths', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new LoadFail('Error'));
+        store.dispatch(new LoadPathsFail('Error'));
 
         store
           .selectOnce((state: AppModel) => state.paths)
@@ -391,7 +393,7 @@ describe('Paths', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new LoadSuccess(pathsArray));
+        store.dispatch(new LoadPathsSuccess(pathsArray));
 
         store
           .selectOnce((state: AppModel) => state.paths)
@@ -413,8 +415,8 @@ describe('Paths', () => {
           }
         };
         store.reset(appState);
-        const action = new Save();
-        const expected = new SaveSuccess(currentPath);
+        const action = new SavePath();
+        const expected = new SavePathSuccess(currentPath);
         const callbacksCalled = [];
 
         spyOn(service, 'save').and.returnValue(of(currentPath));
@@ -422,7 +424,7 @@ describe('Paths', () => {
 
         // action
         actions
-          .pipe(ofActionSuccessful(SaveSuccess))
+          .pipe(ofActionSuccessful(SavePathSuccess))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -435,15 +437,15 @@ describe('Paths', () => {
       }));
 
       it('should dispatch SaveFail when errors', fakeAsync(() => {
-        const action = new Save();
-        const expected = new SaveFail('Error');
+        const action = new SavePath();
+        const expected = new SavePathFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'save').and.returnValue(throwError('Error'));
 
         // action
         actions
-          .pipe(ofActionSuccessful(SaveFail))
+          .pipe(ofActionSuccessful(SavePathFail))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -467,7 +469,7 @@ describe('Paths', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new SaveFail('Error'));
+        store.dispatch(new SavePathFail('Error'));
 
         store
           .selectOnce((state: AppModel) => state.paths)
@@ -492,7 +494,7 @@ describe('Paths', () => {
           id: 3,
           name: 'XYZ'
         };
-        store.dispatch(new SaveSuccess(expected));
+        store.dispatch(new SavePathSuccess(expected));
 
         store
           .selectOnce((state: AppModel) => state.paths)

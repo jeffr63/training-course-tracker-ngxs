@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 import { Store, Select } from '@ngxs/store';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
-import { Source } from '../../shared/sources';
+import { GetSource, SaveSource, NewSource } from './../../state/sources.actions';
 import { SourcesState } from './../../state/sources.state';
-import { Get, Save, NewSource } from './../../state/sources.actions';
+import { Source } from '../../shared/sources';
 
 @Component({
   selector: 'app-source-edit',
@@ -32,7 +32,7 @@ export class SourceEditComponent implements OnInit, OnDestroy {
       if (params.id === 'new') {
         this.store.dispatch(new NewSource());
       } else {
-        this.store.dispatch(new Get(params.id));
+        this.store.dispatch(new GetSource(params.id));
       }
     });
   }
@@ -42,7 +42,7 @@ export class SourceEditComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.store.dispatch(new Save());
+    this.store.dispatch(new SaveSource());
     this.location.back();
   }
 

@@ -1,14 +1,14 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
+import {
+  DeleteSource, DeleteSourceFail, DeleteSourceSuccess,
+  GetSource, GetSourceFail, GetSourceSuccess,
+  LoadSources, LoadSourcesFail, LoadSourcesSuccess, NewSource,
+  SaveSource, SaveSourceFail, SaveSourceSuccess
+} from './sources.actions';
 import { Source } from '../shared/sources';
 import { SourcesService } from '../services/sources.service';
-import {
-  Delete, DeleteSuccess, DeleteFail,
-  Get, GetSuccess, GetFail,
-  Load, LoadSuccess, LoadFail,
-  Save, SaveSuccess, SaveFail, NewSource
-} from './sources.actions';
 
 export interface SourcesStateModel {
   sources: Source[];
@@ -43,31 +43,31 @@ export class SourcesState {
     return state.currentSource;
   }
 
-  @Action(Delete)
-  public delete({ dispatch, patchState }: StateContext<SourcesStateModel>, { payload }: Delete) {
+  @Action(DeleteSource)
+  public delete({ dispatch, patchState }: StateContext<SourcesStateModel>, { payload }: DeleteSource) {
     patchState({
       error: ''
     });
     return this.sourcesService.delete(payload).pipe(
       map(source => {
-        return dispatch(new DeleteSuccess(payload));
+        return dispatch(new DeleteSourceSuccess(payload));
       }),
       catchError(error => {
-        return dispatch(new DeleteFail(error));
+        return dispatch(new DeleteSourceFail(error));
       })
     );
   }
 
-  @Action(DeleteFail)
-  public deleteFail({ patchState }: StateContext<SourcesStateModel>, { payload }: DeleteFail) {
+  @Action(DeleteSourceFail)
+  public deleteFail({ patchState }: StateContext<SourcesStateModel>, { payload }: DeleteSourceFail) {
     patchState({
       currentSource: null,
       error: payload
     });
   }
 
-  @Action(DeleteSuccess)
-  public deleteSuccess({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: DeleteSuccess) {
+  @Action(DeleteSourceSuccess)
+  public deleteSuccess({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: DeleteSourceSuccess) {
     const state = getState();
     patchState({
       currentSource: null,
@@ -75,62 +75,62 @@ export class SourcesState {
     });
   }
 
-  @Action(Get)
-  public get({ dispatch, patchState }: StateContext<SourcesStateModel>, { payload }: Get) {
+  @Action(GetSource)
+  public get({ dispatch, patchState }: StateContext<SourcesStateModel>, { payload }: GetSource) {
     patchState({
       error: ''
     });
     return this.sourcesService.get(payload).pipe(
       map((source: Source) => {
-        return dispatch(new GetSuccess(source));
+        return dispatch(new GetSourceSuccess(source));
       }),
       catchError(err => {
-        return dispatch(new GetFail(err));
+        return dispatch(new GetSourceFail(err));
       })
     );
   }
 
-  @Action(GetFail)
-  public getFail({ patchState }: StateContext<SourcesStateModel>, { payload }: GetFail) {
+  @Action(GetSourceFail)
+  public getFail({ patchState }: StateContext<SourcesStateModel>, { payload }: GetSourceFail) {
     patchState({
       currentSource: null,
       error: payload
     });
   }
 
-  @Action(GetSuccess)
-  public getSuccess({ patchState }: StateContext<SourcesStateModel>, { payload }: GetSuccess) {
+  @Action(GetSourceSuccess)
+  public getSuccess({ patchState }: StateContext<SourcesStateModel>, { payload }: GetSourceSuccess) {
     patchState({
       currentSource: payload,
       error: ''
     });
   }
 
-  @Action(Load)
+  @Action(LoadSources)
   public load({ dispatch, patchState }: StateContext<SourcesStateModel>) {
     patchState({
       error: ''
     });
     return this.sourcesService.load().pipe(
       map((sources: any[]) => {
-        return dispatch(new LoadSuccess(sources));
+        return dispatch(new LoadSourcesSuccess(sources));
       }),
       catchError(err => {
-        return dispatch(new LoadFail(err));
+        return dispatch(new LoadSourcesFail(err));
       })
     );
   }
 
-  @Action(LoadFail)
-  public loadFail({ patchState }: StateContext<SourcesStateModel>, { payload }: LoadFail) {
+  @Action(LoadSourcesFail)
+  public loadFail({ patchState }: StateContext<SourcesStateModel>, { payload }: LoadSourcesFail) {
     patchState({
       sources: [],
       error: payload
     });
   }
 
-  @Action(LoadSuccess)
-  public loadSuccess({ patchState }: StateContext<SourcesStateModel>, { payload }: LoadSuccess) {
+  @Action(LoadSourcesSuccess)
+  public loadSuccess({ patchState }: StateContext<SourcesStateModel>, { payload }: LoadSourcesSuccess) {
     patchState({
       sources: payload,
       error: ''
@@ -148,7 +148,7 @@ export class SourcesState {
     });
   }
 
-  @Action(Save)
+  @Action(SaveSource)
   public save({ dispatch, getState, patchState }: StateContext<SourcesStateModel>) { // , { payload }: Save) {
     const state = getState();
     patchState({
@@ -157,25 +157,25 @@ export class SourcesState {
     return this.sourcesService.save(state.currentSource).pipe(
       map((source: Source) => {
         return dispatch([
-          new Load(),
-          new SaveSuccess(state.currentSource)
+          new LoadSources(),
+          new SaveSourceSuccess(state.currentSource)
         ]);
       }),
       catchError(err => {
-        return dispatch(new SaveFail(err));
+        return dispatch(new SaveSourceFail(err));
       })
     );
   }
 
-  @Action(SaveFail)
-  public saveFail({ patchState }: StateContext<SourcesStateModel>, { payload }: SaveFail) {
+  @Action(SaveSourceFail)
+  public saveFail({ patchState }: StateContext<SourcesStateModel>, { payload }: SaveSourceFail) {
     patchState({
       error: payload
     });
   }
 
-  @Action(SaveSuccess)
-  public saveSuccess({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: SaveSuccess) {
+  @Action(SaveSourceSuccess)
+  public saveSuccess({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: SaveSourceSuccess) {
     const state = getState();
     const updatedSources = state.sources.map(
       item => payload.id === item.id ? payload : item);

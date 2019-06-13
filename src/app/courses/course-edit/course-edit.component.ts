@@ -6,13 +6,13 @@ import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
-import { Course } from '../../shared/course';
+import { GetCourse, NewCourse, SaveCourse } from '../../state/course.actions';
 import { CoursesState } from '../../state/course.state';
+import { Course } from '../../shared/course';
+import { LoadPaths } from '../../state/paths.actions';
 import { PathsState } from '../../state/paths.state';
+import { LoadSources } from '../../state/sources.actions';
 import { SourcesState } from '../../state/sources.state';
-import * as courseActions from '../../state/course.actions';
-import * as fromPaths from '../../state/paths.actions';
-import * as fromSources from '../../state/sources.actions';
 
 
 @Component({
@@ -22,10 +22,10 @@ import * as fromSources from '../../state/sources.actions';
 })
 export class CourseEditComponent implements OnInit, OnDestroy {
   @Select(CoursesState.getCourse) course$: Observable<Course>;
-  loading = false;
-  componentActive = true;
   @Select(PathsState.getPaths) paths$: Observable<any[]>;
   @Select(SourcesState.getSources) sources$: Observable<any[]>;
+  loading = false;
+  componentActive = true;
   faSave = faSave;
   faBan = faBan;
 
@@ -38,14 +38,14 @@ export class CourseEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.params.subscribe(params => {
       if (params.id === 'new') {
-        this.store.dispatch(new courseActions.NewCourse());
+        this.store.dispatch(new NewCourse());
       } else {
-        this.store.dispatch(new courseActions.GetCourse(params.id));
+        this.store.dispatch(new GetCourse(params.id));
       }
     });
 
-    this.store.dispatch(new fromPaths.Load());
-    this.store.dispatch(new fromSources.Load());
+    this.store.dispatch(new LoadPaths());
+    this.store.dispatch(new LoadSources());
   }
 
   ngOnDestroy() {
@@ -53,7 +53,7 @@ export class CourseEditComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.store.dispatch(new courseActions.Save());
+    this.store.dispatch(new SaveCourse());
     this.location.back();
   }
 

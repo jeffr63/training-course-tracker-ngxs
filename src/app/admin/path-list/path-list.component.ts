@@ -7,7 +7,7 @@ import { faPencilAlt, faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-
 
 import { Path } from '../../shared/paths';
 import { PathsState } from './../../state/paths.state';
-import { Delete, Load } from './../../state/paths.actions';
+import { DeletePath, LoadPaths } from './../../state/paths.actions';
 
 @Component({
   selector: 'app-path-list',
@@ -29,13 +29,13 @@ export class PathListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.dispatch(new Load());
+    this.store.dispatch(new LoadPaths());
   }
 
   deletePath(id, deleteModal) {
     this.modal.open(deleteModal).result.then(result => {
       this.closedResult = `Closed with ${result}`;
-      this.store.dispatch(new Delete(id));
+      this.store.dispatch(new DeletePath(id));
     }, (reason) => {
       this.closedResult = `Dismissed with ${reason}`;
     });

@@ -5,9 +5,9 @@ import { Store, Select } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { faPencilAlt, faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-solid-svg-icons';
 
-import { Source } from '../../shared/sources';
+import { LoadSources, DeleteSource } from './../../state/sources.actions';
 import { SourcesState } from './../../state/sources.state';
-import { Load, Delete } from './../../state/sources.actions';
+import { Source } from '../../shared/sources';
 
 @Component({
   selector: 'app-source-list',
@@ -29,13 +29,13 @@ export class SourceListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.dispatch(new Load());
+    this.store.dispatch(new LoadSources());
   }
 
   deleteSource(id, deleteModal) {
     this.modal.open(deleteModal).result.then(result => {
       this.closedResult = `Closed with ${result}`;
-      this.store.dispatch(new Delete(id));
+      this.store.dispatch(new DeleteSource(id));
     }, (reason) => {
       this.closedResult = `Dismissed with ${reason}`;
     });

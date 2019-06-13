@@ -1,14 +1,14 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { Path } from '../shared/paths';
-import { PathsService } from '../services/paths.service';
 import {
-  Delete, DeleteSuccess, DeleteFail,
-  Get, GetSuccess, GetFail,
-  Load, LoadSuccess, LoadFail,
-  Save, SaveSuccess, SaveFail, NewPath
+  DeletePath, DeletePathFail, DeletePathSuccess,
+  GetPath, GetPathFail, GetPathSuccess,
+  LoadPaths, LoadPathsFail, LoadPathsSuccess, NewPath,
+  SavePath, SavePathFail, SavePathSuccess
 } from './paths.actions';
+import { PathsService } from '../services/paths.service';
+import { Path } from '../shared/paths';
 
 export interface PathsStateModel {
   paths: Path[];
@@ -43,31 +43,31 @@ export class PathsState {
     return state.currentPath;
   }
 
-  @Action(Delete)
-  public delete({ dispatch, patchState }: StateContext<PathsStateModel>, { payload }: Delete) {
+  @Action(DeletePath)
+  public delete({ dispatch, patchState }: StateContext<PathsStateModel>, { payload }: DeletePath) {
     patchState({
       error: ''
     });
     return this.pathsService.delete(payload).pipe(
       map(_path => {
-        return dispatch(new DeleteSuccess(payload));
+        return dispatch(new DeletePathSuccess(payload));
       }),
       catchError(error => {
-        return dispatch(new DeleteFail(error));
+        return dispatch(new DeletePathFail(error));
       })
     );
   }
 
-  @Action(DeleteFail)
-  public deleteFail({ patchState }: StateContext<PathsStateModel>, { payload }: DeleteFail) {
+  @Action(DeletePathFail)
+  public deleteFail({ patchState }: StateContext<PathsStateModel>, { payload }: DeletePathFail) {
     patchState({
       currentPath: null,
       error: payload
     });
   }
 
-  @Action(DeleteSuccess)
-  public deleteSuccess({ getState, patchState }: StateContext<PathsStateModel>, { payload }: DeleteSuccess) {
+  @Action(DeletePathSuccess)
+  public deleteSuccess({ getState, patchState }: StateContext<PathsStateModel>, { payload }: DeletePathSuccess) {
     const state = getState();
     patchState({
       currentPath: null,
@@ -75,31 +75,31 @@ export class PathsState {
     });
   }
 
-  @Action(Get)
-  public get({ dispatch, patchState }: StateContext<PathsStateModel>, { payload }: Get) {
+  @Action(GetPath)
+  public get({ dispatch, patchState }: StateContext<PathsStateModel>, { payload }: GetPath) {
     patchState({
       error: ''
     });
     return this.pathsService.get(payload).pipe(
       map((path: Path) => {
-        return dispatch(new GetSuccess(path));
+        return dispatch(new GetPathSuccess(path));
       }),
       catchError(err => {
-        return dispatch(new GetFail(err));
+        return dispatch(new GetPathFail(err));
       })
     );
   }
 
-  @Action(GetFail)
-  public getFail({ patchState }: StateContext<PathsStateModel>, { payload }: GetFail) {
+  @Action(GetPathFail)
+  public getFail({ patchState }: StateContext<PathsStateModel>, { payload }: GetPathFail) {
     patchState({
       currentPath: null,
       error: payload
     });
   }
 
-  @Action(GetSuccess)
-  public getSuccess({ patchState }: StateContext<PathsStateModel>, { payload }: GetSuccess) {
+  @Action(GetPathSuccess)
+  public getSuccess({ patchState }: StateContext<PathsStateModel>, { payload }: GetPathSuccess) {
     patchState({
       currentPath: payload,
       error: ''
@@ -117,38 +117,38 @@ export class PathsState {
     });
   }
 
-  @Action(Load)
+  @Action(LoadPaths)
   public load({ dispatch, patchState }: StateContext<PathsStateModel>) {
     patchState({
       error: ''
     });
     return this.pathsService.load().pipe(
       map((Paths: any[]) => {
-        return dispatch(new LoadSuccess(Paths));
+        return dispatch(new LoadPathsSuccess(Paths));
       }),
       catchError(err => {
-        return dispatch(new LoadFail(err));
+        return dispatch(new LoadPathsFail(err));
       })
     );
   }
 
-  @Action(LoadFail)
-  public loadFail({ patchState }: StateContext<PathsStateModel>, { payload }: LoadFail) {
+  @Action(LoadPathsFail)
+  public loadFail({ patchState }: StateContext<PathsStateModel>, { payload }: LoadPathsFail) {
     patchState({
       paths: [],
       error: payload
     });
   }
 
-  @Action(LoadSuccess)
-  public loadSuccess({ patchState }: StateContext<PathsStateModel>, { payload }: LoadSuccess) {
+  @Action(LoadPathsSuccess)
+  public loadSuccess({ patchState }: StateContext<PathsStateModel>, { payload }: LoadPathsSuccess) {
     patchState({
       paths: payload,
       error: ''
     });
   }
 
-  @Action(Save)
+  @Action(SavePath)
   public save({ dispatch, getState, patchState }: StateContext<PathsStateModel>) { // , { payload }: Save) {
     const state = getState();
     patchState({
@@ -157,25 +157,25 @@ export class PathsState {
     return this.pathsService.save(state.currentPath).pipe(
       map((path: Path) => {
         return dispatch([
-          new SaveSuccess(state.currentPath),
-          new Load()
+          new SavePathSuccess(state.currentPath),
+          new LoadPaths()
         ]);
       }),
       catchError(err => {
-        return dispatch(new SaveFail(err));
+        return dispatch(new SavePathFail(err));
       })
     );
   }
 
-  @Action(SaveFail)
-  public saveFail({ patchState }: StateContext<PathsStateModel>, { payload }: SaveFail) {
+  @Action(SavePathFail)
+  public saveFail({ patchState }: StateContext<PathsStateModel>, { payload }: SavePathFail) {
     patchState({
       error: payload
     });
   }
 
-  @Action(SaveSuccess)
-  public saveSuccess({ getState, patchState }: StateContext<PathsStateModel>, { payload }: SaveSuccess) {
+  @Action(SavePathSuccess)
+  public saveSuccess({ getState, patchState }: StateContext<PathsStateModel>, { payload }: SavePathSuccess) {
     const state = getState();
     const updatedPaths = state.paths.map(
       item => payload.id === item.id ? payload : item);

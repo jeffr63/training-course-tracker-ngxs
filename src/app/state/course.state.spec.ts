@@ -7,8 +7,10 @@ import { CoursesState, CoursesStateModel } from './course.state';
 import { CoursesService } from '../services/courses.service';
 import { Course, CourseData } from '../shared/course';
 import {
-  Delete, DeleteFail, DeleteSuccess, GetCourse, GetCourseFail, GetCourseSuccess, GetPage,
-  Load, LoadFail, LoadSuccess, NewCourse, Save, SaveFail, SaveSuccess, GetCourseData
+  DeleteCourse, DeleteCourseFail, DeleteCourseSuccess,
+  GetCourse, GetCourseFail, GetCourseSuccess, GetCourseData, GetCoursesPage,
+  LoadCourses, LoadCoursesFail, LoadCoursesSuccess, NewCourse,
+  SaveCourse, SaveCourseFail, SaveCourseSuccess
 } from './course.actions';
 import { of, throwError } from 'rxjs';
 
@@ -219,8 +221,8 @@ describe('Courses', () => {
     describe('Delete', () => {
       it('should dispatch DeleteSuccess when successful', fakeAsync(() => {
         // arrange
-        const action = new Delete({ id: 3, current: 1, pageSize: 10 });
-        const expected = new DeleteSuccess();
+        const action = new DeleteCourse({ id: 3, current: 1, pageSize: 10 });
+        const expected = new DeleteCourseSuccess();
         const callbacksCalled = [];
 
         spyOn(service, 'deleteCourse').and.returnValue(of(currentCourse));
@@ -228,7 +230,7 @@ describe('Courses', () => {
 
         // action
         actions
-          .pipe(ofActionSuccessful(DeleteSuccess))
+          .pipe(ofActionSuccessful(DeleteCourseSuccess))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -241,15 +243,15 @@ describe('Courses', () => {
       }));
 
       it('should dispatch DeleteFail when errors', fakeAsync(() => {
-        const action = new Delete({ id: 3, current: 1, pageSize: 10 });
-        const expected = new DeleteFail('Error');
+        const action = new DeleteCourse({ id: 3, current: 1, pageSize: 10 });
+        const expected = new DeleteCourseFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'deleteCourse').and.returnValue(throwError('Error'));
 
         // action
         actions
-          .pipe(ofActionSuccessful(DeleteFail))
+          .pipe(ofActionSuccessful(DeleteCourseFail))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -277,7 +279,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new DeleteFail('Error'));
+        store.dispatch(new DeleteCourseFail('Error'));
 
         store
           .selectOnce((state: AppModel) => state.courses.error)
@@ -302,7 +304,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new DeleteSuccess());
+        store.dispatch(new DeleteCourseSuccess());
 
         store
           .selectOnce((state: AppModel) => state.courses.error)
@@ -424,7 +426,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new GetPage({ 'current': 1, 'pageSize': 2 }));
+        store.dispatch(new GetCoursesPage({ 'current': 1, 'pageSize': 2 }));
 
         store
           .selectOnce((state: AppModel) => state.courses)
@@ -463,15 +465,15 @@ describe('Courses', () => {
     describe('Load', () => {
       it('should dispatch LoadSuccusss when successful', fakeAsync(() => {
         // arrange
-        const action = new Load();
-        const expected = new LoadSuccess(courseArray);
+        const action = new LoadCourses();
+        const expected = new LoadCoursesSuccess(courseArray);
         const callbacksCalled = [];
 
         spyOn(service, 'getCoursesSorted').and.returnValue(of(courseArray));
 
         // action
         actions
-          .pipe(ofActionSuccessful(LoadSuccess))
+          .pipe(ofActionSuccessful(LoadCoursesSuccess))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -484,15 +486,15 @@ describe('Courses', () => {
       }));
 
       it('should dispatch LoadFail when errors', fakeAsync(() => {
-        const action = new Load();
-        const expected = new LoadFail('Error');
+        const action = new LoadCourses();
+        const expected = new LoadCoursesFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'getCoursesSorted').and.returnValue(throwError('Error'));
 
         // action
         actions
-          .pipe(ofActionSuccessful(LoadFail))
+          .pipe(ofActionSuccessful(LoadCoursesFail))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -520,7 +522,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new LoadFail('Error'));
+        store.dispatch(new LoadCoursesFail('Error'));
 
         store
           .selectOnce((state: AppModel) => state.courses)
@@ -549,7 +551,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new LoadSuccess(courseArray));
+        store.dispatch(new LoadCoursesSuccess(courseArray));
 
         store
           .selectOnce((state: AppModel) => state.courses)
@@ -603,8 +605,8 @@ describe('Courses', () => {
           }
         };
         store.reset(appState);
-        const action = new Save();
-        const expected = new SaveSuccess(currentCourse);
+        const action = new SaveCourse();
+        const expected = new SaveCourseSuccess(currentCourse);
         const callbacksCalled = [];
 
         spyOn(service, 'saveCourse').and.returnValue(of(currentCourse));
@@ -612,7 +614,7 @@ describe('Courses', () => {
 
         // action
         actions
-          .pipe(ofActionSuccessful(SaveSuccess))
+          .pipe(ofActionSuccessful(SaveCourseSuccess))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -625,15 +627,15 @@ describe('Courses', () => {
       }));
 
       it('should dispatch SaveFail when errors', fakeAsync(() => {
-        const action = new Save();
-        const expected = new SaveFail('Error');
+        const action = new SaveCourse();
+        const expected = new SaveCourseFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'saveCourse').and.returnValue(throwError('Error'));
 
         // action
         actions
-          .pipe(ofActionSuccessful(SaveFail))
+          .pipe(ofActionSuccessful(SaveCourseFail))
           .subscribe(x => {
             callbacksCalled.push(x);
           });
@@ -661,7 +663,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        store.dispatch(new SaveFail('Error'));
+        store.dispatch(new SaveCourseFail('Error'));
 
         store
           .selectOnce((state: AppModel) => state.courses)
@@ -688,7 +690,7 @@ describe('Courses', () => {
         store.reset(appState);
 
         const expected: Course = { id: 2, title: 'XYZ', instructor: 'Joe', path: 'Updated', source: 'Updated' };
-        store.dispatch(new SaveSuccess(expected));
+        store.dispatch(new SaveCourseSuccess(expected));
 
         store
           .selectOnce((state: AppModel) => state.courses)

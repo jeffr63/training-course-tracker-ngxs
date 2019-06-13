@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -7,22 +7,19 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './course-list-header.component.html',
   styles: []
 })
-export class CourseListHeaderComponent implements OnInit {
-  @Input() total: number;
-  @Input() pageSize: number;
-  @Input() maxSize: number;
+export class CourseListHeaderComponent {
   @Input() current;
   @Input() isAuthenticated: boolean;
+  @Input() maxSize: number;
+  @Input() pageSize: number;
+  @Input() total: number;
+  @Output() currentChange: EventEmitter<number> = new EventEmitter<number>();
   @Output() refreshTable = new EventEmitter();
   faPlusCircle = faPlusCircle;
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
   onPageChange() {
-    this.refreshTable.emit(this.current);
+    this.currentChange.emit(this.current);
+    this.refreshTable.emit();
   }
 
 }

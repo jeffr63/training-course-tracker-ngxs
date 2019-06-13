@@ -6,9 +6,9 @@ import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
+import { GetPath, NewPath, SavePath } from './../../state/paths.actions';
 import { Path } from '../../shared/paths';
 import { PathsState } from './../../state/paths.state';
-import { Get, Save, NewPath } from './../../state/paths.actions';
 
 @Component({
   selector: 'app-path-edit',
@@ -32,7 +32,7 @@ export class PathEditComponent implements OnInit, OnDestroy {
       if (params.id === 'new') {
         this.store.dispatch(new NewPath());
       } else {
-        this.store.dispatch(new Get(params.id));
+        this.store.dispatch(new GetPath(params.id));
       }
     });
   }
@@ -42,7 +42,7 @@ export class PathEditComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.store.dispatch(new Save());
+    this.store.dispatch(new SavePath());
     this.location.back();
   }
 

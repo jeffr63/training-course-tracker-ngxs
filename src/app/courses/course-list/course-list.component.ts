@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
+import { faTrashAlt, faBan } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from './../../auth/auth.service';
 import { Course } from '../../shared/course';
 import { CoursesState } from '../../state/course.state';
-import { Load, Delete, GetPage } from '../../state/course.actions';
+import { DeleteCourse, LoadCourses, GetCoursesPage } from '../../state/course.actions';
 import { Router } from '@angular/router';
 
 @Component({
@@ -26,7 +26,6 @@ export class CourseListComponent implements OnInit {
   @Select(CoursesState.getTotalCourses) totalCourses$: Observable<number>;
   closedResult = '';
   faTrashAlt = faTrashAlt;
-  faPlusCircle = faPlusCircle;
   faBan = faBan;
 
   constructor(
@@ -37,15 +36,15 @@ export class CourseListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.dispatch(new Load()).subscribe(() => {
-      this.refreshTable(this.current);
+    this.store.dispatch(new LoadCourses()).subscribe(() => {
+      this.refreshTable();
     });
   }
 
   deleteCourse(id, deleteModal) {
     this.modal.open(deleteModal).result.then(result => {
       this.closedResult = `Closed with ${result}`;
-      this.store.dispatch(new Delete({ 'id': id, 'current': this.current, 'pageSize': this.pageSize }));
+      this.store.dispatch(new DeleteCourse({ 'id': id, 'current': this.current, 'pageSize': this.pageSize }));
     }, (reason) => {
       this.closedResult = `Dismissed with ${reason}`;
     });
@@ -55,8 +54,7 @@ export class CourseListComponent implements OnInit {
     this.router.navigate(['/courses', id]);
   }
 
-  refreshTable(current) {
-    this.current = current;
-    this.store.dispatch(new GetPage({ 'current': this.current, 'pageSize': this.pageSize }));
+  refreshTable() {
+    this.store.dispatch(new GetCoursesPage({ 'current': this.current, 'pageSize': this.pageSize }));
   }
 }
