@@ -2,18 +2,18 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 
 import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { Course } from './../../shared/course';
-
 @Component({
-  selector: 'app-course-list-display',
-  templateUrl: './course-list-display.component.html',
+  selector: 'app-list-display',
+  templateUrl: './list-display.component.html',
   styles: []
 })
-export class CourseListDisplayComponent implements OnInit {
-  @Input() courses: Course[];
+export class ListDisplayComponent implements OnInit {
+  @Input() columns: string[];
+  @Input() headers: string[];
+  @Input() items: any[];
   @Input() isAuthenticated: boolean;
-  @Output() deleteCourse = new EventEmitter();
-  @Output() editCourse = new EventEmitter();
+  @Output() deleteItem = new EventEmitter();
+  @Output() editItem = new EventEmitter();
 
   faPencilAlt = faPencilAlt;
   faTrashAlt = faTrashAlt;
@@ -24,11 +24,11 @@ export class CourseListDisplayComponent implements OnInit {
   }
 
   editClicked(id: number) {
-    this.editCourse.emit(id);
+    this.editItem.emit(id);
   }
 
   deleteClicked(id: number) {
-      this.deleteCourse.emit(id);
+    this.deleteItem.emit(id);
   }
 
 }

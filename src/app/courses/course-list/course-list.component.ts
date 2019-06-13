@@ -18,15 +18,16 @@ import { Router } from '@angular/router';
 })
 export class CourseListComponent implements OnInit {
   @Select(CoursesState.getPagedCourses) courses$: Observable<Course[]>;
-  selectCourse = <Course>{};
-  selectedId: number;
+  closedResult = '';
+  columns = ['title', 'instructor', 'path', 'source'];
   current = 1;
+  faBan = faBan;
+  faTrashAlt = faTrashAlt;
+  headers = ['Title', 'Instructor', 'Path', 'Source'];
   loading = false;
   pageSize = 10;
+  selectCourse = <Course>{};
   @Select(CoursesState.getTotalCourses) totalCourses$: Observable<number>;
-  closedResult = '';
-  faTrashAlt = faTrashAlt;
-  faBan = faBan;
 
   constructor(
     private store: Store,
@@ -52,6 +53,10 @@ export class CourseListComponent implements OnInit {
 
   editCourse(id) {
     this.router.navigate(['/courses', id]);
+  }
+
+  newCourse() {
+    this.router.navigate(['/courses/new']);
   }
 
   refreshTable() {

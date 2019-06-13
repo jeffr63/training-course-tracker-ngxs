@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { Store, Select } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { faPencilAlt, faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { LoadSources, DeleteSource } from './../../state/sources.actions';
 import { SourcesState } from './../../state/sources.state';
@@ -16,29 +17,39 @@ import { Source } from '../../shared/sources';
 })
 export class SourceListComponent implements OnInit {
   @Select(SourcesState.getSources) source$: Observable<any[]>;
-  selectPath = <Source>{};
   closedResult = '';
-  faPencilAlt = faPencilAlt;
-  faTrashAlt = faTrashAlt;
-  faPlusCircle = faPlusCircle;
+  columns = ['name'];
   faBan = faBan;
+  faTrashAlt = faTrashAlt;
+  headers = ['Source'];
+  isAuthenticated = true;
+  selectPath = <Source>{};
 
   constructor(
     private store: Store,
-    private modal: NgbModal
+    private modal: NgbModal,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.store.dispatch(new LoadSources());
   }
 
-  deleteSource(id, deleteModal) {
+  deleteSource(id: number, deleteModal) {
     this.modal.open(deleteModal).result.then(result => {
       this.closedResult = `Closed with ${result}`;
       this.store.dispatch(new DeleteSource(id));
     }, (reason) => {
       this.closedResult = `Dismissed with ${reason}`;
     });
+  }
+
+  editSource(id: number) {
+    this.router.navigate(['/admin/sources', id]);
+  }
+
+  newSource() {
+    this.router.navigate(['/admin/sources/new']);
   }
 
 }

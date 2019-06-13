@@ -4,11 +4,14 @@
       <h1 class="card-header">Training Courses</h1>
     </header>
     <section class="card-body">
-      <app-course-list-header [total]="totalCourses$ | async" [pageSize]="pageSize" [maxSize]="5" [(current)]="current"
-        [isAuthenticated]="auth.isAuthenticated()" (refreshTable)="refreshTable()"></app-course-list-header>
+      <app-pager-list-header includePager="true" [total]="totalCourses$ | async" [pageSize]="pageSize" [maxSize]="5"
+        [(current)]="current" [isAuthenticated]="auth.isAuthenticated()" (refreshTable)="refreshTable()"
+        (newCourse)="newCourse()">
+      </app-pager-list-header>
 
-      <app-course-list-display [courses]="courses$ | async" [isAuthenticated]="auth.isAuthenticated()"
-        (deleteCourse)="deleteCourse($event, deleteModal)" (editCourse)="editCourse($event)"></app-course-list-display>
+      <app-list-display [headers]="headers" [columns]="columns" [items]="courses$ | async"
+        [isAuthenticated]="auth.isAuthenticated()" (deleteItem)="deleteCourse($event, deleteModal)"
+        (editItem)="editCourse($event)"></app-list-display>
     </section>
 
   </section>
