@@ -4,18 +4,8 @@
       <h1 class="card-header">Training Courses</h1>
     </header>
     <section class="card-body">
-      <header class="row">
-        <div class="col">
-          <ngb-pagination [collectionSize]="totalCourses$ | async" boundaryLinks="true" [pageSize]="pageSize"
-            maxSize="5" rotate="true" [(page)]="current" (pageChange)="refreshTable()"></ngb-pagination>
-        </div>
-        <div class="col" *ngIf="auth.isAuthenticated()">
-          <a [routerLink]="['/courses/new']" title="Add Course">
-            <fa-icon [icon]="faPlusCircle" class="fa-2x text-success"></fa-icon>
-            <span class="sr-only">Add Course</span>
-          </a>
-        </div>
-      </header>
+      <app-course-list-header [total]="totalCourses$ | async" [pageSize]="pageSize" [maxSize]="5" [current]="current"
+        [isAuthenticated]="auth.isAuthenticated()" (refreshTable)="refreshTable($event)"></app-course-list-header>
 
       <app-course-list-display [courses]="courses$ | async" [isAuthenticated]="auth.isAuthenticated()"
         (deleteCourse)="deleteCourse($event, deleteModal)" (editCourse)="editCourse($event)"></app-course-list-display>

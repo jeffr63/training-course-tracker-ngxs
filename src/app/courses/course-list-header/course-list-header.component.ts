@@ -11,9 +11,9 @@ export class CourseListHeaderComponent implements OnInit {
   @Input() total: number;
   @Input() pageSize: number;
   @Input() maxSize: number;
-  @Input() @Output() current = new EventEmitter();
+  @Input() current;
   @Input() isAuthenticated: boolean;
-  @Output() refreshDisplay = new EventEmitter();
+  @Output() refreshTable = new EventEmitter();
   faPlusCircle = faPlusCircle;
 
   constructor() { }
@@ -22,8 +22,7 @@ export class CourseListHeaderComponent implements OnInit {
   }
 
   onPageChange() {
-    this.current.emit();
-    this.refreshDisplay.emit();
+    this.refreshTable.emit(this.current);
   }
 
 }

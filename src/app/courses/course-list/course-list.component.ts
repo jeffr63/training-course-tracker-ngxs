@@ -38,7 +38,7 @@ export class CourseListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new Load()).subscribe(() => {
-      this.refreshTable();
+      this.refreshTable(this.current);
     });
   }
 
@@ -55,7 +55,8 @@ export class CourseListComponent implements OnInit {
     this.router.navigate(['/courses', id]);
   }
 
-  refreshTable() {
+  refreshTable(current) {
+    this.current = current;
     this.store.dispatch(new GetPage({ 'current': this.current, 'pageSize': this.pageSize }));
   }
 }
