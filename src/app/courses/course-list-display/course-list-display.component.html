@@ -1,0 +1,27 @@
+<table class="table table-striped">
+  <thead>
+    <th>Title</th>
+    <th>Instructor</th>
+    <th>Path</th>
+    <th>Source</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let course of courses">
+      <td>{{course.title}}</td>
+      <td>{{course.instructor}}</td>
+      <td>{{course.path}}</td>
+      <td>{{course.source}}</td>
+      <td *ngIf="isAuthenticated">
+        <button class="btn btn-info btn-sm mr-2" (click)="editClicked(course.id)" title="Edit">
+          <fa-icon [icon]="faPencilAlt"></fa-icon>
+          <span class="sr-only">Edit</span>
+        </button>
+        <button class="btn btn-danger btn-sm" (click)="deleteClicked(course.id)" title="Delete">
+          <fa-icon [icon]="faTrashAlt"></fa-icon>
+          <span class="sr-only">Delete</span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

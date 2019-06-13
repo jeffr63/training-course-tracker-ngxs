@@ -3,12 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { faPencilAlt, faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-solid-svg-icons';
+import { faTrashAlt, faPlusCircle, faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthService } from './../../auth/auth.service';
 import { Course } from '../../shared/course';
 import { CoursesState } from '../../state/course.state';
 import { Load, Delete, GetPage } from '../../state/course.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-list',
@@ -18,12 +19,12 @@ import { Load, Delete, GetPage } from '../../state/course.actions';
 export class CourseListComponent implements OnInit {
   @Select(CoursesState.getPagedCourses) courses$: Observable<Course[]>;
   selectCourse = <Course>{};
+  selectedId: number;
   current = 1;
   loading = false;
   pageSize = 10;
   @Select(CoursesState.getTotalCourses) totalCourses$: Observable<number>;
   closedResult = '';
-  faPencilAlt = faPencilAlt;
   faTrashAlt = faTrashAlt;
   faPlusCircle = faPlusCircle;
   faBan = faBan;
@@ -31,7 +32,8 @@ export class CourseListComponent implements OnInit {
   constructor(
     private store: Store,
     private modal: NgbModal,
-    public auth: AuthService
+    public auth: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -47,6 +49,10 @@ export class CourseListComponent implements OnInit {
     }, (reason) => {
       this.closedResult = `Dismissed with ${reason}`;
     });
+  }
+
+  editCourse(id) {
+    this.router.navigate(['/courses', id]);
   }
 
   refreshTable() {

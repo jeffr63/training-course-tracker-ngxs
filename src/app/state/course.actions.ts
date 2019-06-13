@@ -29,7 +29,6 @@ export class GetCourseSuccess {
   constructor(public payload: Course) { }
 }
 
-
 export class GetCourseData {
   static readonly type = '[Courses] Get Courses Data';
 }

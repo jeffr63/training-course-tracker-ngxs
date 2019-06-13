@@ -39,28 +39,13 @@ export class CoursesState {
   constructor(private coursesService: CoursesService) { }
 
   @Selector()
-  static getCourses(state: CoursesStateModel) {
-    return state.courses;
-  }
-
-  @Selector()
-  static getError(state: CoursesStateModel) {
-    return state.error;
-  }
-
-  @Selector()
   static getCourse(state: CoursesStateModel) {
     return state.currentCourse;
   }
 
   @Selector()
-  static getPagedCourses(state: CoursesStateModel) {
-    return state.pagedCourses;
-  }
-
-  @Selector()
-  static getTotalCourses(state: CoursesStateModel) {
-    return state.totalCourses;
+  static getCourses(state: CoursesStateModel) {
+    return state.courses;
   }
 
   @Selector()
@@ -71,6 +56,21 @@ export class CoursesState {
   @Selector()
   static getCoursesBySource(state: CoursesStateModel) {
     return state.coursesBySource;
+  }
+
+  @Selector()
+  static getError(state: CoursesStateModel) {
+    return state.error;
+  }
+
+  @Selector()
+  static getPagedCourses(state: CoursesStateModel) {
+    return state.pagedCourses;
+  }
+
+  @Selector()
+  static getTotalCourses(state: CoursesStateModel) {
+    return state.totalCourses;
   }
 
   @Action(Delete)
@@ -136,19 +136,8 @@ export class CoursesState {
     });
   }
 
-  @Action(GetPage)
-  public getPage({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: GetPage) {
-    const state = getState();
-    const offset = (payload.current - 1) * payload.pageSize;
-    const courses = [...state.courses];
-    const pagedItems = _.drop(courses, offset).slice(0, payload.pageSize);
-    patchState({
-      pagedCourses: pagedItems
-    });
-  }
-
   @Action(GetCourseData)
-  public getTotal({ getState, patchState }: StateContext<CoursesStateModel>) {
+  public getCourseData({ getState, patchState }: StateContext<CoursesStateModel>) {
     const state = getState();
     const courses = [...state.courses];
     let byPath = _.chain(courses)
@@ -182,6 +171,17 @@ export class CoursesState {
     })
   }
 
+  @Action(GetPage)
+  public getPage({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: GetPage) {
+    const state = getState();
+    const offset = (payload.current - 1) * payload.pageSize;
+    const courses = [...state.courses];
+    const pagedItems = _.drop(courses, offset).slice(0, payload.pageSize);
+    patchState({
+      pagedCourses: pagedItems
+    });
+  }
+
   @Action(Load)
   public load({ dispatch, patchState }: StateContext<CoursesStateModel>) {
     patchState({
@@ -201,6 +201,9 @@ export class CoursesState {
   public loadFail({ patchState }: StateContext<CoursesStateModel>, { payload }: LoadFail) {
     patchState({
       courses: [],
+      pagedCourses: [],
+      coursesByPath: [],
+      coursesBySource: [],
       error: payload
     });
   }
@@ -257,9 +260,12 @@ export class CoursesState {
     const state = getState();
     const updatedCourses = state.courses.map(
       item => payload.id === item.id ? payload : item);
+    const updatePageCourses = state.pagedCourses.map(
+      item => payload.id === item.id ? payload : item);
     patchState({
       courses: updatedCourses,
       currentCourse: null,
+      pagedCourses: updatePageCourses,
       error: ''
     });
   }

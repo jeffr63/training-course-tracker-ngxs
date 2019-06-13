@@ -5,28 +5,43 @@ import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 
 import { CoursesState, CoursesStateModel } from './course.state';
 import { CoursesService } from '../services/courses.service';
-import { Course } from '../shared/course';
+import { Course, CourseData } from '../shared/course';
 import {
-  Delete, DeleteFail, DeleteSuccess, GetCourse, GetCourseFail, GetCourseSuccess, GetTotal, GetTotalFail, GetTotalSuccess,
-  Load, LoadFail, LoadSuccess, NewCourse, Save, SaveFail, SaveSuccess
+  Delete, DeleteFail, DeleteSuccess, GetCourse, GetCourseFail, GetCourseSuccess, GetPage,
+  Load, LoadFail, LoadSuccess, NewCourse, Save, SaveFail, SaveSuccess, GetCourseData
 } from './course.actions';
-import { of, throwError, Subscription } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 const courseArray: Course[] = [
-  { id: 1, title: 'ABC', instructor: 'Bob', path: 'Test Path', source: 'Test Source' },
-  { id: 2, title: 'DEF', instructor: 'Bob', path: 'Test Path', source: 'Test Source' },
-  { id: 3, title: 'GHI', instructor: 'Bob', path: 'Test Path', source: 'Test Source' }
+  { id: 1, title: 'ABC', instructor: 'Bob', path: 'Test Path 1', source: 'Test Source 1' },
+  { id: 2, title: 'DEF', instructor: 'Bob', path: 'Test Path 1', source: 'Test Source 2' },
+  { id: 3, title: 'GHI', instructor: 'Bob', path: 'Test Path 2', source: 'Test Source 2' }
 ];
 
-const currentCourse = {
-  id: 1, title: 'ABC', instructor: 'Bob', path: 'Test Path', source: 'Test Source'
+const byPathArray: CourseData[] = [
+  { name: 'Test Path 1', value: 2 },
+  { name: 'Test Path 2', value: 1 },
+];
+
+const bySourceArray: CourseData[] = [
+  { name: 'Test Source 2', value: 2 },
+  { name: 'Test Source 1', value: 1 },
+];
+
+const pagedCourseArray: Course[] = [
+  { id: 1, title: 'ABC', instructor: 'Bob', path: 'Test Path 1', source: 'Test Source 1' },
+  { id: 2, title: 'DEF', instructor: 'Bob', path: 'Test Path 1', source: 'Test Source 2' },
+];
+
+const currentCourse: Course = {
+  id: 1, title: 'ABC', instructor: 'Bob', path: 'Test Path 1', source: 'Test Source 1'
 };
 
 interface AppModel {
   readonly courses: CoursesStateModel;
 }
 
-describe('courses', () => {
+describe('Courses', () => {
   let store: Store;
   let service: CoursesService;
   let actions: Actions;
@@ -47,6 +62,9 @@ describe('courses', () => {
   it('should initialize values', () => {
     const coursesState: CoursesStateModel = {
       courses: courseArray,
+      coursesByPath: [],
+      coursesBySource: [],
+      pagedCourses: [],
       totalCourses: 0,
       error: '',
       currentCourse: null
@@ -60,49 +78,19 @@ describe('courses', () => {
       });
   });
 
-  describe('Selector', () => {
-
-    describe('getCourses', () => {
-
-      it('should return an array of Courses', async(() => {
-        const appState: AppModel = {
-          courses: {
-            courses: courseArray,
-            totalCourses: 3,
-            error: '',
-            currentCourse: null
-          }
-        };
-        store.reset(appState);
-
-        expect(CoursesState.getCourses(appState.courses)).toEqual(courseArray);
-      }));
-    });
-
-    describe('getTotalCourses', () => {
-      it('should return a number', async(() => {
-        const appState: AppModel = {
-          courses: {
-            courses: [],
-            totalCourses: 3,
-            error: '',
-            currentCourse: null
-          }
-        };
-        store.reset(appState);
-
-        expect(CoursesState.getTotalCourses(appState.courses)).toEqual(3);
-      }));
-    });
+  describe('Selectors', () => {
 
     describe('getCourse', () => {
       it('should return an object', async(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
-            totalCourses: 0,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: currentCourse,
             error: '',
-            currentCourse: currentCourse
+            pagedCourses: [],
+            totalCourses: 0,
           }
         };
         store.reset(appState);
@@ -111,14 +99,74 @@ describe('courses', () => {
       }));
     });
 
+    describe('getCourses', () => {
+      it('should return an array of Courses', async(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: courseArray,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 3,
+          }
+        };
+        store.reset(appState);
+
+        expect(CoursesState.getCourses(appState.courses)).toEqual(courseArray);
+      }));
+    });
+
+    describe('getCoursesByPath', () => {
+      it('should return an array', async(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: byPathArray,
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 0,
+          }
+        };
+        store.reset(appState);
+
+        expect(CoursesState.getCoursesByPath(appState.courses)).toEqual(byPathArray);
+      }));
+    });
+
+    describe('getCoursesBySource', () => {
+      it('should return an array', async(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: bySourceArray,
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 0,
+          }
+        };
+        store.reset(appState);
+
+        expect(CoursesState.getCoursesBySource(appState.courses)).toEqual(bySourceArray);
+      }));
+    });
+
     describe('getError', () => {
       it('should return an string', async(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
-            totalCourses: 0,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
             error: 'Error',
-            currentCourse: null
+            pagedCourses: [],
+            totalCourses: 0,
           }
         };
         store.reset(appState);
@@ -127,6 +175,43 @@ describe('courses', () => {
       }));
     });
 
+    describe('getPagedCourses', () => {
+      it('should return an string', async(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: courseArray,
+            totalCourses: 0,
+          }
+        };
+        store.reset(appState);
+
+        expect(CoursesState.getPagedCourses(appState.courses)).toEqual(courseArray);
+      }));
+    });
+
+    describe('getTotalCourses', () => {
+      it('should return a number', async(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 3,
+          }
+        };
+        store.reset(appState);
+
+        expect(CoursesState.getTotalCourses(appState.courses)).toEqual(3);
+      }));
+    });
   });
 
   describe('Action', () => {
@@ -139,8 +224,7 @@ describe('courses', () => {
         const callbacksCalled = [];
 
         spyOn(service, 'deleteCourse').and.returnValue(of(currentCourse));
-        spyOn(service, 'getCoursesPaged').and.returnValue(of(courseArray));
-        spyOn(service, 'getCourses').and.returnValue(of(courseArray));
+        spyOn(service, 'getCoursesSorted').and.returnValue(of(courseArray));
 
         // action
         actions
@@ -183,9 +267,12 @@ describe('courses', () => {
         const appState: AppModel = {
           courses: {
             courses: [],
-            totalCourses: 0,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            pagedCourses: [],
             error: '',
-            currentCourse: null
+            totalCourses: 0,
           }
         };
         store.reset(appState);
@@ -205,9 +292,12 @@ describe('courses', () => {
         const appState: AppModel = {
           courses: {
             courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: 'Error',
+            pagedCourses: [],
             totalCourses: 0,
-            error: 'Test',
-            currentCourse: null
           }
         };
         store.reset(appState);
@@ -272,9 +362,12 @@ describe('courses', () => {
         const appState: AppModel = {
           courses: {
             courses: [],
-            totalCourses: 0,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: currentCourse,
             error: '',
-            currentCourse: currentCourse
+            pagedCourses: [],
+            totalCourses: 0,
           }
         };
         store.reset(appState);
@@ -295,9 +388,12 @@ describe('courses', () => {
         const appState: AppModel = {
           courses: {
             courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: 'Error',
+            pagedCourses: [],
             totalCourses: 0,
-            error: 'Test',
-            currentCourse: null
           }
         };
         store.reset(appState);
@@ -313,93 +409,53 @@ describe('courses', () => {
       }));
     });
 
-    describe('GetTotal', () => {
-      it('should dispatch GetTotalSuccusss when successful', fakeAsync(() => {
-        // arrange
-        const action = new GetTotal();
-        const expected = new GetTotalSuccess(3);
-        const callbacksCalled = [];
-
-        spyOn(service, 'getCourses').and.returnValue(of(courseArray));
-
-        // action
-        actions
-          .pipe(ofActionSuccessful(GetTotalSuccess))
-          .subscribe(x => {
-            callbacksCalled.push(x);
-          });
-
-        store.dispatch(action);
-        tick(1);
-
-        // assert
-        expect(callbacksCalled).toEqual([expected]);
-      }));
-
-      it('should dispatch GetTotalFail when errors', fakeAsync(() => {
-        const action = new GetTotal();
-        const expected = new GetTotalFail('Error');
-        const callbacksCalled = [];
-
-        spyOn(service, 'getCourses').and.returnValue(throwError('Error'));
-
-        // action
-        actions
-          .pipe(ofActionSuccessful(GetTotalFail))
-          .subscribe(x => {
-            callbacksCalled.push(x);
-          });
-
-        store.dispatch(action);
-        tick(1);
-
-        // assert
-        expect(callbacksCalled).toEqual([expected]);
-      }));
-    });
-
-    describe('GetTotalFail', () => {
-      it('should return string in Error', async(() => {
+    describe('GetPage', () => {
+      it('should update the pagedCourses with request page info ', async(() => {
         const appState: AppModel = {
           courses: {
-            courses: [],
-            totalCourses: 3,
+            courses: courseArray,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
             error: '',
-            currentCourse: null
+            pagedCourses: [],
+            totalCourses: 3,
           }
         };
         store.reset(appState);
 
-        store.dispatch(new GetTotalFail('Error'));
+        store.dispatch(new GetPage({ 'current': 1, 'pageSize': 2 }));
 
         store
           .selectOnce((state: AppModel) => state.courses)
           .subscribe(actual => {
-            expect(actual.error).toEqual('Error');
-            expect(actual.totalCourses).toEqual(0);
+            expect(actual.pagedCourses).toEqual(pagedCourseArray)
           });
       }));
     });
 
-    describe('GetTotalSuccess', () => {
-      it('should set totalCourses with payload and clear error', async(() => {
+    describe('GetCourseData', () => {
+      it('should update the coursesByPath and coursesBySource store values', async(() => {
         const appState: AppModel = {
           courses: {
-            courses: [],
+            courses: courseArray,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
             totalCourses: 0,
-            error: 'Test',
-            currentCourse: null
           }
         };
         store.reset(appState);
 
-        store.dispatch(new GetTotalSuccess(3));
+        store.dispatch(new GetCourseData());
 
         store
           .selectOnce((state: AppModel) => state.courses)
           .subscribe(actual => {
-            expect(actual.totalCourses).toEqual(3);
-            expect(actual.error).toEqual('');
+            expect(actual.coursesByPath).toEqual(byPathArray);
+            expect(actual.coursesBySource).toEqual(bySourceArray);
           });
       }));
     });
@@ -407,11 +463,11 @@ describe('courses', () => {
     describe('Load', () => {
       it('should dispatch LoadSuccusss when successful', fakeAsync(() => {
         // arrange
-        const action = new Load({ current: 1, pageSize: 10 });
+        const action = new Load();
         const expected = new LoadSuccess(courseArray);
         const callbacksCalled = [];
 
-        spyOn(service, 'getCoursesPaged').and.returnValue(of(courseArray));
+        spyOn(service, 'getCoursesSorted').and.returnValue(of(courseArray));
 
         // action
         actions
@@ -428,11 +484,11 @@ describe('courses', () => {
       }));
 
       it('should dispatch LoadFail when errors', fakeAsync(() => {
-        const action = new Load({ current: 1, pageSize: 10 });
+        const action = new Load();
         const expected = new LoadFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'getCoursesPaged').and.returnValue(throwError('Error'));
+        spyOn(service, 'getCoursesSorted').and.returnValue(throwError('Error'));
 
         // action
         actions
@@ -454,9 +510,12 @@ describe('courses', () => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
-            totalCourses: 0,
+            coursesByPath: byPathArray,
+            coursesBySource: bySourceArray,
+            currentCourse: null,
             error: '',
-            currentCourse: null
+            pagedCourses: pagedCourseArray,
+            totalCourses: 0,
           }
         };
         store.reset(appState);
@@ -467,6 +526,9 @@ describe('courses', () => {
           .selectOnce((state: AppModel) => state.courses)
           .subscribe(actual => {
             expect(actual.courses.length).toEqual(0);
+            expect(actual.coursesByPath.length).toEqual(0);
+            expect(actual.coursesBySource.length).toEqual(0);
+            expect(actual.pagedCourses.length).toEqual(0);
             expect(actual.error).toEqual('Error');
           });
       }));
@@ -477,9 +539,12 @@ describe('courses', () => {
         const appState: AppModel = {
           courses: {
             courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: 'Error',
+            pagedCourses: [],
             totalCourses: 0,
-            error: 'Test',
-            currentCourse: null
           }
         };
         store.reset(appState);
@@ -490,6 +555,7 @@ describe('courses', () => {
           .selectOnce((state: AppModel) => state.courses)
           .subscribe(actual => {
             expect(actual.courses).toEqual(courseArray);
+            expect(actual.totalCourses).toEqual(3);
             expect(actual.error).toEqual('');
           });
       }));
@@ -500,9 +566,12 @@ describe('courses', () => {
         const appState: AppModel = {
           courses: {
             courses: [],
-            totalCourses: 0,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
             error: '',
-            currentCourse: null
+            pagedCourses: [],
+            totalCourses: 0,
           }
         };
         store.reset(appState);
@@ -525,9 +594,12 @@ describe('courses', () => {
         const appState: AppModel = {
           courses: {
             courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: currentCourse,
             error: '',
+            pagedCourses: [],
             totalCourses: 0,
-            currentCourse: currentCourse
           }
         };
         store.reset(appState);
@@ -579,9 +651,12 @@ describe('courses', () => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
-            totalCourses: 0,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
             error: '',
-            currentCourse: null
+            pagedCourses: [],
+            totalCourses: 0,
           }
         };
         store.reset(appState);
@@ -602,21 +677,26 @@ describe('courses', () => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: currentCourse,
+            error: 'Error',
+            pagedCourses: pagedCourseArray,
             totalCourses: 3,
-            error: 'Test',
-            currentCourse: currentCourse
           }
         };
         store.reset(appState);
 
-        const expected: Course = { id: 3, title: 'XYZ', instructor: 'Joe', path: 'Updated', source: 'Updated' };
+        const expected: Course = { id: 2, title: 'XYZ', instructor: 'Joe', path: 'Updated', source: 'Updated' };
         store.dispatch(new SaveSuccess(expected));
 
         store
           .selectOnce((state: AppModel) => state.courses)
           .subscribe(actual => {
             expect(actual.courses.length).toEqual(courseArray.length);
-            expect(actual.courses[2]).toEqual(expected);
+            expect(actual.courses[1]).toEqual(expected);
+            expect(actual.pagedCourses.length).toEqual(pagedCourseArray.length);
+            expect(actual.pagedCourses[1]).toEqual(expected);
             expect(actual.error).toEqual('');
             expect(actual.currentCourse).toEqual(null);
           });

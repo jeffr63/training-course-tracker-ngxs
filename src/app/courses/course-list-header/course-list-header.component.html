@@ -1,0 +1,12 @@
+<header class="row">
+  <div class="col">
+    <ngb-pagination [collectionSize]="total" boundaryLinks="true" [pageSize]="pageSize" [maxSize]="maxSize"
+      rotate="true" [(page)]="current" (pageChange)="onPageChange()"></ngb-pagination>
+  </div>
+  <div class="col" *ngIf="isAuthenticated">
+    <a [routerLink]="['/courses/new']" title="Add Course">
+      <fa-icon [icon]="faPlusCircle" class="fa-2x text-success"></fa-icon>
+      <span class="sr-only">Add Course</span>
+    </a>
+  </div>
+</header>
