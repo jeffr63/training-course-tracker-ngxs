@@ -4,10 +4,11 @@
       <h1 class="card-header">Sources</h1>
     </header>
     <section class="card-body">
-      <app-list-header (newItem)="newSource()"></app-list-header>
-      <app-list-display [headers]="headers" [columns]="columns" [items]="source$ | async"
-        [isAuthenticated]="isAuthenticated" (deleteItem)="deleteSource($event, deleteModal)"
-        (editItem)="editSource($event)"></app-list-display>
+      <app-list-header (newItem)="facade.newSource()"></app-list-header>
+
+      <app-list-display [headers]="headers" [columns]="columns" [items]="sources$ | async"
+        [isAuthenticated]="isAuthenticated" (deleteItem)="facade.deleteSource($event, deleteModal)"
+        (editItem)="facade.editSource($event)"></app-list-display>
     </section>
 
   </section>

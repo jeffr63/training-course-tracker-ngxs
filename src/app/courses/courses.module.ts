@@ -10,6 +10,7 @@ import { CanActivateEdit } from '../auth/canActiveateEdit.guard';
 import { CourseEditComponent } from './course-edit/course-edit.component';
 import { CourseListComponent } from './course-list/course-list.component';
 import { SharedModule } from '../shared/shared.module';
+import { CoursesFacadeService } from './courses-facade.service';
 
 const routes = [
   {
@@ -32,6 +33,9 @@ const routes = [
     NgbModule,
     SharedModule,
     RouterModule.forChild(routes)
+  ],
+  providers: [
+    CoursesFacadeService
   ]
 })
 export class CoursesModule { }

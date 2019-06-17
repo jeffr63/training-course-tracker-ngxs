@@ -9,10 +9,10 @@
       </fieldset>
 
       <div class="form-group row form-buttons">
-        <button class="btn btn-primary mr-sm-2" (click)="save()" title="Save">
+        <button class="btn btn-primary mr-sm-2" (click)="facade.save()" title="Save">
           <fa-icon [icon]="faSave"></fa-icon> Save
         </button>
-        <a class="btn btn-secondary" [routerLink]="['/admin/paths']" title="Cancel">
+        <a class="btn btn-secondary" (click)="facade.cancelEdit()" title="Cancel">
           <fa-icon [icon]="faBan"></fa-icon> Cancel
         </a>
       </div>

@@ -1,18 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 
-import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
-import { GetCourse, NewCourse, SaveCourse } from '../../state/course.actions';
-import { CoursesState } from '../../state/course.state';
 import { Course } from '../../shared/course';
-import { LoadPaths } from '../../state/paths.actions';
-import { PathsState } from '../../state/paths.state';
-import { LoadSources } from '../../state/sources.actions';
-import { SourcesState } from '../../state/sources.state';
+import { CoursesFacadeService } from '../courses-facade.service';
+import { Path } from '../../shared/paths';
+import { Source } from '../../shared/sources';
 
 
 @Component({
@@ -20,41 +15,21 @@ import { SourcesState } from '../../state/sources.state';
   templateUrl: './course-edit.component.html',
   styleUrls: ['./course-edit.component.scss']
 })
-export class CourseEditComponent implements OnInit, OnDestroy {
-  @Select(CoursesState.getCourse) course$: Observable<Course>;
-  @Select(PathsState.getPaths) paths$: Observable<any[]>;
-  @Select(SourcesState.getSources) sources$: Observable<any[]>;
-  loading = false;
-  componentActive = true;
+export class CourseEditComponent implements OnInit {
+  course$: Observable<Course> = this.facade.course$;
   faSave = faSave;
   faBan = faBan;
+  paths$: Observable<Path[]> = this.facade.paths$;
+  sources$: Observable<Source[]> = this.facade.sources$;
 
   constructor(
     private route: ActivatedRoute,
-    private location: Location,
-    private store: Store
+    public facade: CoursesFacadeService
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      if (params.id === 'new') {
-        this.store.dispatch(new NewCourse());
-      } else {
-        this.store.dispatch(new GetCourse(params.id));
-      }
+      this.facade.loadCourse(params.id);
     });
-
-    this.store.dispatch(new LoadPaths());
-    this.store.dispatch(new LoadSources());
   }
-
-  ngOnDestroy() {
-    this.componentActive = false;
-  }
-
-  save() {
-    this.store.dispatch(new SaveCourse());
-    this.location.back();
-  }
-
 }

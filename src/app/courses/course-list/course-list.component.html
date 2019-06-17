@@ -4,14 +4,14 @@
       <h1 class="card-header">Training Courses</h1>
     </header>
     <section class="card-body">
-      <app-pager-list-header includePager="true" [total]="totalCourses$ | async" [pageSize]="pageSize" [maxSize]="5"
-        [(current)]="current" [isAuthenticated]="auth.isAuthenticated()" (refreshTable)="refreshTable()"
-        (newCourse)="newCourse()">
+      <app-pager-list-header includePager="true" [total]="totalCourses$ | async" [pageSize]="facade.pageSize" [maxSize]="5"
+        [(current)]="facade.current" [isAuthenticated]="auth.isAuthenticated()" (refreshTable)="facade.refreshTable()"
+        (newCourse)="facade.newCourse()">
       </app-pager-list-header>
 
       <app-list-display [headers]="headers" [columns]="columns" [items]="courses$ | async"
-        [isAuthenticated]="auth.isAuthenticated()" (deleteItem)="deleteCourse($event, deleteModal)"
-        (editItem)="editCourse($event)"></app-list-display>
+        [isAuthenticated]="auth.isAuthenticated()" (deleteItem)="facade.deleteCourse($event, deleteModal)"
+        (editItem)="facade.editCourse($event)"></app-list-display>
     </section>
 
   </section>

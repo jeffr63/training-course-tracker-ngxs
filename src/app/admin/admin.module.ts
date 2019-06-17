@@ -8,11 +8,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AdminComponent } from './admin/admin.component';
 import { CanActivateAdmin } from '../auth/canActiveateAdmin.guard';
-import { PathListComponent } from './path-list/path-list.component';
 import { PathEditComponent } from './path-edit/path-edit.component';
+import { PathFacadeService } from './path-facade.service';
+import { PathListComponent } from './path-list/path-list.component';
 import { SharedModule } from '../shared/shared.module';
-import { SourceListComponent } from './source-list/source-list.component';
 import { SourceEditComponent } from './source-edit/source-edit.component';
+import { SourceFacadeService } from './source-facade.service';
+import { SourceListComponent } from './source-list/source-list.component';
 
 const routes = [
   {
@@ -42,6 +44,10 @@ const routes = [
     NgbModule,
     SharedModule,
     RouterModule.forChild(routes)
+  ],
+  providers: [
+    PathFacadeService,
+    SourceFacadeService
   ]
 })
 export class AdminModule { }
