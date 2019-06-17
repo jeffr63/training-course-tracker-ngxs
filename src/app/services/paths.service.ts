@@ -11,31 +11,31 @@ export class PathsService {
 
   constructor(private http: HttpClient) { }
 
-  add(path: Path) {
+  addPath(path: Path) {
     return this.http.post(`${this.baseUrl}/paths`, path);
   }
 
-  delete(id) {
+  deletePath(id) {
     return this.http.delete<Path>(`${this.baseUrl}/paths/${id}`);
   }
 
-  get(id) {
+  getPath(id) {
     return this.http.get<Path>(`${this.baseUrl}/paths/${id}`);
   }
 
-  load() {
+  loadPaths() {
     return this.http.get<Path[]>(`${this.baseUrl}/paths?_sort=name&_order=asc`);
   }
 
-  save(path: Path) {
+  savePath(path: Path) {
     if (path.id) {
-      return this.update(path);
+      return this.updatePath(path);
     } else {
-      return this.add(path);
+      return this.addPath(path);
     }
   }
 
-  update(path: Path) {
+  updatePath(path: Path) {
     return this.http.put(`${this.baseUrl}/paths/${path.id}`, path);
   }
 }

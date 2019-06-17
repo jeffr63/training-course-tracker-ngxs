@@ -13,31 +13,31 @@ export class SourcesService {
 
   constructor(private http: HttpClient) { }
 
-  add(source: Source) {
+  addSource(source: Source) {
     return this.http.post(`${this.baseUrl}/sources`, source);
   }
 
-  delete(id) {
+  deleteSource(id) {
     return this.http.delete<Source>(`${this.baseUrl}/sources/${id}`);
   }
 
-  get(id) {
+  getSource(id) {
     return this.http.get<Source>(`${this.baseUrl}/sources/${id}`);
   }
 
-  load() {
+  loadSources() {
     return this.http.get<Source[]>(`${this.baseUrl}/sources?_sort=name&_order=asc`);
   }
 
-  save(source: Source) {
+  saveSource(source: Source) {
     if (source.id) {
-      return this.update(source);
+      return this.updateSource(source);
     } else {
-      return this.add(source);
+      return this.addSource(source);
     }
   }
 
-  update(source: Source) {
+  updateSource(source: Source) {
     return this.http.put(`${this.baseUrl}/sources/${source.id}`, source);
   }
 

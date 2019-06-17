@@ -48,7 +48,7 @@ export class SourcesState {
     patchState({
       error: ''
     });
-    return this.sourcesService.delete(payload).pipe(
+    return this.sourcesService.deleteSource(payload).pipe(
       map(source => {
         return dispatch(new DeleteSourceSuccess(payload));
       }),
@@ -80,7 +80,7 @@ export class SourcesState {
     patchState({
       error: ''
     });
-    return this.sourcesService.get(payload).pipe(
+    return this.sourcesService.getSource(payload).pipe(
       map((source: Source) => {
         return dispatch(new GetSourceSuccess(source));
       }),
@@ -111,7 +111,7 @@ export class SourcesState {
     patchState({
       error: ''
     });
-    return this.sourcesService.load().pipe(
+    return this.sourcesService.loadSources().pipe(
       map((sources: any[]) => {
         return dispatch(new LoadSourcesSuccess(sources));
       }),
@@ -154,7 +154,7 @@ export class SourcesState {
     patchState({
       error: ''
     });
-    return this.sourcesService.save(state.currentSource).pipe(
+    return this.sourcesService.saveSource(state.currentSource).pipe(
       map((source: Source) => {
         return dispatch([
           new LoadSources(),

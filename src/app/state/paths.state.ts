@@ -48,7 +48,7 @@ export class PathsState {
     patchState({
       error: ''
     });
-    return this.pathsService.delete(payload).pipe(
+    return this.pathsService.deletePath(payload).pipe(
       map(_path => {
         return dispatch(new DeletePathSuccess(payload));
       }),
@@ -80,7 +80,7 @@ export class PathsState {
     patchState({
       error: ''
     });
-    return this.pathsService.get(payload).pipe(
+    return this.pathsService.getPath(payload).pipe(
       map((path: Path) => {
         return dispatch(new GetPathSuccess(path));
       }),
@@ -122,7 +122,7 @@ export class PathsState {
     patchState({
       error: ''
     });
-    return this.pathsService.load().pipe(
+    return this.pathsService.loadPaths().pipe(
       map((Paths: any[]) => {
         return dispatch(new LoadPathsSuccess(Paths));
       }),
@@ -154,7 +154,7 @@ export class PathsState {
     patchState({
       error: ''
     });
-    return this.pathsService.save(state.currentPath).pipe(
+    return this.pathsService.savePath(state.currentPath).pipe(
       map((path: Path) => {
         return dispatch([
           new SavePathSuccess(state.currentPath),

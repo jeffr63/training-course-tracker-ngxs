@@ -120,7 +120,7 @@ describe('sources', () => {
         const expected = new DeleteSourceSuccess(3);
         const callbacksCalled = [];
 
-        spyOn(service, 'delete').and.returnValue(of(currentSource));
+        spyOn(service, 'deleteSource').and.returnValue(of(currentSource));
 
         // action
         actions
@@ -141,7 +141,7 @@ describe('sources', () => {
         const expected = new DeleteSourceFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'delete').and.returnValue(throwError('Error'));
+        spyOn(service, 'deleteSource').and.returnValue(throwError('Error'));
 
         // action
         actions
@@ -211,7 +211,7 @@ describe('sources', () => {
         const expected = new GetSourceSuccess(currentSource);
         const callbacksCalled = [];
 
-        spyOn(service, 'get').and.returnValue(of(currentSource));
+        spyOn(service, 'getSource').and.returnValue(of(currentSource));
 
         // action
         actions
@@ -232,7 +232,7 @@ describe('sources', () => {
         const expected = new GetSourceFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'get').and.returnValue(throwError('Error'));
+        spyOn(service, 'getSource').and.returnValue(throwError('Error'));
 
         // action
         actions
@@ -322,7 +322,7 @@ describe('sources', () => {
         const expected = new LoadSourcesSuccess(sourceArray);
         const callbacksCalled = [];
 
-        spyOn(service, 'load').and.returnValue(of(sourceArray));
+        spyOn(service, 'loadSources').and.returnValue(of(sourceArray));
 
         // action
         actions
@@ -343,7 +343,7 @@ describe('sources', () => {
         const expected = new LoadSourcesFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'load').and.returnValue(throwError('Error'));
+        spyOn(service, 'loadSources').and.returnValue(throwError('Error'));
 
         // action
         actions
@@ -419,8 +419,8 @@ describe('sources', () => {
         const expected = new SaveSourceSuccess(currentSource);
         const callbacksCalled = [];
 
-        spyOn(service, 'save').and.returnValue(of(currentSource));
-        spyOn(service, 'load').and.returnValue(of(sourceArray));
+        spyOn(service, 'saveSource').and.returnValue(of(currentSource));
+        spyOn(service, 'loadSources').and.returnValue(of(sourceArray));
 
         // action
         actions
@@ -442,7 +442,7 @@ describe('sources', () => {
         const expected = new SaveSourceFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'save').and.returnValue(throwError('Error'));
+        spyOn(service, 'saveSource').and.returnValue(throwError('Error'));
 
         // action
         actions

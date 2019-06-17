@@ -120,7 +120,7 @@ describe('Paths', () => {
         const expected = new DeletePathSuccess(3);
         const callbacksCalled = [];
 
-        spyOn(service, 'delete').and.returnValue(of(currentPath));
+        spyOn(service, 'deletePath').and.returnValue(of(currentPath));
 
         // action
         actions
@@ -141,7 +141,7 @@ describe('Paths', () => {
         const expected = new DeletePathFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'delete').and.returnValue(throwError('Error'));
+        spyOn(service, 'deletePath').and.returnValue(throwError('Error'));
 
         // action
         actions
@@ -211,7 +211,7 @@ describe('Paths', () => {
         const expected = new GetPathSuccess(currentPath);
         const callbacksCalled = [];
 
-        spyOn(service, 'get').and.returnValue(of(currentPath));
+        spyOn(service, 'getPath').and.returnValue(of(currentPath));
 
         // action
         actions
@@ -232,7 +232,7 @@ describe('Paths', () => {
         const expected = new GetPathFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'get').and.returnValue(throwError('Error'));
+        spyOn(service, 'getPath').and.returnValue(throwError('Error'));
 
         // action
         actions
@@ -322,7 +322,7 @@ describe('Paths', () => {
         const expected = new LoadPathsSuccess(pathsArray);
         const callbacksCalled = [];
 
-        spyOn(service, 'load').and.returnValue(of(pathsArray));
+        spyOn(service, 'loadPaths').and.returnValue(of(pathsArray));
 
         // action
         actions
@@ -343,7 +343,7 @@ describe('Paths', () => {
         const expected = new LoadPathsFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'load').and.returnValue(throwError('Error'));
+        spyOn(service, 'loadPaths').and.returnValue(throwError('Error'));
 
         // action
         actions
@@ -419,8 +419,8 @@ describe('Paths', () => {
         const expected = new SavePathSuccess(currentPath);
         const callbacksCalled = [];
 
-        spyOn(service, 'save').and.returnValue(of(currentPath));
-        spyOn(service, 'load').and.returnValue(of(pathsArray));
+        spyOn(service, 'savePath').and.returnValue(of(currentPath));
+        spyOn(service, 'loadPaths').and.returnValue(of(pathsArray));
 
         // action
         actions
@@ -441,7 +441,7 @@ describe('Paths', () => {
         const expected = new SavePathFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'save').and.returnValue(throwError('Error'));
+        spyOn(service, 'savePath').and.returnValue(throwError('Error'));
 
         // action
         actions
