@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Store, Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
 import { faTrashAlt, faBan } from '@fortawesome/free-solid-svg-icons';
+import { Observable } from 'rxjs';
 
 import { Path } from '../../shared/paths';
-import { PathsState } from './../../state/paths.state';
-import { DeletePath, LoadPaths } from './../../state/paths.actions';
-import { Router } from '@angular/router';
-import { PathFacadeService } from '../path-facade.service';
+import { PathsFacade } from '../paths.facade';
 
 @Component({
   selector: 'app-path-list',
@@ -25,7 +20,7 @@ export class PathListComponent implements OnInit {
   isAuthenticated = true;
 
   constructor(
-    public facade: PathFacadeService
+    public facade: PathsFacade
   ) { }
 
   ngOnInit() {

@@ -5,10 +5,9 @@ import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Course } from '../../shared/course';
-import { CoursesFacadeService } from '../courses-facade.service';
+import { CoursesFacade } from '../courses.facade';
 import { Path } from '../../shared/paths';
 import { Source } from '../../shared/sources';
-
 
 @Component({
   selector: 'app-course-edit',
@@ -24,7 +23,7 @@ export class CourseEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    public facade: CoursesFacadeService
+    public facade: CoursesFacade
   ) { }
 
   ngOnInit() {

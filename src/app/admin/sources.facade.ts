@@ -11,7 +11,7 @@ import { Source } from '../shared/sources';
 import { SourcesState } from '../state/sources.state';
 
 @Injectable()
-export class SourceFacadeService {
+export class SourcesFacade {
   @Select(SourcesState.getCurrentSource) source$: Observable<Source>;
   @Select(SourcesState.getSources) sources$: Observable<Source[]>;
   closedResult = '';

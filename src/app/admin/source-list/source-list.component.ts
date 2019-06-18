@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Observable } from 'rxjs';
 import { faTrashAlt, faBan } from '@fortawesome/free-solid-svg-icons';
+import { Observable } from 'rxjs';
 
 import { Source } from '../../shared/sources';
-import { SourceFacadeService } from '../source-facade.service';
+import { SourcesFacade } from '../sources.facade';
 
 @Component({
   selector: 'app-source-list',
@@ -20,7 +20,7 @@ export class SourceListComponent implements OnInit {
   isAuthenticated = true;
 
   constructor(
-    public facade: SourceFacadeService
+    public facade: SourcesFacade
   ) { }
 
   ngOnInit() {

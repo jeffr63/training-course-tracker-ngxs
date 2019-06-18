@@ -3,18 +3,18 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AdminComponent } from './admin/admin.component';
 import { CanActivateAdmin } from '../auth/canActiveateAdmin.guard';
 import { PathEditComponent } from './path-edit/path-edit.component';
-import { PathFacadeService } from './path-facade.service';
 import { PathListComponent } from './path-list/path-list.component';
+import { PathsFacade } from './paths.facade';
 import { SharedModule } from '../shared/shared.module';
 import { SourceEditComponent } from './source-edit/source-edit.component';
-import { SourceFacadeService } from './source-facade.service';
 import { SourceListComponent } from './source-list/source-list.component';
+import { SourcesFacade } from './sources.facade';
 
 const routes = [
   {
@@ -46,8 +46,8 @@ const routes = [
     RouterModule.forChild(routes)
   ],
   providers: [
-    PathFacadeService,
-    SourceFacadeService
+    PathsFacade,
+    SourcesFacade
   ]
 })
 export class AdminModule { }

@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
 
-import { CoursesState } from './../state/course.state';
 import { CourseData } from './../shared/course';
-import { GetCourseData, LoadCourses } from './../state/course.actions';
+import { DashboardFacade } from './dashboard.facade'
 
 @Component({
   selector: 'app-dashboard',
@@ -13,16 +11,14 @@ import { GetCourseData, LoadCourses } from './../state/course.actions';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  @Select(CoursesState.getCoursesByPath) courses$: Observable<CourseData[]>;
-  @Select(CoursesState.getCoursesBySource) sources$: Observable<CourseData[]>;
+  courses$: Observable<CourseData[]> = this.facade.courses$;
+  sources$: Observable<CourseData[]> = this.facade.sources$;
 
   constructor(
-    private store: Store,
+    private facade: DashboardFacade,
   ) { }
 
   ngOnInit() {
-    this.store.dispatch(new LoadCourses()).subscribe(() => {
-      this.store.dispatch(new GetCourseData());
-    });
+    this.facade.loadChartData();
   }
 }

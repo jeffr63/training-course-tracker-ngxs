@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
 import { Source } from '../../shared/sources';
-import { SourceFacadeService } from '../source-facade.service';
+import { SourcesFacade } from '../sources.facade';
 
 @Component({
   selector: 'app-source-edit',
@@ -19,7 +19,7 @@ export class SourceEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    public facade: SourceFacadeService
+    public facade: SourcesFacade
   ) { }
 
   ngOnInit() {

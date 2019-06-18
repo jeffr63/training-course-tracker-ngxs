@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { Store, Select } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +17,7 @@ import { LoadPaths } from '../state/paths.actions';
 import { LoadSources } from '../state/sources.actions';
 
 @Injectable()
-export class CoursesFacadeService {
+export class CoursesFacade {
   @Select(CoursesState.getCourse) course$: Observable<Course>;
   @Select(CoursesState.getPagedCourses) courses$: Observable<Course[]>;
   closedResult = '';

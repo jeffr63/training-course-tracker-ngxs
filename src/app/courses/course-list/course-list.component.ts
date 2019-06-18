@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { AuthService } from './../../auth/auth.service';
 import { Course } from '../../shared/course';
-import { CoursesFacadeService } from '../courses-facade.service';
+import { CoursesFacade } from '../courses.facade';
 
 @Component({
   selector: 'app-course-list',
@@ -22,7 +22,7 @@ export class CourseListComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
-    public facade: CoursesFacadeService,
+    public facade: CoursesFacade,
   ) { }
 
   ngOnInit() {

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
+import { Observable } from 'rxjs';
 
 import { Path } from '../../shared/paths';
-import { PathFacadeService } from '../path-facade.service';
+import { PathsFacade } from '../paths.facade';
 
 @Component({
   selector: 'app-path-edit',
@@ -18,8 +18,8 @@ export class PathEditComponent implements OnInit {
   faBan = faBan;
 
   constructor(
-    public facade: PathFacadeService,
     private route: ActivatedRoute,
+    public facade: PathsFacade,
   ) { }
 
   ngOnInit() {

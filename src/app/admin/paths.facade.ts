@@ -11,7 +11,7 @@ import { Path } from '../shared/paths';
 import { PathsState } from '../state/paths.state';
 
 @Injectable()
-export class PathFacadeService {
+export class PathsFacade {
   @Select(PathsState.getCurrentPath) path$: Observable<Path>;
   @Select(PathsState.getPaths) paths$: Observable<Path[]>;
   closedResult = '';
@@ -42,11 +42,11 @@ export class PathFacadeService {
   }
 
   loadPath(id) {
-       if (id === 'new') {
-        this.store.dispatch(new NewPath());
-      } else {
-        this.store.dispatch(new GetPath(id));
-      }
+    if (id === 'new') {
+      this.store.dispatch(new NewPath());
+    } else {
+      this.store.dispatch(new GetPath(id));
+    }
   }
 
   loadPaths() {
