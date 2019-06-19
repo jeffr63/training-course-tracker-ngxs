@@ -39,7 +39,9 @@ describe('Paths', () => {
         NgxsModule.forRoot([PathsState]),
         HttpClientModule
       ],
-      providers: []
+      providers: [
+        DataServiceFacade
+      ]
     }).compileComponents();
     store = TestBed.get(Store);
     service = TestBed.get(DataServiceFacade);

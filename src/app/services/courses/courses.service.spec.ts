@@ -20,22 +20,6 @@ describe('CourseService', () => {
     service = TestBed.get(CoursesService);
   });
 
-  describe('addCourse', () => {
-    it('should return course passed, with a post call to the correct URL', () => {
-      const course = { id: 1, title: 'ABC', instructor: 'John', path: 'A', source: 'B', yearCompleted: '2019' };
-
-      service.addCourse(course).subscribe((data: Course) => {
-        expect(data.id).toBe(1);
-        expect(data).toEqual(course);
-      });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/courses`);
-      req.flush(course);
-      expect(req.request.method).toBe('POST');
-      httpTestingController.verify();
-    });
-  });
-
   describe('deleteCourse', () => {
     it('should return deleted course with a delete call to the correct URL', () => {
       const course = { id: 1, title: 'ABC', instructor: 'John', path: 'A', source: 'B', yearCompleted: '2019' };
@@ -184,22 +168,6 @@ describe('CourseService', () => {
       const req = httpTestingController.expectOne(`${baseUrl}/courses/1`);
       req.flush(course);
       expect(req.request.method).toBe('DELETE');
-      httpTestingController.verify();
-    });
-  });
-
-  describe('updateCourse', () => {
-    it('should return updated course with a put call to the correct URL', () => {
-      const course = { id: 1, title: 'ABC', instructor: 'John', path: 'A', source: 'B' };
-
-      service.updateCourse(course).subscribe((data: Course) => {
-        expect(data.id).toBe(1);
-        expect(data).toEqual(course);
-      });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/courses/1`);
-      req.flush(course);
-      expect(req.request.method).toBe('PUT');
       httpTestingController.verify();
     });
   });

@@ -1,14 +1,38 @@
+import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
+import { DashboardFacade } from './dashboard.facade';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+  let mockFacadeService;
+
+  @Component({
+    selector: 'ngx-charts-pie-chart',
+    template: '<div></div>'
+  })
+  class FakePieChartComponent {
+    @Input() view;
+    @Input() results;
+    @Input() labels;
+    @Input() doughnut;
+    @Input() arcWidth;
+  }
 
   beforeEach(async(() => {
+
+    mockFacadeService = jasmine.createSpyObj(['loadChartData']);
+
     TestBed.configureTestingModule({
-      declarations: [DashboardComponent]
+      declarations: [
+        DashboardComponent,
+        FakePieChartComponent
+      ],
+      providers: [
+        { provide: DashboardFacade, useValue: mockFacadeService }
+      ]
     })
       .compileComponents();
   }));
@@ -21,13 +45,5 @@ describe('DashboardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should render title in a h1 tag', () => {
-    // tslint:disable-next-line:no-shadowed-variable
-    const fixture = TestBed.createComponent(DashboardComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Training Courses Tracker');
   });
 });

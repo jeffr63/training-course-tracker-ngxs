@@ -6,13 +6,13 @@ import { of, throwError } from 'rxjs';
 
 import { CoursesState, CoursesStateModel } from './course.state';
 import { Course, CourseData } from '../shared/course';
+import { DataServiceFacade } from '../services/data-service-facade';
 import {
   DeleteCourse, DeleteCourseFail, DeleteCourseSuccess,
   GetCourse, GetCourseFail, GetCourseSuccess, GetCourseData, GetCoursesPage,
   LoadCourses, LoadCoursesFail, LoadCoursesSuccess, NewCourse,
   SaveCourse, SaveCourseFail, SaveCourseSuccess
 } from './course.actions';
-import { DataServiceFacade } from '../services/data-service-facade';
 
 const courseArray: Course[] = [
   { id: 1, title: 'ABC', instructor: 'Bob', path: 'Test Path 1', source: 'Test Source 1' },
@@ -54,7 +54,9 @@ describe('Courses', () => {
         NgxsModule.forRoot([CoursesState]),
         HttpClientModule
       ],
-      providers: []
+      providers: [
+        DataServiceFacade
+      ]
     }).compileComponents();
     store = TestBed.get(Store);
     service = TestBed.get(DataServiceFacade);

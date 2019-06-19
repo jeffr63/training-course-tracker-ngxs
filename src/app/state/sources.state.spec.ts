@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
+import { DataServiceFacade } from '../services/data-service-facade';
 import {
   DeleteSource, DeleteSourceFail, DeleteSourceSuccess,
   GetSource, GetSourceFail, GetSourceSuccess,
@@ -12,7 +13,6 @@ import {
 } from './sources.actions';
 import { SourcesState, SourcesStateModel } from './sources.state';
 import { Source } from '../shared/sources';
-import { DataServiceFacade } from '../services/data-service-facade';
 
 const sourceArray: Source[] = [
   { id: 1, name: 'ABC' },
@@ -39,7 +39,9 @@ describe('sources', () => {
         NgxsModule.forRoot([SourcesState]),
         HttpClientModule
       ],
-      providers: []
+      providers: [
+        DataServiceFacade
+      ]
     }).compileComponents();
     store = TestBed.get(Store);
     service = TestBed.get(DataServiceFacade);
