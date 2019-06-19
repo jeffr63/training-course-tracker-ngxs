@@ -11,8 +11,8 @@ import {
   SaveSource, SaveSourceFail, SaveSourceSuccess
 } from './sources.actions';
 import { SourcesState, SourcesStateModel } from './sources.state';
-import { SourcesService } from '../services/sources.service';
 import { Source } from '../shared/sources';
+import { DataServiceFacade } from '../services/data-service-facade';
 
 const sourceArray: Source[] = [
   { id: 1, name: 'ABC' },
@@ -30,7 +30,7 @@ interface AppModel {
 
 describe('sources', () => {
   let store: Store;
-  let service: SourcesService;
+  let service: DataServiceFacade;
   let actions: Actions;
 
   beforeEach(async(() => {
@@ -42,7 +42,7 @@ describe('sources', () => {
       providers: []
     }).compileComponents();
     store = TestBed.get(Store);
-    service = TestBed.get(SourcesService);
+    service = TestBed.get(DataServiceFacade);
     actions = TestBed.get(Actions);
   }));
 

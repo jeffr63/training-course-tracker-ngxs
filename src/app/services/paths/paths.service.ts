@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Path } from '../shared/paths';
+import { Path } from '../../shared/paths';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class PathsService {
 
   constructor(private http: HttpClient) { }
 
-  addPath(path: Path) {
+  private addPath(path: Path) {
     return this.http.post(`${this.baseUrl}/paths`, path);
   }
 
@@ -35,7 +35,7 @@ export class PathsService {
     }
   }
 
-  updatePath(path: Path) {
+  private updatePath(path: Path) {
     return this.http.put(`${this.baseUrl}/paths/${path.id}`, path);
   }
 }

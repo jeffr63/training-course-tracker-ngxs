@@ -1,13 +1,13 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
+import { DataServiceFacade } from '../services/data-service-facade';
 import {
   DeletePath, DeletePathFail, DeletePathSuccess,
   GetPath, GetPathFail, GetPathSuccess,
   LoadPaths, LoadPathsFail, LoadPathsSuccess, NewPath,
   SavePath, SavePathFail, SavePathSuccess
 } from './paths.actions';
-import { PathsService } from '../services/paths.service';
 import { Path } from '../shared/paths';
 
 export interface PathsStateModel {
@@ -26,7 +26,7 @@ export interface PathsStateModel {
 })
 export class PathsState {
 
-  constructor(private pathsService: PathsService) { }
+  constructor(private dataFacade: DataServiceFacade) { }
 
   @Selector()
   static getPaths(state: PathsStateModel) {
@@ -48,7 +48,7 @@ export class PathsState {
     patchState({
       error: ''
     });
-    return this.pathsService.deletePath(payload).pipe(
+    return this.dataFacade.deletePath(payload).pipe(
       map(_path => {
         return dispatch(new DeletePathSuccess(payload));
       }),
@@ -80,7 +80,7 @@ export class PathsState {
     patchState({
       error: ''
     });
-    return this.pathsService.getPath(payload).pipe(
+    return this.dataFacade.getPath(payload).pipe(
       map((path: Path) => {
         return dispatch(new GetPathSuccess(path));
       }),
@@ -122,7 +122,7 @@ export class PathsState {
     patchState({
       error: ''
     });
-    return this.pathsService.loadPaths().pipe(
+    return this.dataFacade.loadPaths().pipe(
       map((Paths: any[]) => {
         return dispatch(new LoadPathsSuccess(Paths));
       }),
@@ -154,7 +154,7 @@ export class PathsState {
     patchState({
       error: ''
     });
-    return this.pathsService.savePath(state.currentPath).pipe(
+    return this.dataFacade.savePath(state.currentPath).pipe(
       map((path: Path) => {
         return dispatch([
           new SavePathSuccess(state.currentPath),

@@ -3,7 +3,6 @@ import { catchError, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 import { Course, CourseData } from '../shared/course';
-import { CoursesService } from '../services/courses.service';
 import {
   DeleteCourse, DeleteCourseSuccess, DeleteCourseFail,
   GetCourse, GetCourseSuccess, GetCourseFail,
@@ -11,6 +10,7 @@ import {
   LoadCourses, LoadCoursesSuccess, LoadCoursesFail,
   SaveCourse, SaveCourseSuccess, SaveCourseFail,
 } from './course.actions';
+import { DataServiceFacade } from '../services/data-service-facade';
 
 export interface CoursesStateModel {
   courses: Course[];
@@ -36,7 +36,7 @@ export interface CoursesStateModel {
 })
 export class CoursesState {
 
-  constructor(private coursesService: CoursesService) { }
+  constructor(private dataFacade: DataServiceFacade) { }
 
   @Selector()
   static getCourse(state: CoursesStateModel) {
@@ -78,7 +78,7 @@ export class CoursesState {
     patchState({
       error: ''
     });
-    return this.coursesService.deleteCourse(payload.id).pipe(
+    return this.dataFacade.deleteCourse(payload.id).pipe(
       map(_course => {
         dispatch(new LoadCourses()).subscribe(() => {
           dispatch(new GetCoursesPage({ 'current': payload.current, 'pageSize': payload.pageSize }))
@@ -110,7 +110,7 @@ export class CoursesState {
     patchState({
       error: ''
     });
-    return this.coursesService.getCourse(payload).pipe(
+    return this.dataFacade.getCourse(payload).pipe(
       map(course => {
         return dispatch(new GetCourseSuccess(course));
       }),
@@ -187,7 +187,7 @@ export class CoursesState {
     patchState({
       error: ''
     });
-    return this.coursesService.getCoursesSorted().pipe(
+    return this.dataFacade.getCoursesSorted().pipe(
       map((courses: Course[]) => {
         return dispatch(new LoadCoursesSuccess(courses));
       }),
@@ -237,7 +237,7 @@ export class CoursesState {
       error: ''
     });
     const state = getState();
-    return this.coursesService.saveCourse(state.currentCourse).pipe(
+    return this.dataFacade.saveCourse(state.currentCourse).pipe(
       map((course: Course) => {
         return dispatch(new SaveCourseSuccess(course));
       }),

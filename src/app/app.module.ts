@@ -13,6 +13,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 // custom components
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { DataServiceModule } from './services/data-service.module';
 import { CallbackComponent } from './callback.component';
 import { CoursesState } from './state/course.state';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -31,6 +32,7 @@ import { SourcesState } from './state/sources.state';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    DataServiceModule,
     FontAwesomeModule,
     HttpClientModule,
     NgbModule.forRoot(),

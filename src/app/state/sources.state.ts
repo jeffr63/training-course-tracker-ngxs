@@ -1,6 +1,7 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
+import { DataServiceFacade } from '../services/data-service-facade';
 import {
   DeleteSource, DeleteSourceFail, DeleteSourceSuccess,
   GetSource, GetSourceFail, GetSourceSuccess,
@@ -8,7 +9,6 @@ import {
   SaveSource, SaveSourceFail, SaveSourceSuccess
 } from './sources.actions';
 import { Source } from '../shared/sources';
-import { SourcesService } from '../services/sources.service';
 
 export interface SourcesStateModel {
   sources: Source[];
@@ -26,7 +26,7 @@ export interface SourcesStateModel {
 })
 export class SourcesState {
 
-  constructor(private sourcesService: SourcesService) { }
+  constructor(private dataFacade: DataServiceFacade) { }
 
   @Selector()
   static getSources(state: SourcesStateModel) {
@@ -48,7 +48,7 @@ export class SourcesState {
     patchState({
       error: ''
     });
-    return this.sourcesService.deleteSource(payload).pipe(
+    return this.dataFacade.deleteSource(payload).pipe(
       map(source => {
         return dispatch(new DeleteSourceSuccess(payload));
       }),
@@ -80,7 +80,7 @@ export class SourcesState {
     patchState({
       error: ''
     });
-    return this.sourcesService.getSource(payload).pipe(
+    return this.dataFacade.getSource(payload).pipe(
       map((source: Source) => {
         return dispatch(new GetSourceSuccess(source));
       }),
@@ -111,7 +111,7 @@ export class SourcesState {
     patchState({
       error: ''
     });
-    return this.sourcesService.loadSources().pipe(
+    return this.dataFacade.loadSources().pipe(
       map((sources: any[]) => {
         return dispatch(new LoadSourcesSuccess(sources));
       }),
@@ -154,7 +154,7 @@ export class SourcesState {
     patchState({
       error: ''
     });
-    return this.sourcesService.saveSource(state.currentSource).pipe(
+    return this.dataFacade.saveSource(state.currentSource).pipe(
       map((source: Source) => {
         return dispatch([
           new LoadSources(),

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import * as _ from 'lodash';
 
-import { Source } from '../shared/sources';
+import { Source } from '../../shared/sources';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class SourcesService {
 
   constructor(private http: HttpClient) { }
 
-  addSource(source: Source) {
+  private addSource(source: Source) {
     return this.http.post(`${this.baseUrl}/sources`, source);
   }
 
@@ -37,7 +37,7 @@ export class SourcesService {
     }
   }
 
-  updateSource(source: Source) {
+  private updateSource(source: Source) {
     return this.http.put(`${this.baseUrl}/sources/${source.id}`, source);
   }
 

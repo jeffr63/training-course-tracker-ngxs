@@ -9,12 +9,12 @@ import { Observable } from 'rxjs';
 import { Course } from '../shared/course';
 import { CoursesState } from '../state/course.state';
 import { DeleteCourse, GetCoursesPage, LoadCourses, NewCourse, SaveCourse, GetCourse } from '../state/course.actions';
+import { LoadPaths } from '../state/paths.actions';
+import { LoadSources } from '../state/sources.actions';
 import { Path } from '../shared/paths';
 import { PathsState } from '../state/paths.state';
 import { Source } from '../shared/sources';
 import { SourcesState } from '../state/sources.state';
-import { LoadPaths } from '../state/paths.actions';
-import { LoadSources } from '../state/sources.actions';
 
 @Injectable()
 export class CoursesFacade {

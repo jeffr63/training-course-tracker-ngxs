@@ -2,9 +2,9 @@ import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
+import { of, throwError } from 'rxjs';
 
 import { CoursesState, CoursesStateModel } from './course.state';
-import { CoursesService } from '../services/courses.service';
 import { Course, CourseData } from '../shared/course';
 import {
   DeleteCourse, DeleteCourseFail, DeleteCourseSuccess,
@@ -12,7 +12,7 @@ import {
   LoadCourses, LoadCoursesFail, LoadCoursesSuccess, NewCourse,
   SaveCourse, SaveCourseFail, SaveCourseSuccess
 } from './course.actions';
-import { of, throwError } from 'rxjs';
+import { DataServiceFacade } from '../services/data-service-facade';
 
 const courseArray: Course[] = [
   { id: 1, title: 'ABC', instructor: 'Bob', path: 'Test Path 1', source: 'Test Source 1' },
@@ -45,7 +45,7 @@ interface AppModel {
 
 describe('Courses', () => {
   let store: Store;
-  let service: CoursesService;
+  let service: DataServiceFacade;
   let actions: Actions;
 
   beforeEach(async(() => {
@@ -57,7 +57,7 @@ describe('Courses', () => {
       providers: []
     }).compileComponents();
     store = TestBed.get(Store);
-    service = TestBed.get(CoursesService);
+    service = TestBed.get(DataServiceFacade);
     actions = TestBed.get(Actions);
   }));
 

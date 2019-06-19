@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
+import { DataServiceFacade } from '../services/data-service-facade';
 import {
   DeletePath, DeletePathFail, DeletePathSuccess,
   GetPath, GetPathFail, GetPathSuccess,
@@ -11,7 +12,6 @@ import {
   SavePath, SavePathFail, SavePathSuccess
 } from './paths.actions';
 import { PathsState, PathsStateModel } from './paths.state';
-import { PathsService } from '../services/paths.service';
 import { Path } from '../shared/paths';
 
 const pathsArray: Path[] = [
@@ -30,7 +30,7 @@ interface AppModel {
 
 describe('Paths', () => {
   let store: Store;
-  let service: PathsService;
+  let service: DataServiceFacade;
   let actions: Actions;
 
   beforeEach(async(() => {
@@ -42,7 +42,7 @@ describe('Paths', () => {
       providers: []
     }).compileComponents();
     store = TestBed.get(Store);
-    service = TestBed.get(PathsService);
+    service = TestBed.get(DataServiceFacade);
     actions = TestBed.get(Actions);
   }));
 
