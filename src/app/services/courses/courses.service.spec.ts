@@ -22,7 +22,7 @@ describe('CourseService', () => {
 
   describe('deleteCourse', () => {
     it('should return deleted course with a delete call to the correct URL', () => {
-      const course = { id: 1, title: 'ABC', instructor: 'John', path: 'A', source: 'B', yearCompleted: '2019' };
+      const course = { id: 1, title: 'ABC', instructor: 'John', path: 'A', source: 'B' };
 
       service.deleteCourse(1).subscribe((data: Course) => {
         expect(data.id).toBe(1);
@@ -152,22 +152,6 @@ describe('CourseService', () => {
       const req = httpTestingController.expectOne(`${baseUrl}/courses`);
       req.flush(returns);
       expect(req.request.method).toBe('POST');
-      httpTestingController.verify();
-    });
-  });
-
-  describe('deleteCourse', () => {
-    it('should return requested course with a get call to the correct URL', () => {
-      const course = { id: 1, title: 'ABC', instructor: 'John', path: 'A', source: 'B' };
-
-      service.deleteCourse(1).subscribe((data: Course) => {
-        expect(data.id).toBe(1);
-        expect(data).toEqual(course);
-      });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/courses/1`);
-      req.flush(course);
-      expect(req.request.method).toBe('DELETE');
       httpTestingController.verify();
     });
   });
