@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
-import { Course } from '../../shared/course';
 import { CoursesFacade } from '../courses.facade';
-import { Path } from '../../shared/paths';
-import { Source } from '../../shared/sources';
 
 @Component({
   selector: 'app-course-edit',
@@ -15,11 +11,9 @@ import { Source } from '../../shared/sources';
   styleUrls: ['./course-edit.component.scss']
 })
 export class CourseEditComponent implements OnInit {
-  course$: Observable<Course> = this.facade.course$;
   faSave = faSave;
   faBan = faBan;
-  paths$: Observable<Path[]> = this.facade.paths$;
-  sources$: Observable<Source[]> = this.facade.sources$;
+  saveId = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -28,6 +22,7 @@ export class CourseEditComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
+      this.saveId = params.id;
       this.facade.loadCourse(params.id);
     });
   }

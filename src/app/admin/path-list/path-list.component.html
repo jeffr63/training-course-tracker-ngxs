@@ -5,8 +5,8 @@
     </header>
     <section class="card-body">
       <app-list-header (newItem)="facade.newPath()"></app-list-header>
-      
-      <app-list-display [headers]="headers" [columns]="columns" [items]="paths$ | async"
+
+      <app-list-display [headers]="headers" [columns]="columns" [items]="facade.paths$ | async"
         [isAuthenticated]="isAuthenticated" (deleteItem)="facade.deletePath($event, deleteModal)"
         (editItem)="facade.editPath($event)"></app-list-display>
     </section>

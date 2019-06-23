@@ -12,12 +12,12 @@ import { SourcesState } from '../state/sources.state';
 
 @Injectable()
 export class SourcesFacade {
-  @Select(SourcesState.getCurrentSource) source$: Observable<Source>;
-  @Select(SourcesState.getSources) sources$: Observable<Source[]>;
-  closedResult = '';
-  columns = ['name'];
-  headers = ['Source'];
-  isAuthenticated = true;
+  @Select(SourcesState.getCurrentSource) public source$: Observable<Source>;
+  @Select(SourcesState.getSources) public sources$: Observable<Source[]>;
+  public closedResult = '';
+  public columns = ['name'];
+  public headers = ['Source'];
+  public isAuthenticated = true;
 
   constructor(
     private store: Store,
@@ -26,11 +26,11 @@ export class SourcesFacade {
     private location: Location
   ) { }
 
-  cancelEdit() {
+  public cancelEdit() {
     this.location.back();
   }
 
-  deleteSource(id: number, deleteModal) {
+  public deleteSource(id: number, deleteModal) {
     this.modal.open(deleteModal).result.then(result => {
       this.closedResult = `Closed with ${result}`;
       this.store.dispatch(new DeleteSource(id));
@@ -39,11 +39,11 @@ export class SourcesFacade {
     });
   }
 
-  editSource(id: number) {
+  public editSource(id: number) {
     this.router.navigate(['/admin/sources', id]);
   }
 
-  loadSource(id) {
+  public loadSource(id) {
     if (id === 'new') {
       this.store.dispatch(new NewSource());
     } else {
@@ -51,15 +51,15 @@ export class SourcesFacade {
     }
   }
 
-  loadSources() {
+  public loadSources() {
     this.store.dispatch(new LoadSources());
   }
 
-  newSource() {
+  public newSource() {
     this.router.navigate(['/admin/sources/new']);
   }
 
-  saveSource() {
+  public saveSource() {
     this.store.dispatch(new SaveSource());
     this.location.back();
   }

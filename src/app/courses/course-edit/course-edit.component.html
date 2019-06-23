@@ -1,6 +1,6 @@
 <section class="container">
   <section class="card">
-    <form *ngIf="course$ | async as course">
+    <form *ngIf="facade.course$ | async as course">
       <fieldset class="form-group row">
         <label class="col-form-label col-sm-2" for="title">Title</label>
         <div class="col-sm-6">
@@ -23,9 +23,7 @@
           <input type="text" class="form-control" name="path" [(ngModel)]="course.path" list="path-helpers"
             placeholder="Enter techical path of course (ex: Angular or React)" />
           <datalist id="path-helpers">
-            <div *ngFor="let path of paths$ | async">
-              <option value="{{path.name}}"></option>
-            </div>
+            <option *ngFor="let path of facade.paths$ | async" value="{{path.name}}"></option>
           </datalist>
         </div>
       </fieldset>
@@ -36,15 +34,13 @@
           <input type="text" class="form-control" name="source" list="source-helpers" [(ngModel)]="course.source"
             placeholder="Enter where the course was sourced from (ex: Pluralsite)" />
           <datalist id="source-helpers">
-            <div *ngFor="let source of sources$ | async">
-              <option value="{{source.name}}"></option>
-            </div>
+            <option *ngFor="let source of facade.sources$ | async" value="{{source.name}}"></option>
           </datalist>
         </div>
       </fieldset>
 
       <div class="form-group row form-buttons">
-        <button class="btn btn-primary mr-sm-2" (click)="facade.saveCourse()" title="Save">
+        <button class="btn btn-primary mr-sm-2" (click)="facade.saveCourse(saveId)" title="Save">
           <fa-icon [icon]="faSave"></fa-icon> Save
         </button>
         <a class="btn btn-secondary" (click)="facade.cancelEdit()" title="Cancel">

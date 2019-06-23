@@ -12,9 +12,9 @@ import { PathsState } from '../state/paths.state';
 
 @Injectable()
 export class PathsFacade {
-  @Select(PathsState.getCurrentPath) path$: Observable<Path>;
-  @Select(PathsState.getPaths) paths$: Observable<Path[]>;
-  closedResult = '';
+  @Select(PathsState.getCurrentPath) public path$: Observable<Path>;
+  @Select(PathsState.getPaths) public paths$: Observable<Path[]>;
+  public closedResult = '';
 
 
   constructor(
@@ -24,11 +24,11 @@ export class PathsFacade {
     private location: Location
   ) { }
 
-  cancelEdit() {
+  public cancelEdit() {
     this.location.back();
   }
 
-  deletePath(id: number, deleteModal) {
+  public deletePath(id: number, deleteModal) {
     this.modal.open(deleteModal).result.then(result => {
       this.closedResult = `Closed with ${result}`;
       this.store.dispatch(new DeletePath(id));
@@ -37,11 +37,11 @@ export class PathsFacade {
     });
   }
 
-  editPath(id: number) {
+  public editPath(id: number) {
     this.router.navigate(['/admin/paths', id]);
   }
 
-  loadPath(id) {
+  public loadPath(id) {
     if (id === 'new') {
       this.store.dispatch(new NewPath());
     } else {
@@ -49,15 +49,15 @@ export class PathsFacade {
     }
   }
 
-  loadPaths() {
+  public loadPaths() {
     this.store.dispatch(new LoadPaths());
   }
 
-  newPath() {
+  public newPath() {
     this.router.navigate(['/admin/paths/new']);
   }
 
-  save() {
+  public save() {
     this.store.dispatch(new SavePath());
     this.location.back();
   }

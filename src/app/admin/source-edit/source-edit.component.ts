@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Observable } from 'rxjs';
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 
-import { Source } from '../../shared/sources';
 import { SourcesFacade } from '../sources.facade';
 
 @Component({
@@ -13,7 +11,6 @@ import { SourcesFacade } from '../sources.facade';
   styleUrls: ['./source-edit.component.scss']
 })
 export class SourceEditComponent implements OnInit {
-  source$: Observable<Source> = this.facade.source$;
   faSave = faSave;
   faBan = faBan;
 

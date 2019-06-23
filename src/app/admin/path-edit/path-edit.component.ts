@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
-import { Observable } from 'rxjs';
 
-import { Path } from '../../shared/paths';
 import { PathsFacade } from '../paths.facade';
 
 @Component({
@@ -13,7 +11,6 @@ import { PathsFacade } from '../paths.facade';
   styleUrls: ['./path-edit.component.scss']
 })
 export class PathEditComponent implements OnInit {
-  path$: Observable<Path> = this.facade.path$;
   faSave = faSave;
   faBan = faBan;
 
