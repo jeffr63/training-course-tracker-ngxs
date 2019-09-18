@@ -23,26 +23,21 @@ import { SharedModule } from './shared/shared.module';
 import { SourcesState } from './state/sources.state';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CallbackComponent,
-    DashboardComponent,
-    MenuComponent,
-  ],
+  declarations: [AppComponent, CallbackComponent, DashboardComponent, MenuComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     DataServiceModule,
     FontAwesomeModule,
     HttpClientModule,
-    NgbModule.forRoot(),
+    NgbModule,
     NgxChartsModule,
     NgxsModule.forRoot([CoursesState, SourcesState, PathsState]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     SharedModule,
-    AppRoutingModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
