@@ -1,14 +1,25 @@
-import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { catchError, map } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
 
-import { DataServiceFacade } from '../services/data-service-facade';
+import { State, Action, StateContext, Selector } from "@ngxs/store";
+import { catchError, map } from "rxjs/operators";
+
+import { DataServiceFacade } from "../services/data-service-facade";
 import {
-  DeletePath, DeletePathFail, DeletePathSuccess,
-  GetPath, GetPathFail, GetPathSuccess,
-  LoadPaths, LoadPathsFail, LoadPathsSuccess, NewPath,
-  SavePath, SavePathFail, SavePathSuccess
-} from './paths.actions';
-import { Path } from '../shared/paths';
+  DeletePath,
+  DeletePathFail,
+  DeletePathSuccess,
+  GetPath,
+  GetPathFail,
+  GetPathSuccess,
+  LoadPaths,
+  LoadPathsFail,
+  LoadPathsSuccess,
+  NewPath,
+  SavePath,
+  SavePathFail,
+  SavePathSuccess
+} from "./paths.actions";
+import { Path } from "../shared/paths";
 
 export interface PathsStateModel {
   paths: Path[];
@@ -16,17 +27,17 @@ export interface PathsStateModel {
   error: string;
 }
 
+@Injectable()
 @State<PathsStateModel>({
-  name: 'paths',
+  name: "paths",
   defaults: {
     paths: [],
     currentPath: null,
-    error: '',
+    error: ""
   }
 })
 export class PathsState {
-
-  constructor(private dataFacade: DataServiceFacade) { }
+  constructor(private dataFacade: DataServiceFacade) {}
 
   @Selector()
   static getPaths(state: PathsStateModel) {
@@ -44,9 +55,12 @@ export class PathsState {
   }
 
   @Action(DeletePath)
-  public delete({ dispatch, patchState }: StateContext<PathsStateModel>, { payload }: DeletePath) {
+  public delete(
+    { dispatch, patchState }: StateContext<PathsStateModel>,
+    { payload }: DeletePath
+  ) {
     patchState({
-      error: ''
+      error: ""
     });
     return this.dataFacade.deletePath(payload).pipe(
       map(_path => {
@@ -59,7 +73,10 @@ export class PathsState {
   }
 
   @Action(DeletePathFail)
-  public deleteFail({ patchState }: StateContext<PathsStateModel>, { payload }: DeletePathFail) {
+  public deleteFail(
+    { patchState }: StateContext<PathsStateModel>,
+    { payload }: DeletePathFail
+  ) {
     patchState({
       currentPath: null,
       error: payload
@@ -67,7 +84,10 @@ export class PathsState {
   }
 
   @Action(DeletePathSuccess)
-  public deleteSuccess({ getState, patchState }: StateContext<PathsStateModel>, { payload }: DeletePathSuccess) {
+  public deleteSuccess(
+    { getState, patchState }: StateContext<PathsStateModel>,
+    { payload }: DeletePathSuccess
+  ) {
     const state = getState();
     patchState({
       currentPath: null,
@@ -76,9 +96,12 @@ export class PathsState {
   }
 
   @Action(GetPath)
-  public get({ dispatch, patchState }: StateContext<PathsStateModel>, { payload }: GetPath) {
+  public get(
+    { dispatch, patchState }: StateContext<PathsStateModel>,
+    { payload }: GetPath
+  ) {
     patchState({
-      error: ''
+      error: ""
     });
     return this.dataFacade.getPath(payload).pipe(
       map((path: Path) => {
@@ -91,7 +114,10 @@ export class PathsState {
   }
 
   @Action(GetPathFail)
-  public getFail({ patchState }: StateContext<PathsStateModel>, { payload }: GetPathFail) {
+  public getFail(
+    { patchState }: StateContext<PathsStateModel>,
+    { payload }: GetPathFail
+  ) {
     patchState({
       currentPath: null,
       error: payload
@@ -99,10 +125,13 @@ export class PathsState {
   }
 
   @Action(GetPathSuccess)
-  public getSuccess({ patchState }: StateContext<PathsStateModel>, { payload }: GetPathSuccess) {
+  public getSuccess(
+    { patchState }: StateContext<PathsStateModel>,
+    { payload }: GetPathSuccess
+  ) {
     patchState({
       currentPath: payload,
-      error: ''
+      error: ""
     });
   }
 
@@ -110,7 +139,7 @@ export class PathsState {
   public newPath({ patchState }: StateContext<PathsStateModel>) {
     const initPath = {
       id: null,
-      name: ''
+      name: ""
     };
     patchState({
       currentPath: initPath
@@ -120,7 +149,7 @@ export class PathsState {
   @Action(LoadPaths)
   public load({ dispatch, patchState }: StateContext<PathsStateModel>) {
     patchState({
-      error: ''
+      error: ""
     });
     return this.dataFacade.loadPaths().pipe(
       map((Paths: any[]) => {
@@ -133,7 +162,10 @@ export class PathsState {
   }
 
   @Action(LoadPathsFail)
-  public loadFail({ patchState }: StateContext<PathsStateModel>, { payload }: LoadPathsFail) {
+  public loadFail(
+    { patchState }: StateContext<PathsStateModel>,
+    { payload }: LoadPathsFail
+  ) {
     patchState({
       paths: [],
       error: payload
@@ -141,18 +173,26 @@ export class PathsState {
   }
 
   @Action(LoadPathsSuccess)
-  public loadSuccess({ patchState }: StateContext<PathsStateModel>, { payload }: LoadPathsSuccess) {
+  public loadSuccess(
+    { patchState }: StateContext<PathsStateModel>,
+    { payload }: LoadPathsSuccess
+  ) {
     patchState({
       paths: payload,
-      error: ''
+      error: ""
     });
   }
 
   @Action(SavePath)
-  public save({ dispatch, getState, patchState }: StateContext<PathsStateModel>) { // , { payload }: Save) {
+  public save({
+    dispatch,
+    getState,
+    patchState
+  }: StateContext<PathsStateModel>) {
+    // , { payload }: Save) {
     const state = getState();
     patchState({
-      error: ''
+      error: ""
     });
     return this.dataFacade.savePath(state.currentPath).pipe(
       map((path: Path) => {
@@ -168,22 +208,28 @@ export class PathsState {
   }
 
   @Action(SavePathFail)
-  public saveFail({ patchState }: StateContext<PathsStateModel>, { payload }: SavePathFail) {
+  public saveFail(
+    { patchState }: StateContext<PathsStateModel>,
+    { payload }: SavePathFail
+  ) {
     patchState({
       error: payload
     });
   }
 
   @Action(SavePathSuccess)
-  public saveSuccess({ getState, patchState }: StateContext<PathsStateModel>, { payload }: SavePathSuccess) {
+  public saveSuccess(
+    { getState, patchState }: StateContext<PathsStateModel>,
+    { payload }: SavePathSuccess
+  ) {
     const state = getState();
-    const updatedPaths = state.paths.map(
-      item => payload.id === item.id ? payload : item);
+    const updatedPaths = state.paths.map(item =>
+      payload.id === item.id ? payload : item
+    );
     patchState({
       paths: updatedPaths,
       currentPath: null,
-      error: ''
+      error: ""
     });
   }
-
 }
