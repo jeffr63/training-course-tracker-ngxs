@@ -1044,7 +1044,7 @@
       "id": 149
     },
     {
-      "title": "Intro to NestJS Framework for Reliable Server-side Apss on NodeJS",
+      "title": "Intro to NestJS Framework for Reliable Server-side Apps on NodeJS",
       "instructor": "IPenywis",
       "path": "NestJS",
       "source": "YouTube",
@@ -1056,6 +1056,13 @@
       "instructor": "Michael Callaghan",
       "path": "Ionic",
       "source": "Pluralsite"
+    },
+    {
+      "id": 152,
+      "title": "State Management in Angular, from Facades to NgRX and Back",
+      "instructor": "Cornelia Rouch",
+      "path": "Angular",
+      "source": "YouTube"
     }
   ],
   "paths": [
