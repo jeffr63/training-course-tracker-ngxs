@@ -27,7 +27,6 @@ export interface PathsStateModel {
   error: string;
 }
 
-@Injectable()
 @State<PathsStateModel>({
   name: "paths",
   defaults: {
@@ -36,6 +35,7 @@ export interface PathsStateModel {
     error: ""
   }
 })
+@Injectable()
 export class PathsState {
   constructor(private dataFacade: DataServiceFacade) {}
 
