@@ -31,7 +31,7 @@
     "@swimlane/ngx-charts": "^13.0.2",
     "auth0-js": "^9.10.2",
     "core-js": "^2.6.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
