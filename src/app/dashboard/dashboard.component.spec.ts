@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
 import { DashboardFacade } from './dashboard.facade';
@@ -21,7 +21,7 @@ describe('DashboardComponent', () => {
     @Input() arcWidth;
   }
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     mockFacadeService = jasmine.createSpyObj(['loadChartData']);
 

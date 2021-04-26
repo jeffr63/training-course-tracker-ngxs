@@ -16,8 +16,8 @@ describe('PathsService', () => {
       providers: [PathsService]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(PathsService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(PathsService);
   });
 
   describe('deletePath', () => {

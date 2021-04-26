@@ -16,8 +16,8 @@ describe('SourcesService', () => {
       providers: [SourcesService]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(SourcesService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(SourcesService);
   });
 
   describe('deleteSource', () => {

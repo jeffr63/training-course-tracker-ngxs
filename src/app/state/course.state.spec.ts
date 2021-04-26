@@ -1,4 +1,4 @@
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
@@ -48,7 +48,7 @@ describe('Courses', () => {
   let service: DataServiceFacade;
   let actions: Actions;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         NgxsModule.forRoot([CoursesState]),
@@ -58,9 +58,9 @@ describe('Courses', () => {
         DataServiceFacade
       ]
     }).compileComponents();
-    store = TestBed.get(Store);
-    service = TestBed.get(DataServiceFacade);
-    actions = TestBed.get(Actions);
+    store = TestBed.inject(Store);
+    service = TestBed.inject(DataServiceFacade);
+    actions = TestBed.inject(Actions);
   }));
 
   it('should initialize values', () => {
@@ -85,7 +85,7 @@ describe('Courses', () => {
   describe('Selectors', () => {
 
     describe('getCourse', () => {
-      it('should return an object', async(() => {
+      it('should return an object', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -104,7 +104,7 @@ describe('Courses', () => {
     });
 
     describe('getCourses', () => {
-      it('should return an array of Courses', async(() => {
+      it('should return an array of Courses', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -123,7 +123,7 @@ describe('Courses', () => {
     });
 
     describe('getCoursesByPath', () => {
-      it('should return an array', async(() => {
+      it('should return an array', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -142,7 +142,7 @@ describe('Courses', () => {
     });
 
     describe('getCoursesBySource', () => {
-      it('should return an array', async(() => {
+      it('should return an array', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -161,7 +161,7 @@ describe('Courses', () => {
     });
 
     describe('getError', () => {
-      it('should return an string', async(() => {
+      it('should return an string', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -180,7 +180,7 @@ describe('Courses', () => {
     });
 
     describe('getPagedCourses', () => {
-      it('should return an string', async(() => {
+      it('should return an string', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -199,7 +199,7 @@ describe('Courses', () => {
     });
 
     describe('getTotalCourses', () => {
-      it('should return a number', async(() => {
+      it('should return a number', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -267,7 +267,7 @@ describe('Courses', () => {
     });
 
     describe('DeleteFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -292,7 +292,7 @@ describe('Courses', () => {
     });
 
     describe('DeleteSuccess', () => {
-      it('should remove requested item from courses array', async(() => {
+      it('should remove requested item from courses array', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -362,7 +362,7 @@ describe('Courses', () => {
     });
 
     describe('GetCourseFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -388,7 +388,7 @@ describe('Courses', () => {
     });
 
     describe('GetCourseSuccess', () => {
-      it('should set currentCourse with requested record and clear error', async(() => {
+      it('should set currentCourse with requested record and clear error', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -414,7 +414,7 @@ describe('Courses', () => {
     });
 
     describe('GetPage', () => {
-      it('should update the pagedCourses with request page info ', async(() => {
+      it('should update the pagedCourses with request page info ', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -439,7 +439,7 @@ describe('Courses', () => {
     });
 
     describe('GetCourseData', () => {
-      it('should update the coursesByPath and coursesBySource store values', async(() => {
+      it('should update the coursesByPath and coursesBySource store values', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -510,7 +510,7 @@ describe('Courses', () => {
     });
 
     describe('LoadFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -539,7 +539,7 @@ describe('Courses', () => {
     });
 
     describe('LoadSuccess', () => {
-      it('should set the courses array to returned values and clear error', async(() => {
+      it('should set the courses array to returned values and clear error', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -566,7 +566,7 @@ describe('Courses', () => {
     });
 
     describe('New Course', () => {
-      it('should initialize currentCourse values for a new record', async(() => {
+      it('should initialize currentCourse values for a new record', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -651,7 +651,7 @@ describe('Courses', () => {
     });
 
     describe('SaveFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -677,7 +677,7 @@ describe('Courses', () => {
     });
 
     describe('SaveSuccess', () => {
-      it('should update the course array with new value', async(() => {
+      it('should update the course array with new value', waitForAsync(() => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,

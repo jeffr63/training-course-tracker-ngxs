@@ -1,4 +1,4 @@
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
@@ -33,7 +33,7 @@ describe('sources', () => {
   let service: DataServiceFacade;
   let actions: Actions;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         NgxsModule.forRoot([SourcesState]),
@@ -43,9 +43,9 @@ describe('sources', () => {
         DataServiceFacade
       ]
     }).compileComponents();
-    store = TestBed.get(Store);
-    service = TestBed.get(DataServiceFacade);
-    actions = TestBed.get(Actions);
+    store = TestBed.inject(Store);
+    service = TestBed.inject(DataServiceFacade);
+    actions = TestBed.inject(Actions);
   }));
 
   it('should initialize values', () => {
@@ -67,7 +67,7 @@ describe('sources', () => {
 
     describe('getSources', () => {
 
-      it('should return an array of Sources', async(() => {
+      it('should return an array of Sources', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: sourceArray,
@@ -82,7 +82,7 @@ describe('sources', () => {
     });
 
     describe('getcurrentSource', () => {
-      it('should return an object', async(() => {
+      it('should return an object', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -97,7 +97,7 @@ describe('sources', () => {
     });
 
     describe('getError', () => {
-      it('should return an string', async(() => {
+      it('should return an string', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -161,7 +161,7 @@ describe('sources', () => {
     });
 
     describe('DeleteFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -183,7 +183,7 @@ describe('sources', () => {
     });
 
     describe('DeleteSuccess', () => {
-      it('should remove requested item from sources array', async(() => {
+      it('should remove requested item from sources array', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: sourceArray,
@@ -252,7 +252,7 @@ describe('sources', () => {
     });
 
     describe('GetFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -274,7 +274,7 @@ describe('sources', () => {
     });
 
     describe('GetSuccess', () => {
-      it('should set currentSource with requested record and clear error', async(() => {
+      it('should set currentSource with requested record and clear error', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -296,7 +296,7 @@ describe('sources', () => {
     });
 
     describe('New Source', () => {
-      it('should initialize currentSource values for a new record', async(() => {
+      it('should initialize currentSource values for a new record', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -363,7 +363,7 @@ describe('sources', () => {
     });
 
     describe('LoadFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: sourceArray,
@@ -385,7 +385,7 @@ describe('sources', () => {
     });
 
     describe('LoadSuccess', () => {
-      it('should set the sources array to returned values and clear error', async(() => {
+      it('should set the sources array to returned values and clear error', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -462,7 +462,7 @@ describe('sources', () => {
     });
 
     describe('SaveFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -483,7 +483,7 @@ describe('sources', () => {
     });
 
     describe('SaveSuccess', () => {
-      it('should update the source array with new value', async(() => {
+      it('should update the source array with new value', waitForAsync(() => {
         const appState: AppModel = {
           sources: {
             sources: sourceArray,

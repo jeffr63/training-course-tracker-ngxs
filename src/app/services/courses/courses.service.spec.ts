@@ -16,8 +16,8 @@ describe('CourseService', () => {
       providers: [CoursesService]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(CoursesService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(CoursesService);
   });
 
   describe('deleteCourse', () => {

@@ -1,4 +1,4 @@
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
@@ -33,7 +33,7 @@ describe('Paths', () => {
   let service: DataServiceFacade;
   let actions: Actions;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         NgxsModule.forRoot([PathsState]),
@@ -43,9 +43,9 @@ describe('Paths', () => {
         DataServiceFacade
       ]
     }).compileComponents();
-    store = TestBed.get(Store);
-    service = TestBed.get(DataServiceFacade);
-    actions = TestBed.get(Actions);
+    store = TestBed.inject(Store);
+    service = TestBed.inject(DataServiceFacade);
+    actions = TestBed.inject(Actions);
   }));
 
   it('should initialize values', () => {
@@ -67,7 +67,7 @@ describe('Paths', () => {
 
     describe('getPaths', () => {
 
-      it('should return an array of Paths', async(() => {
+      it('should return an array of Paths', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: pathsArray,
@@ -82,7 +82,7 @@ describe('Paths', () => {
     });
 
     describe('getCurrentPath', () => {
-      it('should return an object', async(() => {
+      it('should return an object', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -97,7 +97,7 @@ describe('Paths', () => {
     });
 
     describe('getError', () => {
-      it('should return an string', async(() => {
+      it('should return an string', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -161,7 +161,7 @@ describe('Paths', () => {
     });
 
     describe('DeleteFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -183,7 +183,7 @@ describe('Paths', () => {
     });
 
     describe('DeleteSuccess', () => {
-      it('should remove requested item from paths array', async(() => {
+      it('should remove requested item from paths array', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: pathsArray,
@@ -274,7 +274,7 @@ describe('Paths', () => {
     });
 
     describe('GetSuccess', () => {
-      it('should set currentPath with requested record and clear error', async(() => {
+      it('should set currentPath with requested record and clear error', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -296,7 +296,7 @@ describe('Paths', () => {
     });
 
     describe('New Path', () => {
-      it('should initialize currentPath values for a new record', async(() => {
+      it('should initialize currentPath values for a new record', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -363,7 +363,7 @@ describe('Paths', () => {
     });
 
     describe('LoadFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: pathsArray,
@@ -385,7 +385,7 @@ describe('Paths', () => {
     });
 
     describe('LoadSuccess', () => {
-      it('should set the paths array to returned values and clear error', async(() => {
+      it('should set the paths array to returned values and clear error', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -461,7 +461,7 @@ describe('Paths', () => {
     });
 
     describe('SaveFail', () => {
-      it('should return string in Error', async(() => {
+      it('should return string in Error', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -482,7 +482,7 @@ describe('Paths', () => {
     });
 
     describe('SaveSuccess', () => {
-      it('should update the path array with new value', async(() => {
+      it('should update the path array with new value', waitForAsync(() => {
         const appState: AppModel = {
           paths: {
             paths: pathsArray,
