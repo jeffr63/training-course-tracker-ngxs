@@ -29,10 +29,10 @@
     "@ngxs/logger-plugin": "^3.6.2",
     "@ngxs/store": "^3.6.2",
     "@swimlane/ngx-charts": "^13.0.2",
-    "auth0-js": "^9.10.2",
+    "auth0-js": "^9.15.0",
     "core-js": "^2.6.5",
-    "lodash": "^4.17.15",
-    "rxjs": "~6.5.4",
+    "lodash": "^4.17.21",
+    "rxjs": "~6.6.7",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
