@@ -1,7 +1,14 @@
 <header class="row">
   <div class="col">
-    <ngb-pagination [collectionSize]="total" boundaryLinks="true" [pageSize]="pageSize" [maxSize]="maxSize"
-      rotate="true" [(page)]="current" (pageChange)="onPageChange()"></ngb-pagination>
+    <ngb-pagination
+      [collectionSize]="total"
+      boundaryLinks="true"
+      [pageSize]="pageSize"
+      [maxSize]="maxSize"
+      rotate="true"
+      [(page)]="current"
+      (pageChange)="onPageChange()"
+    ></ngb-pagination>
   </div>
   <div class="col" *ngIf="isAuthenticated">
     <button class="btn btn-sm" (click)="newClicked()" title="Add Course">
