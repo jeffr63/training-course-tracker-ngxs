@@ -2,10 +2,10 @@
   <div class="col">
     <ngb-pagination
       [collectionSize]="total"
-      boundaryLinks="true"
+      [boundaryLinks]="true"
       [pageSize]="pageSize"
       [maxSize]="maxSize"
-      rotate="true"
+      [rotate]="true"
       [(page)]="current"
       (pageChange)="onPageChange()"
     ></ngb-pagination>
