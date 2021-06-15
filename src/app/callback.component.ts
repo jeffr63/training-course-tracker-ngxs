@@ -1,18 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-callback',
+  selector: "app-callback",
   template: `
-  <div class="loading">
-    <img src="assets/loading.svg" alt="loading">
-  </div>
+    <div class="loading">
+      <img src="assets/loading.svg" alt="loading" />
+    </div>
   `,
-  styleUrls: ['./callback.component.scss']
+  styleUrls: ["./callback.component.scss"],
 })
-export class CallbackComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() { }
-
+export class CallbackComponent {
+  constructor() {}
 }

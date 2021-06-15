@@ -1,17 +1,17 @@
-import { Component, Input } from '@angular/core';
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, Input } from "@angular/core";
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { DashboardComponent } from './dashboard.component';
-import { DashboardFacade } from './dashboard.facade';
+import { DashboardComponent } from "./dashboard.component";
+import { DashboardFacade } from "./dashboard.facade";
 
-describe('DashboardComponent', () => {
+describe("DashboardComponent", () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   let mockFacadeService;
 
   @Component({
-    selector: 'ngx-charts-pie-chart',
-    template: '<div></div>'
+    selector: "app-charts-pie-chart",
+    template: "<div></div>",
   })
   class FakePieChartComponent {
     @Input() view;
@@ -21,21 +21,16 @@ describe('DashboardComponent', () => {
     @Input() arcWidth;
   }
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(
+    waitForAsync(() => {
+      mockFacadeService = jasmine.createSpyObj(["loadChartData"]);
 
-    mockFacadeService = jasmine.createSpyObj(['loadChartData']);
-
-    TestBed.configureTestingModule({
-      declarations: [
-        DashboardComponent,
-        FakePieChartComponent
-      ],
-      providers: [
-        { provide: DashboardFacade, useValue: mockFacadeService }
-      ]
+      TestBed.configureTestingModule({
+        declarations: [DashboardComponent, FakePieChartComponent],
+        providers: [{ provide: DashboardFacade, useValue: mockFacadeService }],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);
@@ -43,7 +38,7 @@ describe('DashboardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -7,7 +7,7 @@ import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './list-display.component.html',
   styles: []
 })
-export class ListDisplayComponent implements OnInit {
+export class ListDisplayComponent {
   @Input() columns: string[];
   @Input() headers: string[];
   @Input() items: any[];
@@ -19,9 +19,6 @@ export class ListDisplayComponent implements OnInit {
   faTrashAlt = faTrashAlt;
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
   editClicked(id: number) {
     this.editItem.emit(id);
