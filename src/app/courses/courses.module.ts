@@ -7,8 +7,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CanActivateEdit } from '../auth/canActiveateEdit.guard';
-import { CourseEditComponent } from './course-edit/course-edit.component';
-import { CourseListComponent } from './course-list/course-list.component';
+import { CourseEditComponent } from './course-edit.component';
+import { CourseListComponent } from './course-list.component';
 import { CoursesFacade } from './courses.facade';
 import { SharedModule } from '../shared/shared.module';
 

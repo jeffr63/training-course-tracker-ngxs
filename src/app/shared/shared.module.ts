@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ListDisplayComponent } from './list-display/list-display.component';
-import { ListHeaderComponent } from './list-header/list-header.component';
-import { PagerListHeaderComponent } from './pager-list-header/pager-list-header.component';
+import { ListDisplayComponent } from './list-display.component';
+import { ListHeaderComponent } from './list-header.component';
+import { PagerListHeaderComponent } from './pager-list-header.component';
 
 @NgModule({
   declarations: [
