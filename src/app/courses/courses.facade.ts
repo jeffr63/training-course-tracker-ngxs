@@ -7,14 +7,22 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
 import { Course } from '../shared/course';
-import { CoursesState } from '../state/course.state';
-import { DeleteCourse, GetCoursesPage, LoadCourses, NewCourse, SaveCourse, GetCourse, SaveCourseSuccess } from '../state/course.actions';
-import { LoadPaths } from '../state/paths.actions';
-import { LoadSources } from '../state/sources.actions';
+import { CoursesState } from '../state/course/course.state';
+import {
+  DeleteCourse,
+  GetCoursesPage,
+  LoadCourses,
+  NewCourse,
+  SaveCourse,
+  GetCourse,
+  SaveCourseSuccess,
+} from '../state/course/course.actions';
+import { LoadPaths } from '../state/paths/paths.actions';
+import { LoadSources } from '../state/sources/sources.actions';
 import { Path } from '../shared/paths';
-import { PathsState } from '../state/paths.state';
+import { PathsState } from '../state/paths/paths.state';
 import { Source } from '../shared/sources';
-import { SourcesState } from '../state/sources.state';
+import { SourcesState } from '../state/sources/sources.state';
 
 @Injectable()
 export class CoursesFacade {
@@ -22,7 +30,8 @@ export class CoursesFacade {
   @Select(CoursesState.getPagedCourses) public courses$: Observable<Course[]>;
   @Select(PathsState.getPaths) public paths$: Observable<Path[]>;
   @Select(SourcesState.getSources) public sources$: Observable<Source[]>;
-  @Select(CoursesState.getTotalCourses) public totalCourses$: Observable<number>;
+  @Select(CoursesState.getTotalCourses)
+  public totalCourses$: Observable<number>;
 
   public closedResult = '';
   public current = 1;
@@ -34,19 +43,28 @@ export class CoursesFacade {
     private modal: NgbModal,
     private location: Location,
     private router: Router
-  ) { }
+  ) {}
 
   public cancelEdit() {
     this.location.back();
   }
 
   public deleteCourse(id, deleteModal) {
-    this.modal.open(deleteModal).result.then(result => {
-      this.closedResult = `Closed with ${result}`;
-      this.store.dispatch(new DeleteCourse({ 'id': id, 'current': this.current, 'pageSize': this.pageSize }));
-    }, (reason) => {
-      this.closedResult = `Dismissed with ${reason}`;
-    });
+    this.modal.open(deleteModal).result.then(
+      (result) => {
+        this.closedResult = `Closed with ${result}`;
+        this.store.dispatch(
+          new DeleteCourse({
+            id: id,
+            current: this.current,
+            pageSize: this.pageSize,
+          })
+        );
+      },
+      (reason) => {
+        this.closedResult = `Dismissed with ${reason}`;
+      }
+    );
   }
 
   public editCourse(id) {
@@ -76,14 +94,14 @@ export class CoursesFacade {
   }
 
   public refreshTable() {
-    this.store.dispatch(new GetCoursesPage({ 'current': this.current, 'pageSize': this.pageSize }));
+    this.store.dispatch(new GetCoursesPage({ current: this.current, pageSize: this.pageSize }));
   }
 
   public saveCourse(id) {
     this.store.dispatch(new SaveCourse());
     this.actions$.pipe(ofActionSuccessful(SaveCourse)).subscribe(() => {
       if (id === 'new') {
-        this.store.dispatch(new LoadCourses);
+        this.store.dispatch(new LoadCourses());
         this.actions$.pipe(ofActionSuccessful(LoadCourses)).subscribe(() => {
           this.refreshTable();
         });

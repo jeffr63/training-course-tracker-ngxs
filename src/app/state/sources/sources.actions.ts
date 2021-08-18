@@ -1,4 +1,4 @@
-import { Source } from '../shared/sources';
+import { Source } from '../../shared/sources';
 
 export class DeleteSource {
   static readonly type = '[Sources] Delete Source';

@@ -1,4 +1,4 @@
-import { Course } from '../shared/course';
+import { Course } from '../../shared/course';
 
 export class DeleteCourse {
   static readonly type = '[Courses] Delete Course';

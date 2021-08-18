@@ -6,9 +6,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 
-import { DeletePath, LoadPaths, NewPath, GetPath, SavePath } from '../state/paths.actions';
+import { DeletePath, LoadPaths, NewPath, GetPath, SavePath } from '../state/paths/paths.actions';
 import { Path } from '../shared/paths';
-import { PathsState } from '../state/paths.state';
+import { PathsState } from '../state/paths/paths.state';
 
 @Injectable()
 export class PathsFacade {
@@ -16,25 +16,22 @@ export class PathsFacade {
   @Select(PathsState.getPaths) public paths$: Observable<Path[]>;
   public closedResult = '';
 
-
-  constructor(
-    private store: Store,
-    private modal: NgbModal,
-    private router: Router,
-    private location: Location
-  ) { }
+  constructor(private store: Store, private modal: NgbModal, private router: Router, private location: Location) {}
 
   public cancelEdit() {
     this.location.back();
   }
 
   public deletePath(id: number, deleteModal) {
-    this.modal.open(deleteModal).result.then(result => {
-      this.closedResult = `Closed with ${result}`;
-      this.store.dispatch(new DeletePath(id));
-    }, (reason) => {
-      this.closedResult = `Dismissed with ${reason}`;
-    });
+    this.modal.open(deleteModal).result.then(
+      (result) => {
+        this.closedResult = `Closed with ${result}`;
+        this.store.dispatch(new DeletePath(id));
+      },
+      (reason) => {
+        this.closedResult = `Dismissed with ${reason}`;
+      }
+    );
   }
 
   public editPath(id: number) {
