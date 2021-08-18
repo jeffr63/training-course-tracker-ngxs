@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 
-import { CourseData } from "./../shared/course";
-import { DashboardFacade } from "./dashboard.facade";
+import { CourseData } from './../shared/course';
+import { DashboardFacade } from './dashboard.facade';
 
 @Component({
-  selector: "app-dashboard",
+  selector: 'app-dashboard',
 
   template: `
     <section>
