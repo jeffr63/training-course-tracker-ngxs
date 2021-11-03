@@ -34,38 +34,38 @@ export interface CoursesStateModel {
 export class CoursesState {
   constructor(private dataFacade: DataServiceFacade) {}
 
-  @Selector()
-  static getCourse(state: CoursesStateModel) {
+  @Selector([CoursesState])
+  static getCourse(state: CoursesStateModel): Course {
     return state.currentCourse;
   }
 
-  @Selector()
-  static getCourses(state: CoursesStateModel) {
+  @Selector([CoursesState])
+  static getCourses(state: CoursesStateModel): Course[] {
     return state.courses;
   }
 
-  @Selector()
-  static getCoursesByPath(state: CoursesStateModel) {
+  @Selector([CoursesState])
+  static getCoursesByPath(state: CoursesStateModel): CourseData[] {
     return state.coursesByPath;
   }
 
-  @Selector()
-  static getCoursesBySource(state: CoursesStateModel) {
+  @Selector([CoursesState])
+  static getCoursesBySource(state: CoursesStateModel): CourseData[] {
     return state.coursesBySource;
   }
 
-  @Selector()
-  static getError(state: CoursesStateModel) {
+  @Selector([CoursesState])
+  static getError(state: CoursesStateModel): string {
     return state.error;
   }
 
-  @Selector()
-  static getPagedCourses(state: CoursesStateModel) {
+  @Selector([CoursesState])
+  static getPagedCourses(state: CoursesStateModel): Course[] {
     return state.pagedCourses;
   }
 
-  @Selector()
-  static getTotalCourses(state: CoursesStateModel) {
+  @Selector([CoursesState])
+  static getTotalCourses(state: CoursesStateModel): number {
     return state.totalCourses;
   }
 

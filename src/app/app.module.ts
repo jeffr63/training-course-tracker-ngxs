@@ -32,7 +32,9 @@ import { SourcesState } from './state/sources/sources.state';
     HttpClientModule,
     NgbModule,
     NgxChartsModule,
-    NgxsModule.forRoot([CoursesState, SourcesState, PathsState]),
+    NgxsModule.forRoot([CoursesState, SourcesState, PathsState], {
+      selectorOptions: { suppressErrors: false, injectContainerState: false },
+    }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     SharedModule,
     AppRoutingModule,

@@ -25,18 +25,18 @@ export interface PathsStateModel {
 export class PathsState {
   constructor(private dataFacade: DataServiceFacade) {}
 
-  @Selector()
-  static getPaths(state: PathsStateModel) {
+  @Selector([PathsState])
+  static getPaths(state: PathsStateModel): Path[] {
     return state.paths;
   }
 
-  @Selector()
-  static getError(state: PathsStateModel) {
+  @Selector([PathsState])
+  static getError(state: PathsStateModel): string {
     return state.error;
   }
 
-  @Selector()
-  static getCurrentPath(state: PathsStateModel) {
+  @Selector([PathsState])
+  static getCurrentPath(state: PathsStateModel): Path {
     return state.currentPath;
   }
 

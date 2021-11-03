@@ -25,18 +25,18 @@ export interface SourcesStateModel {
 export class SourcesState {
   constructor(private dataFacade: DataServiceFacade) {}
 
-  @Selector()
-  static getSources(state: SourcesStateModel) {
+  @Selector([SourcesState])
+  static getSources(state: SourcesStateModel): Source[] {
     return state.sources;
   }
 
-  @Selector()
-  static getError(state: SourcesStateModel) {
+  @Selector([SourcesState])
+  static getError(state: SourcesStateModel): string {
     return state.error;
   }
 
-  @Selector()
-  static getCurrentSource(state: SourcesStateModel) {
+  @Selector([SourcesState])
+  static getCurrentSource(state: SourcesStateModel): Source {
     return state.currentSource;
   }
 
