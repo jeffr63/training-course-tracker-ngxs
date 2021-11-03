@@ -8,17 +8,9 @@ import { Observable } from 'rxjs';
 
 import { Course } from '../shared/course';
 import { CoursesState } from '../state/course/course.state';
-import {
-  DeleteCourse,
-  GetCoursesPage,
-  LoadCourses,
-  NewCourse,
-  SaveCourse,
-  GetCourse,
-  SaveCourseSuccess,
-} from '../state/course/course.actions';
-import { LoadPaths } from '../state/paths/paths.actions';
-import { LoadSources } from '../state/sources/sources.actions';
+import { CourseActions } from '../state/course/course.actions';
+import { PathActions } from '../state/paths/paths.actions';
+import { SourceActions } from '../state/sources/sources.actions';
 import { Path } from '../shared/paths';
 import { PathsState } from '../state/paths/paths.state';
 import { Source } from '../shared/sources';
@@ -54,7 +46,7 @@ export class CoursesFacade {
       (result) => {
         this.closedResult = `Closed with ${result}`;
         this.store.dispatch(
-          new DeleteCourse({
+          new CourseActions.DeleteCourse({
             id: id,
             current: this.current,
             pageSize: this.pageSize,
@@ -72,21 +64,21 @@ export class CoursesFacade {
   }
 
   public loadCourses() {
-    this.store.dispatch(new LoadCourses());
-    this.actions$.pipe(ofActionSuccessful(LoadCourses)).subscribe(() => {
+    this.store.dispatch(new CourseActions.LoadCourses());
+    this.actions$.pipe(ofActionSuccessful(CourseActions.LoadCourses)).subscribe(() => {
       this.refreshTable();
     });
   }
 
   public loadCourse(id) {
     if (id === 'new') {
-      this.store.dispatch(new NewCourse());
+      this.store.dispatch(new CourseActions.NewCourse());
     } else {
-      this.store.dispatch(new GetCourse(id));
+      this.store.dispatch(new CourseActions.GetCourse(id));
     }
 
-    this.store.dispatch(new LoadPaths());
-    this.store.dispatch(new LoadSources());
+    this.store.dispatch(new PathActions.LoadPaths());
+    this.store.dispatch(new SourceActions.LoadSources());
   }
 
   public newCourse() {
@@ -94,15 +86,15 @@ export class CoursesFacade {
   }
 
   public refreshTable() {
-    this.store.dispatch(new GetCoursesPage({ current: this.current, pageSize: this.pageSize }));
+    this.store.dispatch(new CourseActions.GetCoursesPage({ current: this.current, pageSize: this.pageSize }));
   }
 
   public saveCourse(id) {
-    this.store.dispatch(new SaveCourse());
-    this.actions$.pipe(ofActionSuccessful(SaveCourse)).subscribe(() => {
+    this.store.dispatch(new CourseActions.SaveCourse());
+    this.actions$.pipe(ofActionSuccessful(CourseActions.SaveCourse)).subscribe(() => {
       if (id === 'new') {
-        this.store.dispatch(new LoadCourses());
-        this.actions$.pipe(ofActionSuccessful(LoadCourses)).subscribe(() => {
+        this.store.dispatch(new CourseActions.LoadCourses());
+        this.actions$.pipe(ofActionSuccessful(CourseActions.LoadCourses)).subscribe(() => {
           this.refreshTable();
         });
       } else {

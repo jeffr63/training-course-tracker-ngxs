@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { CourseData } from '../shared/course';
 import { CoursesState } from '../state/course/course.state';
-import { LoadCourses, GetCourseData } from '../state/course/course.actions';
+import { CourseActions } from '../state/course/course.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +17,8 @@ export class DashboardFacade {
   constructor(private store: Store) {}
 
   loadChartData() {
-    this.store.dispatch(new LoadCourses()).subscribe(() => {
-      this.store.dispatch(new GetCourseData());
+    this.store.dispatch(new CourseActions.LoadCourses()).subscribe(() => {
+      this.store.dispatch(new CourseActions.GetCourseData());
     });
   }
 }

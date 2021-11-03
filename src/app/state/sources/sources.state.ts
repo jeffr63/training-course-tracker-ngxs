@@ -4,21 +4,7 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
 import { DataServiceFacade } from '../../services/data-service-facade';
-import {
-  DeleteSource,
-  DeleteSourceFail,
-  DeleteSourceSuccess,
-  GetSource,
-  GetSourceFail,
-  GetSourceSuccess,
-  LoadSources,
-  LoadSourcesFail,
-  LoadSourcesSuccess,
-  NewSource,
-  SaveSource,
-  SaveSourceFail,
-  SaveSourceSuccess,
-} from './sources.actions';
+import { SourceActions } from './sources.actions';
 import { Source } from '../../shared/sources';
 
 export interface SourcesStateModel {
@@ -54,31 +40,34 @@ export class SourcesState {
     return state.currentSource;
   }
 
-  @Action(DeleteSource)
-  public delete({ dispatch, patchState }: StateContext<SourcesStateModel>, { payload }: DeleteSource) {
+  @Action(SourceActions.DeleteSource)
+  public delete({ dispatch, patchState }: StateContext<SourcesStateModel>, { payload }: SourceActions.DeleteSource) {
     patchState({
       error: '',
     });
     return this.dataFacade.deleteSource(payload).pipe(
       map((source) => {
-        return dispatch(new DeleteSourceSuccess(payload));
+        return dispatch(new SourceActions.DeleteSourceSuccess(payload));
       }),
       catchError((error) => {
-        return dispatch(new DeleteSourceFail(error));
+        return dispatch(new SourceActions.DeleteSourceFail(error));
       })
     );
   }
 
-  @Action(DeleteSourceFail)
-  public deleteFail({ patchState }: StateContext<SourcesStateModel>, { payload }: DeleteSourceFail) {
+  @Action(SourceActions.DeleteSourceFail)
+  public deleteFail({ patchState }: StateContext<SourcesStateModel>, { payload }: SourceActions.DeleteSourceFail) {
     patchState({
       currentSource: null,
       error: payload,
     });
   }
 
-  @Action(DeleteSourceSuccess)
-  public deleteSuccess({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: DeleteSourceSuccess) {
+  @Action(SourceActions.DeleteSourceSuccess)
+  public deleteSuccess(
+    { getState, patchState }: StateContext<SourcesStateModel>,
+    { payload }: SourceActions.DeleteSourceSuccess
+  ) {
     const state = getState();
     patchState({
       currentSource: null,
@@ -86,69 +75,69 @@ export class SourcesState {
     });
   }
 
-  @Action(GetSource)
-  public get({ dispatch, patchState }: StateContext<SourcesStateModel>, { payload }: GetSource) {
+  @Action(SourceActions.GetSource)
+  public get({ dispatch, patchState }: StateContext<SourcesStateModel>, { payload }: SourceActions.GetSource) {
     patchState({
       error: '',
     });
     return this.dataFacade.getSource(payload).pipe(
       map((source: Source) => {
-        return dispatch(new GetSourceSuccess(source));
+        return dispatch(new SourceActions.GetSourceSuccess(source));
       }),
       catchError((err) => {
-        return dispatch(new GetSourceFail(err));
+        return dispatch(new SourceActions.GetSourceFail(err));
       })
     );
   }
 
-  @Action(GetSourceFail)
-  public getFail({ patchState }: StateContext<SourcesStateModel>, { payload }: GetSourceFail) {
+  @Action(SourceActions.GetSourceFail)
+  public getFail({ patchState }: StateContext<SourcesStateModel>, { payload }: SourceActions.GetSourceFail) {
     patchState({
       currentSource: null,
       error: payload,
     });
   }
 
-  @Action(GetSourceSuccess)
-  public getSuccess({ patchState }: StateContext<SourcesStateModel>, { payload }: GetSourceSuccess) {
+  @Action(SourceActions.GetSourceSuccess)
+  public getSuccess({ patchState }: StateContext<SourcesStateModel>, { payload }: SourceActions.GetSourceSuccess) {
     patchState({
       currentSource: payload,
       error: '',
     });
   }
 
-  @Action(LoadSources)
+  @Action(SourceActions.LoadSources)
   public load({ dispatch, patchState }: StateContext<SourcesStateModel>) {
     patchState({
       error: '',
     });
     return this.dataFacade.loadSources().pipe(
       map((sources: any[]) => {
-        return dispatch(new LoadSourcesSuccess(sources));
+        return dispatch(new SourceActions.LoadSourcesSuccess(sources));
       }),
       catchError((err) => {
-        return dispatch(new LoadSourcesFail(err));
+        return dispatch(new SourceActions.LoadSourcesFail(err));
       })
     );
   }
 
-  @Action(LoadSourcesFail)
-  public loadFail({ patchState }: StateContext<SourcesStateModel>, { payload }: LoadSourcesFail) {
+  @Action(SourceActions.LoadSourcesFail)
+  public loadFail({ patchState }: StateContext<SourcesStateModel>, { payload }: SourceActions.LoadSourcesFail) {
     patchState({
       sources: [],
       error: payload,
     });
   }
 
-  @Action(LoadSourcesSuccess)
-  public loadSuccess({ patchState }: StateContext<SourcesStateModel>, { payload }: LoadSourcesSuccess) {
+  @Action(SourceActions.LoadSourcesSuccess)
+  public loadSuccess({ patchState }: StateContext<SourcesStateModel>, { payload }: SourceActions.LoadSourcesSuccess) {
     patchState({
       sources: payload,
       error: '',
     });
   }
 
-  @Action(NewSource)
+  @Action(SourceActions.NewSource)
   public newSource({ patchState }: StateContext<SourcesStateModel>) {
     const initSource = {
       id: null,
@@ -159,7 +148,7 @@ export class SourcesState {
     });
   }
 
-  @Action(SaveSource)
+  @Action(SourceActions.SaveSource)
   public save({ dispatch, getState, patchState }: StateContext<SourcesStateModel>) {
     // , { payload }: Save) {
     const state = getState();
@@ -168,23 +157,26 @@ export class SourcesState {
     });
     return this.dataFacade.saveSource(state.currentSource).pipe(
       map((source: Source) => {
-        return dispatch([new LoadSources(), new SaveSourceSuccess(state.currentSource)]);
+        return dispatch([new SourceActions.LoadSources(), new SourceActions.SaveSourceSuccess(state.currentSource)]);
       }),
       catchError((err) => {
-        return dispatch(new SaveSourceFail(err));
+        return dispatch(new SourceActions.SaveSourceFail(err));
       })
     );
   }
 
-  @Action(SaveSourceFail)
-  public saveFail({ patchState }: StateContext<SourcesStateModel>, { payload }: SaveSourceFail) {
+  @Action(SourceActions.SaveSourceFail)
+  public saveFail({ patchState }: StateContext<SourcesStateModel>, { payload }: SourceActions.SaveSourceFail) {
     patchState({
       error: payload,
     });
   }
 
-  @Action(SaveSourceSuccess)
-  public saveSuccess({ getState, patchState }: StateContext<SourcesStateModel>, { payload }: SaveSourceSuccess) {
+  @Action(SourceActions.SaveSourceSuccess)
+  public saveSuccess(
+    { getState, patchState }: StateContext<SourcesStateModel>,
+    { payload }: SourceActions.SaveSourceSuccess
+  ) {
     const state = getState();
     const updatedSources = state.sources.map((item) => (payload.id === item.id ? payload : item));
     patchState({

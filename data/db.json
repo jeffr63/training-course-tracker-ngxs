@@ -220,7 +220,7 @@
     {
       "title": "Mastering Git",
       "instructor": "Paolo Perrotta",
-      "path": "GitHub",
+      "path": "Git",
       "source": "Pluralsite",
       "id": 32
     },
@@ -1044,25 +1044,25 @@
       "id": 149
     },
     {
-      "title": "Intro to NestJS Framework for Reliable Server-side Apps on NodeJS",
+      "title": "Intro to NestJS Framework for Reliable Server-side Apss on NodeJS",
       "instructor": "IPenywis",
       "path": "NestJS",
       "source": "YouTube",
       "id": 150
     },
     {
-      "id": 151,
       "title": "Creating Cross Platform Apps with Ionic and Electron",
       "instructor": "Michael Callaghan",
       "path": "Ionic",
-      "source": "Pluralsite"
+      "source": "Pluralsite",
+      "id": 151
     },
     {
-      "id": 152,
-      "title": "State Management in Angular, from Facades to NgRX and Back",
-      "instructor": "Cornelia Rouch",
+      "title": "Advanced Web Apps 2019 | Unit Testing in Angular",
+      "instructor": "Lars Bilde",
       "path": "Angular",
-      "source": "YouTube"
+      "source": "YouTube",
+      "id": 152
     }
   ],
   "paths": [
