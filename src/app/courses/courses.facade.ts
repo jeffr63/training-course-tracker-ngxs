@@ -7,13 +7,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
 import { Course } from '../shared/course';
-import { CoursesState } from '../state/course/course.state';
 import { CourseActions } from '../state/course/course.actions';
-import { PathActions } from '../state/paths/paths.actions';
-import { SourceActions } from '../state/sources/sources.actions';
+import { CoursesState } from '../state/course/course.state';
 import { Path } from '../shared/paths';
+import { PathsActions } from '../state/paths/paths.actions';
 import { PathsState } from '../state/paths/paths.state';
 import { Source } from '../shared/sources';
+import { SourcesActions } from '../state/sources/sources.actions';
 import { SourcesState } from '../state/sources/sources.state';
 
 @Injectable()
@@ -77,8 +77,8 @@ export class CoursesFacade {
       this.store.dispatch(new CourseActions.GetCourse(id));
     }
 
-    this.store.dispatch(new PathActions.LoadPaths());
-    this.store.dispatch(new SourceActions.LoadSources());
+    this.store.dispatch(new PathsActions.LoadPaths());
+    this.store.dispatch(new SourcesActions.LoadSources());
   }
 
   public newCourse() {

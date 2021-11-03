@@ -1,6 +1,6 @@
 import { Path } from '../../shared/paths';
 
-export namespace PathActions {
+export namespace PathsActions {
   export class DeletePath {
     static readonly type = '[Paths] Delete Path';
     constructor(public payload: number) {}

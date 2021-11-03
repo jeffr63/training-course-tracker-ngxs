@@ -1,6 +1,6 @@
 import { Source } from '../../shared/sources';
 
-export namespace SourceActions {
+export namespace SourcesActions {
   export class DeleteSource {
     static readonly type = '[Sources] Delete Source';
     constructor(public payload: number) {}

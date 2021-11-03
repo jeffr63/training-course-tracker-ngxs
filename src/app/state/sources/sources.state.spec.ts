@@ -5,21 +5,7 @@ import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
 import { DataServiceFacade } from '../../services/data-service-facade';
-import {
-  DeleteSource,
-  DeleteSourceFail,
-  DeleteSourceSuccess,
-  GetSource,
-  GetSourceFail,
-  GetSourceSuccess,
-  LoadSources,
-  LoadSourcesFail,
-  LoadSourcesSuccess,
-  NewSource,
-  SaveSource,
-  SaveSourceFail,
-  SaveSourceSuccess,
-} from './sources.actions';
+import { SourcesActions } from './sources.actions';
 import { SourcesState, SourcesStateModel } from './sources.state';
 import { Source } from '../../shared/sources';
 
@@ -130,14 +116,14 @@ describe('sources', () => {
     describe('Delete', () => {
       it('should dispatch DeleteSuccess when successful', fakeAsync(() => {
         // arrange
-        const action = new DeleteSource(3);
-        const expected = new DeleteSourceSuccess(3);
+        const action = new SourcesActions.DeleteSource(3);
+        const expected = new SourcesActions.DeleteSourceSuccess(3);
         const callbacksCalled = [];
 
         spyOn(service, 'deleteSource').and.returnValue(of(currentSource));
 
         // action
-        actions.pipe(ofActionSuccessful(DeleteSourceSuccess)).subscribe((x) => {
+        actions.pipe(ofActionSuccessful(SourcesActions.DeleteSourceSuccess)).subscribe((x) => {
           callbacksCalled.push(x);
         });
 
@@ -149,14 +135,14 @@ describe('sources', () => {
       }));
 
       it('should dispatch DeleteFail when errors', fakeAsync(() => {
-        const action = new DeleteSource(3);
-        const expected = new DeleteSourceFail('Error');
+        const action = new SourcesActions.DeleteSource(3);
+        const expected = new SourcesActions.DeleteSourceFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'deleteSource').and.returnValue(throwError('Error'));
 
         // action
-        actions.pipe(ofActionSuccessful(DeleteSourceFail)).subscribe((x) => {
+        actions.pipe(ofActionSuccessful(SourcesActions.DeleteSourceFail)).subscribe((x) => {
           callbacksCalled.push(x);
         });
 
@@ -181,7 +167,7 @@ describe('sources', () => {
           };
           store.reset(appState);
 
-          store.dispatch(new DeleteSourceFail('Error'));
+          store.dispatch(new SourcesActions.DeleteSourceFail('Error'));
 
           store
             .selectOnce((state: AppModel) => state.sources)
@@ -206,7 +192,7 @@ describe('sources', () => {
           };
           store.reset(appState);
 
-          store.dispatch(new DeleteSourceSuccess(3));
+          store.dispatch(new SourcesActions.DeleteSourceSuccess(3));
 
           store
             .selectOnce((state: AppModel) => state.sources)
@@ -223,14 +209,14 @@ describe('sources', () => {
     describe('Get', () => {
       it('should dispatch GetSuccusss when successful', fakeAsync(() => {
         // arrange
-        const action = new GetSource(3);
-        const expected = new GetSourceSuccess(currentSource);
+        const action = new SourcesActions.GetSource(3);
+        const expected = new SourcesActions.GetSourceSuccess(currentSource);
         const callbacksCalled = [];
 
         spyOn(service, 'getSource').and.returnValue(of(currentSource));
 
         // action
-        actions.pipe(ofActionSuccessful(GetSourceSuccess)).subscribe((x) => {
+        actions.pipe(ofActionSuccessful(SourcesActions.GetSourceSuccess)).subscribe((x) => {
           callbacksCalled.push(x);
         });
 
@@ -242,14 +228,14 @@ describe('sources', () => {
       }));
 
       it('should dispatch GetFail when errors', fakeAsync(() => {
-        const action = new GetSource(3);
-        const expected = new GetSourceFail('Error');
+        const action = new SourcesActions.GetSource(3);
+        const expected = new SourcesActions.GetSourceFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'getSource').and.returnValue(throwError('Error'));
 
         // action
-        actions.pipe(ofActionSuccessful(GetSourceFail)).subscribe((x) => {
+        actions.pipe(ofActionSuccessful(SourcesActions.GetSourceFail)).subscribe((x) => {
           callbacksCalled.push(x);
         });
 
@@ -274,7 +260,7 @@ describe('sources', () => {
           };
           store.reset(appState);
 
-          store.dispatch(new GetSourceFail('Error'));
+          store.dispatch(new SourcesActions.GetSourceFail('Error'));
 
           store
             .selectOnce((state: AppModel) => state.sources)
@@ -299,7 +285,7 @@ describe('sources', () => {
           };
           store.reset(appState);
 
-          store.dispatch(new GetSourceSuccess(currentSource));
+          store.dispatch(new SourcesActions.GetSourceSuccess(currentSource));
 
           store
             .selectOnce((state: AppModel) => state.sources)
@@ -324,7 +310,7 @@ describe('sources', () => {
           };
           store.reset(appState);
 
-          store.dispatch(new NewSource());
+          store.dispatch(new SourcesActions.NewSource());
 
           store
             .selectOnce((state: AppModel) => state.sources.currentSource)
@@ -339,14 +325,14 @@ describe('sources', () => {
     describe('Load', () => {
       it('should dispatch LoadSuccusss when successful', fakeAsync(() => {
         // arrange
-        const action = new LoadSources();
-        const expected = new LoadSourcesSuccess(sourceArray);
+        const action = new SourcesActions.LoadSources();
+        const expected = new SourcesActions.LoadSourcesSuccess(sourceArray);
         const callbacksCalled = [];
 
         spyOn(service, 'loadSources').and.returnValue(of(sourceArray));
 
         // action
-        actions.pipe(ofActionSuccessful(LoadSourcesSuccess)).subscribe((x) => {
+        actions.pipe(ofActionSuccessful(SourcesActions.LoadSourcesSuccess)).subscribe((x) => {
           callbacksCalled.push(x);
         });
 
@@ -358,14 +344,14 @@ describe('sources', () => {
       }));
 
       it('should dispatch LoadFail when errors', fakeAsync(() => {
-        const action = new LoadSources();
-        const expected = new LoadSourcesFail('Error');
+        const action = new SourcesActions.LoadSources();
+        const expected = new SourcesActions.LoadSourcesFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'loadSources').and.returnValue(throwError('Error'));
 
         // action
-        actions.pipe(ofActionSuccessful(LoadSourcesFail)).subscribe((x) => {
+        actions.pipe(ofActionSuccessful(SourcesActions.LoadSourcesFail)).subscribe((x) => {
           callbacksCalled.push(x);
         });
 
@@ -390,7 +376,7 @@ describe('sources', () => {
           };
           store.reset(appState);
 
-          store.dispatch(new LoadSourcesFail('Error'));
+          store.dispatch(new SourcesActions.LoadSourcesFail('Error'));
 
           store
             .selectOnce((state: AppModel) => state.sources)
@@ -415,7 +401,7 @@ describe('sources', () => {
           };
           store.reset(appState);
 
-          store.dispatch(new LoadSourcesSuccess(sourceArray));
+          store.dispatch(new SourcesActions.LoadSourcesSuccess(sourceArray));
 
           store
             .selectOnce((state: AppModel) => state.sources)
@@ -438,15 +424,15 @@ describe('sources', () => {
           },
         };
         store.reset(appState);
-        const action = new SaveSource();
-        const expected = new SaveSourceSuccess(currentSource);
+        const action = new SourcesActions.SaveSource();
+        const expected = new SourcesActions.SaveSourceSuccess(currentSource);
         const callbacksCalled = [];
 
         spyOn(service, 'saveSource').and.returnValue(of(currentSource));
         spyOn(service, 'loadSources').and.returnValue(of(sourceArray));
 
         // action
-        actions.pipe(ofActionSuccessful(SaveSourceSuccess)).subscribe((x) => {
+        actions.pipe(ofActionSuccessful(SourcesActions.SaveSourceSuccess)).subscribe((x) => {
           callbacksCalled.push(x);
         });
 
@@ -459,14 +445,14 @@ describe('sources', () => {
 
       it('should dispatch SaveFail when errors', fakeAsync(() => {
         // arrange
-        const action = new SaveSource();
-        const expected = new SaveSourceFail('Error');
+        const action = new SourcesActions.SaveSource();
+        const expected = new SourcesActions.SaveSourceFail('Error');
         const callbacksCalled = [];
 
         spyOn(service, 'saveSource').and.returnValue(throwError('Error'));
 
         // action
-        actions.pipe(ofActionSuccessful(SaveSourceFail)).subscribe((x) => {
+        actions.pipe(ofActionSuccessful(SourcesActions.SaveSourceFail)).subscribe((x) => {
           callbacksCalled.push(x);
         });
 
@@ -491,7 +477,7 @@ describe('sources', () => {
           };
           store.reset(appState);
 
-          store.dispatch(new SaveSourceFail('Error'));
+          store.dispatch(new SourcesActions.SaveSourceFail('Error'));
 
           store
             .selectOnce((state: AppModel) => state.sources)
@@ -519,7 +505,7 @@ describe('sources', () => {
             id: 3,
             name: 'XYZ',
           };
-          store.dispatch(new SaveSourceSuccess(expected));
+          store.dispatch(new SourcesActions.SaveSourceSuccess(expected));
 
           store
             .selectOnce((state: AppModel) => state.sources)

@@ -6,8 +6,8 @@ import { Store, Select } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
-import { SourceActions } from '../state/sources/sources.actions';
 import { Source } from '../shared/sources';
+import { SourcesActions } from '../state/sources/sources.actions';
 import { SourcesState } from '../state/sources/sources.state';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class SourcesFacade {
     this.modal.open(deleteModal).result.then(
       (result) => {
         this.closedResult = `Closed with ${result}`;
-        this.store.dispatch(new SourceActions.DeleteSource(id));
+        this.store.dispatch(new SourcesActions.DeleteSource(id));
       },
       (reason) => {
         this.closedResult = `Dismissed with ${reason}`;
@@ -43,14 +43,14 @@ export class SourcesFacade {
 
   public loadSource(id) {
     if (id === 'new') {
-      this.store.dispatch(new SourceActions.NewSource());
+      this.store.dispatch(new SourcesActions.NewSource());
     } else {
-      this.store.dispatch(new SourceActions.GetSource(id));
+      this.store.dispatch(new SourcesActions.GetSource(id));
     }
   }
 
   public loadSources() {
-    this.store.dispatch(new SourceActions.LoadSources());
+    this.store.dispatch(new SourcesActions.LoadSources());
   }
 
   public newSource() {
@@ -58,7 +58,7 @@ export class SourcesFacade {
   }
 
   public saveSource() {
-    this.store.dispatch(new SourceActions.SaveSource());
+    this.store.dispatch(new SourcesActions.SaveSource());
     this.location.back();
   }
 }

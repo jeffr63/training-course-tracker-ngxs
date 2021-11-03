@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
+import { CourseActions } from '../state/course/course.actions';
 import { CourseData } from '../shared/course';
 import { CoursesState } from '../state/course/course.state';
-import { CourseActions } from '../state/course/course.actions';
 
 @Injectable({
   providedIn: 'root',

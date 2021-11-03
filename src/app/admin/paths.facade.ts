@@ -6,8 +6,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 
-import { PathActions } from '../state/paths/paths.actions';
 import { Path } from '../shared/paths';
+import { PathsActions } from '../state/paths/paths.actions';
 import { PathsState } from '../state/paths/paths.state';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class PathsFacade {
     this.modal.open(deleteModal).result.then(
       (result) => {
         this.closedResult = `Closed with ${result}`;
-        this.store.dispatch(new PathActions.DeletePath(id));
+        this.store.dispatch(new PathsActions.DeletePath(id));
       },
       (reason) => {
         this.closedResult = `Dismissed with ${reason}`;
@@ -40,14 +40,14 @@ export class PathsFacade {
 
   public loadPath(id) {
     if (id === 'new') {
-      this.store.dispatch(new PathActions.NewPath());
+      this.store.dispatch(new PathsActions.NewPath());
     } else {
-      this.store.dispatch(new PathActions.GetPath(id));
+      this.store.dispatch(new PathsActions.GetPath(id));
     }
   }
 
   public loadPaths() {
-    this.store.dispatch(new PathActions.LoadPaths());
+    this.store.dispatch(new PathsActions.LoadPaths());
   }
 
   public newPath() {
@@ -55,7 +55,7 @@ export class PathsFacade {
   }
 
   public save() {
-    this.store.dispatch(new PathActions.SavePath());
+    this.store.dispatch(new PathsActions.SavePath());
     this.location.back();
   }
 }
