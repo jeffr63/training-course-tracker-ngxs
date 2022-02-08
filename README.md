@@ -9,7 +9,7 @@ Angular, RxJs, Ngxs, lodash, auth0, ng-bootstrap, angular-fontawesome, fontaweso
 ## JSON-SERVER
 
 1. npm install -g json-server
-2. run command '.\apiserver' to start json-server
+2. run "npm run api" to start json-server
 
 ## Development server
 
