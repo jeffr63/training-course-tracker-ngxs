@@ -1,9 +1,9 @@
-import { Component, OnInit, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: "app-list-display",
+  selector: 'app-list-display',
 
   template: `
     <table class="table table-striped">
@@ -19,19 +19,11 @@ import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
             {{ item[column] }}
           </td>
           <td *ngIf="isAuthenticated">
-            <button
-              class="btn btn-info btn-sm mr-2"
-              (click)="editClicked(item.id)"
-              title="Edit"
-            >
+            <button class="btn btn-info btn-sm mr-2" (click)="editClicked(item.id)" title="Edit">
               <fa-icon [icon]="faPencilAlt"></fa-icon>
               <span class="sr-only">Edit</span>
             </button>
-            <button
-              class="btn btn-danger btn-sm"
-              (click)="deleteClicked(item.id)"
-              title="Delete"
-            >
+            <button class="btn btn-danger btn-sm" (click)="deleteClicked(item.id)" title="Delete">
               <fa-icon [icon]="faTrashAlt"></fa-icon>
               <span class="sr-only">Delete</span>
             </button>

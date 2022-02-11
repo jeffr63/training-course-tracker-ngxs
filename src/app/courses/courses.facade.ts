@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { Course } from '../shared/course';
 import { CourseActions } from '../state/course/course.actions';
 import { CoursesState } from '../state/course/course.state';
+import { DeleteComponent } from './../modals/delete.component';
+import { ModalDataService } from './../modals/modal-data.service';
 import { Path } from '../shared/paths';
 import { PathsActions } from '../state/paths/paths.actions';
 import { PathsState } from '../state/paths/paths.state';
@@ -34,15 +36,22 @@ export class CoursesFacade {
     private store: Store,
     private modal: NgbModal,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private modalDataService: ModalDataService
   ) {}
 
   public cancelEdit() {
     this.location.back();
   }
 
-  public deleteCourse(id, deleteModal) {
-    this.modal.open(deleteModal).result.then(
+  public deleteCourse(id) {
+    const modalOptions = {
+      title: 'Are you sure you want to delete this course?',
+      body: 'All information associated to this source will be permanently deleted.',
+      warning: 'This operation can not be undone.',
+    };
+    this.modalDataService.setDeleteModalOptions(modalOptions);
+    this.modal.open(DeleteComponent).result.then(
       (result) => {
         this.closedResult = `Closed with ${result}`;
         this.store.dispatch(
