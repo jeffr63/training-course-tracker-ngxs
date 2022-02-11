@@ -15,7 +15,7 @@ export class CanActivateAdmin implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isAuthenticated() && this.authService.isAdmin) {
+    if (this.authService.isAuthenticated && this.authService.isAdmin) {
       return true;
     }
     this.router.navigate(['/']);

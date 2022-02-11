@@ -16,13 +16,9 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent implements OnInit {
   title = "Training Course Tracker";
 
-  constructor(public auth: AuthService) {
-    auth.handleAuthentication();
-  }
+  constructor(public authService: AuthService) { }
 
   ngOnInit() {
-    if (localStorage.getItem("isLoggedIn") === "true") {
-      this.auth.renewTokens();
-    }
+    this.authService.checkLogin();
   }
 }

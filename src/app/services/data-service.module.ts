@@ -5,6 +5,7 @@ import { CoursesService } from './courses/courses.service';
 import { DataServiceFacade } from './data-service-facade';
 import { PathsService } from './paths/paths.service';
 import { SourcesService } from './sources/sources.service';
+import { UsersService } from './users/users.service';
 
 @NgModule({
   declarations: [],
@@ -15,7 +16,7 @@ import { SourcesService } from './sources/sources.service';
     CoursesService,
     PathsService,
     SourcesService,
-
+    UsersService,
     DataServiceFacade,
   ]
 })

@@ -6,10 +6,10 @@ import { Path } from '../shared/paths';
 import { PathsService } from './paths/paths.service';
 import { Source } from '../shared/sources';
 import { SourcesService } from './sources/sources.service';
+import { UsersService } from './users/users.service';
 
 @Injectable()
 export class DataServiceFacade {
-
   private _coursesService: CoursesService;
   public get coursesService(): CoursesService {
     if (!this._coursesService) {
@@ -34,7 +34,15 @@ export class DataServiceFacade {
     return this._sourcesService;
   }
 
-  constructor(private injector: Injector) { }
+  private _usersService: UsersService;
+  public get usersService(): UsersService {
+    if (!this._sourcesService) {
+      this._usersService = this.injector.get(UsersService);
+    }
+    return this._usersService;
+  }
+
+  constructor(private injector: Injector) {}
 
   // course service methods
   deleteCourse(id) {
@@ -93,5 +101,22 @@ export class DataServiceFacade {
 
   saveSource(source: Source) {
     return this.sourcesService.saveSource(source);
+  }
+
+  // user service methods
+  deleteUser(id) {
+    return this.usersService.deleteUser(id);
+  }
+
+  getUser(id) {
+    return this.usersService.getUser(id);
+  }
+
+  loadUsers() {
+    return this.usersService.loadUsers();
+  }
+
+  patchUser(id: number, patch: any) {
+    return this.usersService.patchUser(id, patch);
   }
 }

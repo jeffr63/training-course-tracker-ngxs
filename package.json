@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "api": "json-server --watch data\\db.json"
+    "api": "json-server-auth --watch data\\db.json"
   },
   "private": true,
   "dependencies": {
@@ -30,7 +30,6 @@
     "@ngxs/logger-plugin": "^3.7.3",
     "@ngxs/store": "^3.7.3",
     "@swimlane/ngx-charts": "^20.0.1",
-    "auth0-js": "^9.19.0",
     "lodash": "^4.17.21",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.1",

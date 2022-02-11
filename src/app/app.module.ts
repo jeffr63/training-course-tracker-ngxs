@@ -16,7 +16,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DataServiceModule } from './services/data-service.module';
 import { DeleteComponent } from './modals/delete.component';
-import { CallbackComponent } from './callback.component';
 import { CoursesState } from './state/course/course.state';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './modals/login.component';
@@ -24,9 +23,10 @@ import { MenuComponent } from './menu/menu.component';
 import { PathsState } from './state/paths/paths.state';
 import { SharedModule } from './shared/shared.module';
 import { SourcesState } from './state/sources/sources.state';
+import { UsersState } from './state/users/users.state';
 
 @NgModule({
-  declarations: [AppComponent, CallbackComponent, DashboardComponent, DeleteComponent, LoginComponent, MenuComponent],
+  declarations: [AppComponent, DashboardComponent, DeleteComponent, LoginComponent, MenuComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -36,7 +36,7 @@ import { SourcesState } from './state/sources/sources.state';
     HttpClientModule,
     NgbModule,
     NgxChartsModule,
-    NgxsModule.forRoot([CoursesState, SourcesState, PathsState], {
+    NgxsModule.forRoot([CoursesState, SourcesState, PathsState, UsersState], {
       selectorOptions: { suppressErrors: false, injectContainerState: false },
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),

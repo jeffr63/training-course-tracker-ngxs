@@ -1,118 +1,65 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
-import * as auth0 from 'auth0-js';
+import { map } from 'rxjs/operators';
 
-import { AUTH_CONFIG } from './auth0-variables';
+class AuthToken {
+  token: string;
+  role: string;
+  id: number;
+  expires: number;
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
+  public isAdmin = false;
+  public isAuthenticated = false;
 
-  private _idToken: string;
-  private _accessToken: string;
-  private _expiresAt: number;
+  constructor(private http: HttpClient) {}
 
-  auth0 = new auth0.WebAuth({
-    clientID: AUTH_CONFIG.clientID,
-    domain: AUTH_CONFIG.domain,
-    responseType: 'token id_token',
-    redirectUri: AUTH_CONFIG.callbackURL,
-    scope: 'openid profile'
-  });
+  login(email: string, password: string) {
+    return this.http.post<any>('http://localhost:3000/login', { email, password }).pipe(
+      map((response) => {
+        // login successful if there's a jwt token in the response and if that token is valid
+        if (response && response.accessToken) {
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          const expire = Date.now() + 3600000;
+          const auth: AuthToken = {
+            token: response.accessToken,
+            role: response.user.role,
+            id: response.user.id,
+            expires: expire,
+          };
+          localStorage.setItem('tct_auth', JSON.stringify(auth));
+          this.isAuthenticated = true;
+          this.isAdmin = response.user.role === 'admin' ? true : false;
+        }
+        return response;
+      })
+    );
+  }
 
-  isAdmin: boolean;
-  roles = [];
-  userProfile: any;
-
-  constructor(public router: Router) {
-    this._idToken = '';
-    this._accessToken = '';
-    this._expiresAt = 0;
+  logout(): void {
+    localStorage.removeItem('tct_auth');
+    this.isAuthenticated = false;
     this.isAdmin = false;
   }
 
-  get accessToken(): string {
-    return this._accessToken;
-  }
+  checkLogin() {
+    let auth: AuthToken = JSON.parse(localStorage.getItem('tct_auth'));
+    if (!auth) return;
 
-  get idToken(): string {
-    return this._idToken;
-  }
-
-  public login(): void {
-    this.auth0.authorize();
-  }
-
-  public handleAuthentication(): void {
-    this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.localLogin(authResult);
-        this.router.navigate(['/home']);
-      } else if (err) {
-        this.router.navigate(['/home']);
-        console.log(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
-      }
-    });
-  }
-
-  public getProfile(cb): void {
-    if (!this._accessToken) {
-      throw new Error('Access token must exist to fetch profile');
+    let now = Date.now();
+    if (auth.expires > now) {
+      this.isAuthenticated = true;
+      this.isAdmin = auth.role === 'admin' ? true : false;
+      // keep logged in for another hour
+      auth.expires = now + 3600000;
+      localStorage.setItem('tct_auth', JSON.stringify(auth));
+    } else {
+      this.logout();
     }
-
-    const self = this;
-    this.auth0.client.userInfo(this._accessToken, (err, profile) => {
-      if (profile) {
-        self.userProfile = profile;
-      }
-      cb(err, profile);
-    });
-  }
-
-  private localLogin(authResult): void {
-    // Set isLoggedIn flag in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
-    // Set the time that the access token will expire at
-    const expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
-    this._accessToken = authResult.accessToken;
-    this._idToken = authResult.idToken;
-    this._expiresAt = expiresAt;
-
-    this.auth0.client.userInfo(this._accessToken, (err, profile) => {
-      const arg = 'http://localhost:4200/roles';
-      this.roles = profile[arg];
-      this.isAdmin = this.roles[0] === 'admin' ? true : false;
-    });
-  }
-
-  public renewTokens(): void {
-    this.auth0.checkSession({}, (err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.localLogin(authResult);
-      } else if (err) {
-        alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
-        this.logout();
-      }
-    });
-  }
-
-  public logout(): void {
-    // Remove tokens and expiry time
-    this._idToken = '';
-    this._accessToken = '';
-    this._expiresAt = 0;
-    // Remove isLoggedIn flag from localStorage
-    localStorage.removeItem('isLoggedIn');
-    // Go back to the home route
-    this.router.navigate(['/']);
-  }
-
-  public isAuthenticated(): boolean {
-    // Check whether the current time is past the
-    // access token's expiry time
-    return new Date().getTime() < this._expiresAt;
   }
 }

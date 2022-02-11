@@ -19,7 +19,7 @@ import { CoursesFacade } from './courses.facade';
             [pageSize]="facade.pageSize"
             [maxSize]="5"
             [(current)]="facade.current"
-            [isAuthenticated]="auth.isAuthenticated()"
+            [isAuthenticated]="auth.isAuthenticated"
             (refreshTable)="facade.refreshTable()"
             (newCourse)="facade.newCourse()"
           >
@@ -29,7 +29,7 @@ import { CoursesFacade } from './courses.facade';
             [headers]="headers"
             [columns]="columns"
             [items]="facade.courses$ | async"
-            [isAuthenticated]="auth.isAuthenticated()"
+            [isAuthenticated]="auth.isAuthenticated"
             (deleteItem)="facade.deleteCourse($event)"
             (editItem)="facade.editCourse($event)"
           ></app-list-display>

@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: "app-admin",
+  selector: 'app-admin',
 
   template: `
     <section>
@@ -14,12 +14,8 @@ import { Router } from "@angular/router";
           <div class="card">
             <div class="card-header">Paths</div>
             <div class="card-body">
-              <p class="card-text">
-                Pre-selections for the Paths field on Course edit form.
-              </p>
-              <a [routerLink]="['/admin/paths']" class="btn btn-primary"
-                >Edit Paths</a
-              >
+              <p class="card-text">Pre-selections for the Paths field on Course edit form.</p>
+              <a [routerLink]="['/admin/paths']" class="btn btn-primary">Edit Paths</a>
             </div>
           </div>
         </div>
@@ -28,12 +24,18 @@ import { Router } from "@angular/router";
           <div class="card ">
             <div class="card-header">Sources</div>
             <div class="card-body">
-              <p class="card-text">
-                Pre-selections for the Sources field on Course edit form.
-              </p>
-              <a [routerLink]="['/admin/sources']" class="btn btn-primary"
-                >Edit Sources</a
-              >
+              <p class="card-text">Pre-selections for the Sources field on Course edit form.</p>
+              <a [routerLink]="['/admin/sources']" class="btn btn-primary">Edit Sources</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3">
+          <div class="card ">
+            <div class="card-header">Users</div>
+            <div class="card-body">
+              <p class="card-text">Current users edit form.</p>
+              <a [routerLink]="['/admin/users']" class="btn btn-primary">Edit Users</a>
             </div>
           </div>
         </div>
