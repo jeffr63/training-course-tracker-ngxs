@@ -59,7 +59,7 @@ export namespace CourseActions {
 
   export class SaveCourse {
     static readonly type = '[Courses] Save Course';
-    // constructor(public payload: Course) { }
+    constructor(public payload: Course) {}
   }
 
   export class SaveCourseFail {

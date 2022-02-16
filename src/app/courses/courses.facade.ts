@@ -98,10 +98,10 @@ export class CoursesFacade {
     this.store.dispatch(new CourseActions.GetCoursesPage({ current: this.current, pageSize: this.pageSize }));
   }
 
-  public saveCourse(id) {
-    this.store.dispatch(new CourseActions.SaveCourse());
+  public saveCourse(id: string, course: Course) {
+    this.store.dispatch(new CourseActions.SaveCourse(course));
     this.actions$.pipe(ofActionSuccessful(CourseActions.SaveCourse)).subscribe(() => {
-      if (id === 'new') {
+      if (id === 'New') {
         this.store.dispatch(new CourseActions.LoadCourses());
         this.actions$.pipe(ofActionSuccessful(CourseActions.LoadCourses)).subscribe(() => {
           this.refreshTable();

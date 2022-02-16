@@ -64,8 +64,8 @@ export class SourcesFacade {
     this.router.navigate(['/admin/sources/new']);
   }
 
-  public saveSource() {
-    this.store.dispatch(new SourcesActions.SaveSource());
+  public saveSource(source: Source) {
+    this.store.dispatch(new SourcesActions.SaveSource(source));
     this.location.back();
   }
 }

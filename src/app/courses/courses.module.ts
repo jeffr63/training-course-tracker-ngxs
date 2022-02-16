@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -14,28 +14,24 @@ import { SharedModule } from '../shared/shared.module';
 
 const routes = [
   {
-    path: '', children: [
+    path: '',
+    children: [
       { path: '', component: CourseListComponent },
-      { path: ':id', component: CourseEditComponent, canActivate: [CanActivateEdit] }
-    ]
-  }
+      { path: ':id', component: CourseEditComponent, canActivate: [CanActivateEdit] },
+    ],
+  },
 ];
 
 @NgModule({
-  declarations: [
-    CourseEditComponent,
-    CourseListComponent,
-  ],
+  declarations: [CourseEditComponent, CourseListComponent],
   imports: [
     CommonModule,
     FontAwesomeModule,
-    FormsModule,
     NgbModule,
+    ReactiveFormsModule,
     SharedModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
   ],
-  providers: [
-    CoursesFacade
-  ]
+  providers: [CoursesFacade],
 })
-export class CoursesModule { }
+export class CoursesModule {}

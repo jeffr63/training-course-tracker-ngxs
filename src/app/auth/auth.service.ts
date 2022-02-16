@@ -25,12 +25,12 @@ export class AuthService {
         // login successful if there's a jwt token in the response and if that token is valid
         if (response && response.accessToken) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          const expire = Date.now() + 3600000;
+          const token = this.parseJwt(response.accessToken);
           const auth: AuthToken = {
             token: response.accessToken,
             role: response.user.role,
             id: response.user.id,
-            expires: expire,
+            expires: token.exp,
           };
           localStorage.setItem('tct_auth', JSON.stringify(auth));
           this.isAuthenticated = true;
@@ -51,15 +51,27 @@ export class AuthService {
     let auth: AuthToken = JSON.parse(localStorage.getItem('tct_auth'));
     if (!auth) return;
 
-    let now = Date.now();
+    const now = Date.now() / 1000;
     if (auth.expires > now) {
       this.isAuthenticated = true;
       this.isAdmin = auth.role === 'admin' ? true : false;
-      // keep logged in for another hour
-      auth.expires = now + 3600000;
-      localStorage.setItem('tct_auth', JSON.stringify(auth));
     } else {
       this.logout();
     }
+  }
+
+  parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join('')
+    );
+
+    return JSON.parse(jsonPayload);
   }
 }

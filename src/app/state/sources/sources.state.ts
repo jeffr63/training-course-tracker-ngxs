@@ -149,15 +149,13 @@ export class SourcesState {
   }
 
   @Action(SourcesActions.SaveSource)
-  public save({ dispatch, getState, patchState }: StateContext<SourcesStateModel>) {
-    // , { payload }: Save) {
-    const state = getState();
+  public save({ dispatch, patchState }: StateContext<SourcesStateModel>, { payload }: SourcesActions.SaveSource) {
     patchState({
       error: '',
     });
-    return this.dataFacade.saveSource(state.currentSource).pipe(
+    return this.dataFacade.saveSource(payload).pipe(
       map((source: Source) => {
-        return dispatch([new SourcesActions.LoadSources(), new SourcesActions.SaveSourceSuccess(state.currentSource)]);
+        return dispatch([new SourcesActions.LoadSources(), new SourcesActions.SaveSourceSuccess(source)]);
       }),
       catchError((err) => {
         return dispatch(new SourcesActions.SaveSourceFail(err));

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -32,10 +32,10 @@ import { UsersState } from './state/users/users.state';
     BrowserAnimationsModule,
     DataServiceModule,
     FontAwesomeModule,
-    FormsModule,
     HttpClientModule,
     NgbModule,
     NgxChartsModule,
+    ReactiveFormsModule,
     NgxsModule.forRoot([CoursesState, SourcesState, PathsState, UsersState], {
       selectorOptions: { suppressErrors: false, injectContainerState: false },
     }),

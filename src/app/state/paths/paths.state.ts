@@ -149,15 +149,13 @@ export class PathsState {
   }
 
   @Action(PathsActions.SavePath)
-  public save({ dispatch, getState, patchState }: StateContext<PathsStateModel>) {
-    // , { payload }: Save) {
-    const state = getState();
+  public save({ dispatch, patchState }: StateContext<PathsStateModel>, { payload }: PathsActions.SavePath) {
     patchState({
       error: '',
     });
-    return this.dataFacade.savePath(state.currentPath).pipe(
+    return this.dataFacade.savePath(payload).pipe(
       map((path: Path) => {
-        return dispatch([new PathsActions.SavePathSuccess(state.currentPath), new PathsActions.LoadPaths()]);
+        return dispatch([new PathsActions.SavePathSuccess(payload), new PathsActions.LoadPaths()]);
       }),
       catchError((err) => {
         return dispatch(new PathsActions.SavePathFail(err));

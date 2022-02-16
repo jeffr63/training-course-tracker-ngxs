@@ -61,8 +61,8 @@ export class PathsFacade {
     this.router.navigate(['/admin/paths/new']);
   }
 
-  public save() {
-    this.store.dispatch(new PathsActions.SavePath());
+  public save(path: Path) {
+    this.store.dispatch(new PathsActions.SavePath(path));
     this.location.back();
   }
 }

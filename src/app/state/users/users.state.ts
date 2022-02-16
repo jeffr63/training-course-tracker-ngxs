@@ -138,20 +138,13 @@ export class UsersState {
   }
 
   @Action(UserActions.PatchUser)
-  public patch({ dispatch, getState, patchState }: StateContext<UsersStateModel>) {
-    // , { payload }: Save) {
-    const state = getState();
+  public patch({ dispatch, patchState }: StateContext<UsersStateModel>, { id, payload }: UserActions.PatchUser) {
     patchState({
       error: '',
     });
-    const patch = {
-      name: state.currentUser.name,
-      email: state.currentUser.email,
-      role: state.currentUser.role,
-    };
-    return this.dataFacade.patchUser(state.currentUser.id, patch).pipe(
-      map((User: User) => {
-        return dispatch([new UserActions.LoadUsers(), new UserActions.PatchUserSuccess(state.currentUser)]);
+    return this.dataFacade.patchUser(id, payload).pipe(
+      map((user: User) => {
+        return dispatch([new UserActions.LoadUsers(), new UserActions.PatchUserSuccess(user)]);
       }),
       catchError((err) => {
         return dispatch(new UserActions.PatchUserFail(err));

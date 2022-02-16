@@ -51,7 +51,7 @@ export namespace SourcesActions {
 
   export class SaveSource {
     static readonly type = '[Sources] Save Source';
-    // constructor(public payload: Source) { }
+    constructor(public payload: Source) { }
   }
 
   export class SaveSourceFail {

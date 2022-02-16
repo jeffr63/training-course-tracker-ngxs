@@ -1,42 +1,51 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { faSave, faBan } from "@fortawesome/free-solid-svg-icons";
+import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 
-import { CoursesFacade } from "./courses.facade";
+import { Course } from '../shared/course';
+import { CoursesFacade } from './courses.facade';
 
 @Component({
-  selector: "app-course-edit",
+  selector: 'app-course-edit',
 
   template: `
     <section class="container">
       <section class="card">
-        <form *ngIf="facade.course$ | async as course">
+        <form *ngIf="courseEditForm" [formGroup]="courseEditForm">
           <fieldset class="form-group row">
             <label class="col-form-label col-sm-2" for="title">Title</label>
             <div class="col-sm-6">
               <input
                 type="text"
                 class="form-control"
-                name="title"
-                [(ngModel)]="course.title"
+                formControlName="title"
                 placeholder="Enter title of course taken"
               />
+              <div *ngIf="courseEditForm.controls.title.errors?.required && courseEditForm.controls.title.touched">
+                <small class="text-danger">Name is required</small>
+              </div>
             </div>
           </fieldset>
 
           <fieldset class="form-group row">
-            <label class="col-form-label col-sm-2" for="instructor"
-              >Instructor</label
-            >
+            <label class="col-form-label col-sm-2" for="instructor">Instructor</label>
             <div class="col-sm-6">
               <input
                 type="text"
                 class="form-control"
-                name="instructor"
-                [(ngModel)]="course.instructor"
+                formControlName="instructor"
                 placeholder="Enter name of course's intructor"
               />
+              <div
+                *ngIf="
+                  courseEditForm.controls.instructor.errors?.required && courseEditForm.controls.instructor.touched
+                "
+              >
+                <small class="text-danger">Name is required</small>
+              </div>
             </div>
           </fieldset>
 
@@ -46,17 +55,16 @@ import { CoursesFacade } from "./courses.facade";
               <input
                 type="text"
                 class="form-control"
-                name="path"
-                [(ngModel)]="course.path"
+                formControlName="path"
                 list="path-helpers"
                 placeholder="Enter techical path of course (ex: Angular or React)"
               />
               <datalist id="path-helpers">
-                <option
-                  *ngFor="let path of facade.paths$ | async"
-                  value="{{ path.name }}"
-                ></option>
+                <option *ngFor="let path of facade.paths$ | async" value="{{ path.name }}"></option>
               </datalist>
+              <div *ngIf="courseEditForm.controls.path.errors?.required && courseEditForm.controls.path.touched">
+                <small class="text-danger">Name is required</small>
+              </div>
             </div>
           </fieldset>
 
@@ -66,33 +74,29 @@ import { CoursesFacade } from "./courses.facade";
               <input
                 type="text"
                 class="form-control"
-                name="source"
+                formControlName="source"
                 list="source-helpers"
-                [(ngModel)]="course.source"
                 placeholder="Enter where the course was sourced from (ex: Pluralsite)"
               />
               <datalist id="source-helpers">
-                <option
-                  *ngFor="let source of facade.sources$ | async"
-                  value="{{ source.name }}"
-                ></option>
+                <option *ngFor="let source of facade.sources$ | async" value="{{ source.name }}"></option>
               </datalist>
+              <div *ngIf="courseEditForm.controls.source.errors?.required && courseEditForm.controls.source.touched">
+                <small class="text-danger">Name is required</small>
+              </div>
             </div>
           </fieldset>
 
           <div class="form-group row form-buttons">
             <button
               class="btn btn-primary mr-sm-2"
-              (click)="facade.saveCourse(saveId)"
+              (click)="saveCourse()"
               title="Save"
+              [disabled]="!courseEditForm.valid"
             >
               <fa-icon [icon]="faSave"></fa-icon> Save
             </button>
-            <a
-              class="btn btn-secondary"
-              (click)="facade.cancelEdit()"
-              title="Cancel"
-            >
+            <a class="btn btn-secondary" (click)="facade.cancelEdit()" title="Cancel">
               <fa-icon [icon]="faBan"></fa-icon> Cancel
             </a>
           </div>
@@ -115,17 +119,52 @@ import { CoursesFacade } from "./courses.facade";
     `,
   ],
 })
-export class CourseEditComponent implements OnInit {
+export class CourseEditComponent implements OnInit, OnDestroy {
   faSave = faSave;
   faBan = faBan;
-  saveId = "";
+  id = '';
+  courseEditForm!: FormGroup;
+  private course: Course;
+  private sub = new Subscription();
 
-  constructor(private route: ActivatedRoute, public facade: CoursesFacade) {}
+  constructor(private route: ActivatedRoute, public facade: CoursesFacade, private fb: FormBuilder) {}
 
-  ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.saveId = params.id;
-      this.facade.loadCourse(params.id);
+  ngOnInit(): void {
+    this.courseEditForm = this.fb.group({
+      title: ['', Validators.required],
+      instructor: ['', Validators.required],
+      path: ['', Validators.required],
+      source: ['', Validators.required],
     });
+
+    this.sub.add(
+      this.route.params.subscribe((params) => {
+        this.id = params.id
+        if (params.id === 'New') return;
+        this.facade.loadCourse(params.id);
+        this.sub.add(
+          this.facade.course$.subscribe((course) => {
+            if (!course) return;
+            this.course = { ...course };
+            this.courseEditForm.get('title').setValue(course.title);
+            this.courseEditForm.get('instructor').setValue(course.instructor);
+            this.courseEditForm.get('path').setValue(course.path);
+            this.courseEditForm.get('source').setValue(course.source);
+          })
+        );
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe;
+  }
+
+  saveCourse() {
+    this.course.title = this.courseEditForm.controls.title.value;
+    this.course.instructor = this.courseEditForm.controls.instructor.value;
+    this.course.path = this.courseEditForm.controls.path.value;
+    this.course.source = this.courseEditForm.controls.source.value;
+    this.facade.saveCourse(this.id, this.course);
   }
 }

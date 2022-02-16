@@ -47,7 +47,7 @@ export namespace UserActions {
 
   export class PatchUser {
     static readonly type = '[Users] Patch User';
-    //constructor(public id: number, public payload: any) { }
+    constructor(public id: number, public payload: any) {}
   }
 
   export class PatchUserFail {

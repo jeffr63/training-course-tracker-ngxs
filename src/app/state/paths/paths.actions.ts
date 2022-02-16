@@ -51,7 +51,7 @@ export namespace PathsActions {
 
   export class SavePath {
     static readonly type = '[Paths] Save Path';
-    // constructor(public payload: Path) { }
+    constructor(public payload: Path) { }
   }
 
   export class SavePathFail {

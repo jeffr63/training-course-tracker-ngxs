@@ -244,12 +244,11 @@ export class CoursesState {
   }
 
   @Action(CourseActions.SaveCourse)
-  public save({ dispatch, getState, patchState }: StateContext<CoursesStateModel>) {
+  public save({ dispatch, patchState }: StateContext<CoursesStateModel>, { payload }: CourseActions.SaveCourse) {
     patchState({
       error: '',
     });
-    const state = getState();
-    return this.dataFacade.saveCourse(state.currentCourse).pipe(
+    return this.dataFacade.saveCourse(payload).pipe(
       map((course: Course) => {
         return dispatch(new CourseActions.SaveCourseSuccess(course));
       }),

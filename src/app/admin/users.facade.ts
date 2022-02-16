@@ -56,8 +56,8 @@ export class UsersFacade {
     this.store.dispatch(new UserActions.LoadUsers());
   }
 
-  public patchUser() {
-    this.store.dispatch(new UserActions.PatchUser());
+  public patchUser(id: number, payload: any) {
+    this.store.dispatch(new UserActions.PatchUser(id, payload));
     this.location.back();
   }
 }
