@@ -19,13 +19,11 @@ import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
             {{ item[column] }}
           </td>
           <td *ngIf="isAuthenticated">
-            <button class="btn btn-info btn-sm mr-2" (click)="editClicked(item.id)" title="Edit">
+            <button class="btn btn-info btn-sm me-2" (click)="editClicked(item.id)" title="Edit">
               <fa-icon [icon]="faPencilAlt"></fa-icon>
-              <span class="sr-only">Edit</span>
             </button>
             <button class="btn btn-danger btn-sm" (click)="deleteClicked(item.id)" title="Delete">
               <fa-icon [icon]="faTrashAlt"></fa-icon>
-              <span class="sr-only">Delete</span>
             </button>
           </td>
         </tr>

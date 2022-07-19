@@ -9,9 +9,8 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
     <header class="row">
       <div class="col">&nbsp;</div>
       <div class="col">
-        <button class="btn btn-sm" (click)="newClicked()" title="Add Path">
+        <button class="btn btn-sm" (click)="newClicked()" title="Add">
           <fa-icon [icon]="faPlusCircle" class="fa-2x text-success"></fa-icon>
-          <span class="sr-only">Add Path</span>
         </button>
       </div>
     </header>

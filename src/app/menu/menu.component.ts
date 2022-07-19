@@ -25,8 +25,8 @@ import { LoginComponent } from '../modals/login.component';
       </button>
 
       <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav ml-auto">
-          <a class="nav-item nav-link active" [routerLink]="['/']">Home <span class="sr-only">(current)</span></a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-item nav-link active" [routerLink]="['/']">Home</a>
           <a class="nav-item nav-link" [routerLink]="['/courses']">Courses</a>
           <div *ngIf="!auth.isAuthenticated" class="nav-item nav-link" (click)="open()">Login</div>
           <a *ngIf="auth.isAuthenticated && auth.isAdmin" class="nav-item nav-link" [routerLink]="['/admin']">Admin</a>

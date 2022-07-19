@@ -6,10 +6,13 @@ import { Router } from '@angular/router';
 
   template: `
     <section>
-      <div class="jumbotron">
-        <h1 class="display-4">Administration</h1>
+      <div class="p-2 m-3 mb-4 border bg-light rounded-3">
+        <div class="container-fluid py-3">
+          <h1 class="display-4">Administration</h1>
+        </div>
       </div>
-      <div class="card-deck">
+
+      <div class="row m-1">
         <div class="col-sm-3">
           <div class="card">
             <div class="card-header">Paths</div>

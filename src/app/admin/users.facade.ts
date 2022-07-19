@@ -36,7 +36,7 @@ export class UsersFacade {
     const modalOptions = {
       title: 'Are you sure you want to delete this user?',
       body: 'All information associated to this source will be permanently deleted.',
-      warning: 'This operation can not be undone.',
+      warning: 'This operation cannot be undone.',
     };
     this.modalDataService.setDeleteModalOptions(modalOptions);
     this.modal.open(DeleteComponent).result.then((_result) => {

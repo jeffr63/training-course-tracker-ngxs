@@ -14,7 +14,7 @@ import { Subscriber, Subscription } from 'rxjs';
     <section class="container">
       <section class="card">
         <form *ngIf="userEditForm" [formGroup]="userEditForm">
-          <fieldset class="form-group row">
+          <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="name">Name</label>
             <div class="col-sm-6">
               <input type="text" class="form-control" formControlName="name" placeholder="Enter user's name" />
@@ -24,7 +24,7 @@ import { Subscriber, Subscription } from 'rxjs';
             </div>
           </fieldset>
 
-          <fieldset class="form-group row">
+          <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="email">Email</label>
             <div class="col-sm-6">
               <input type="text" class="form-control" formControlName="email" placeholder="Enter email address" />
@@ -37,23 +37,23 @@ import { Subscriber, Subscription } from 'rxjs';
             </div>
           </fieldset>
 
-          <fieldset class="form-group row">
+          <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="email">Roles</label>
-            <div class="form-group form-radio col-sm-3" style="margin-left:20px">
+            <div class="form-check col-sm-3" style="margin-left:20px">
               <input type="radio" class="form-check-input" id="role1" value="admin" formControlName="role" />
               <label class="form-check-label" for="check1">Admin</label>
               <div *ngIf="userEditForm.controls.role.errors?.required && userEditForm.controls.role.touched">
                 <small class="text-danger">Role is required</small>
               </div>
             </div>
-            <div class="form-group form-radio col-sm-3">
+            <div class="form-check col-sm-3">
               <input type="radio" class="form-check-input" value="user" id="role2" formControlName="role" />
               <label class="form-check-label" for="check1">User</label>
             </div>
           </fieldset>
 
-          <div class="form-group row form-buttons">
-            <button class="btn btn-primary mr-sm-2" (click)="saveUser()" title="Save" [disabled]="!userEditForm.valid">
+          <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
+            <button class="btn btn-primary me-sm-2" (click)="saveUser()" title="Save" [disabled]="!userEditForm.valid">
               <fa-icon [icon]="faSave"></fa-icon> Save
             </button>
             <a class="btn btn-secondary" (click)="facade.cancelEdit()" title="Cancel">

@@ -1,9 +1,9 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: "app-pager-list-header",
+  selector: 'app-pager-list-header',
 
   template: `
     <header class="row">
@@ -19,9 +19,8 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
         ></ngb-pagination>
       </div>
       <div class="col" *ngIf="isAuthenticated">
-        <button class="btn btn-sm" (click)="newClicked()" title="Add Course">
+        <button class="btn btn-sm" (click)="newClicked()" title="Add">
           <fa-icon [icon]="faPlusCircle" class="fa-2x text-success"></fa-icon>
-          <span class="sr-only">Add Course</span>
         </button>
       </div>
     </header>

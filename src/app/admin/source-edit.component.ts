@@ -15,17 +15,17 @@ import { SourcesFacade } from './sources.facade';
     <section class="container">
       <section class="card">
         <form *ngIf="sourceEditForm" [formGroup]="sourceEditForm">
-          <fieldset class="form-group row">
+          <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="name">Source Name</label>
             <div class="col-sm-6">
               <input type="text" class="form-control" formControlName="name" placeholder="Enter source name" />
               <div *ngIf="sourceEditForm.controls.name.errors?.required && sourceEditForm.controls.name.touched">
-                <small class="text-danger">Name is required</small>
+                <small class="text-danger">Source Name is required</small>
               </div>
             </div>
           </fieldset>
 
-          <div class="form-group row form-buttons">
+          <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
             <button
               class="btn btn-primary mr-sm-2"
               (click)="saveSource()"

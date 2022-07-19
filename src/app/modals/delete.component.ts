@@ -8,7 +8,7 @@ import { ModalDataService } from './modal-data.service';
   selector: 'app-delete',
   template: `
     <div class="modal-header">
-      <span class="modal-title">Delete?</span>
+      <h5 class="modal-title">Delete?</h5>
     </div>
     <div class="modal-body">
       <p>
@@ -20,10 +20,10 @@ import { ModalDataService } from './modal-data.service';
       </p>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-success" (click)="modal.close('delete')" title="Delete">
+      <button class="btn btn-danger" (click)="modal.close('delete')" title="Delete">
         <fa-icon [icon]="faTrashAlt"></fa-icon> Delete
       </button>
-      <button class="btn btn-danger" (click)="modal.dismiss()" title="Cancel">
+      <button class="btn btn-secondary" (click)="modal.dismiss()" title="Cancel">
         <fa-icon [icon]="faBan"></fa-icon> Cancel
       </button>
     </div>

@@ -15,7 +15,7 @@ import { CoursesFacade } from './courses.facade';
     <section class="container">
       <section class="card">
         <form *ngIf="courseEditForm" [formGroup]="courseEditForm">
-          <fieldset class="form-group row">
+          <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="title">Title</label>
             <div class="col-sm-6">
               <input
@@ -25,12 +25,12 @@ import { CoursesFacade } from './courses.facade';
                 placeholder="Enter title of course taken"
               />
               <div *ngIf="courseEditForm.controls.title.errors?.required && courseEditForm.controls.title.touched">
-                <small class="text-danger">Name is required</small>
+                <small class="text-danger">Title is required</small>
               </div>
             </div>
           </fieldset>
 
-          <fieldset class="form-group row">
+          <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="instructor">Instructor</label>
             <div class="col-sm-6">
               <input
@@ -44,12 +44,12 @@ import { CoursesFacade } from './courses.facade';
                   courseEditForm.controls.instructor.errors?.required && courseEditForm.controls.instructor.touched
                 "
               >
-                <small class="text-danger">Name is required</small>
+                <small class="text-danger">Instructor is required</small>
               </div>
             </div>
           </fieldset>
 
-          <fieldset class="form-group row">
+          <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="path">Path</label>
             <div class="col-sm-6">
               <input
@@ -57,18 +57,18 @@ import { CoursesFacade } from './courses.facade';
                 class="form-control"
                 formControlName="path"
                 list="path-helpers"
-                placeholder="Enter techical path of course (ex: Angular or React)"
+                placeholder="Enter technical path of course (ex: Angular or React)"
               />
               <datalist id="path-helpers">
                 <option *ngFor="let path of facade.paths$ | async" value="{{ path.name }}"></option>
               </datalist>
               <div *ngIf="courseEditForm.controls.path.errors?.required && courseEditForm.controls.path.touched">
-                <small class="text-danger">Name is required</small>
+                <small class="text-danger">Path is required</small>
               </div>
             </div>
           </fieldset>
 
-          <fieldset class="form-group row">
+          <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="source">Source</label>
             <div class="col-sm-6">
               <input
@@ -82,14 +82,14 @@ import { CoursesFacade } from './courses.facade';
                 <option *ngFor="let source of facade.sources$ | async" value="{{ source.name }}"></option>
               </datalist>
               <div *ngIf="courseEditForm.controls.source.errors?.required && courseEditForm.controls.source.touched">
-                <small class="text-danger">Name is required</small>
+                <small class="text-danger">Source is required</small>
               </div>
             </div>
           </fieldset>
 
-          <div class="form-group row form-buttons">
+          <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
             <button
-              class="btn btn-primary mr-sm-2"
+              class="btn btn-primary me-sm-2"
               (click)="saveCourse()"
               title="Save"
               [disabled]="!courseEditForm.valid"
@@ -139,7 +139,7 @@ export class CourseEditComponent implements OnInit, OnDestroy {
 
     this.sub.add(
       this.route.params.subscribe((params) => {
-        this.id = params.id
+        this.id = params.id;
         if (params.id === 'New') return;
         this.facade.loadCourse(params.id);
         this.sub.add(
