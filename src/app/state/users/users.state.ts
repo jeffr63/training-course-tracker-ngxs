@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { DataServiceFacade } from '../../services/data-service-facade';
 import { UserActions } from './users.actions';
-import { User } from '../../shared/user';
+import { User } from '../../models/user';
 
 export interface UsersStateModel {
   users: User[];

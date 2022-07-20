@@ -7,7 +7,7 @@ import { of, throwError } from 'rxjs';
 import { DataServiceFacade } from '../../services/data-service-facade';
 import { UserActions } from './users.actions';
 import { UsersState, UsersStateModel } from './users.state';
-import { User } from '../../shared/user';
+import { User } from '../../models/user';
 
 const userArray: User[] = [
   { id: 1, name: 'Joe', email: 'joe@joe.com', password: 'abc', role: 'admin' },
@@ -32,17 +32,15 @@ describe('UsersState', () => {
   let service: DataServiceFacade;
   let actions: Actions;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NgxsModule.forRoot([UsersState]), HttpClientModule],
-        providers: [DataServiceFacade],
-      }).compileComponents();
-      store = TestBed.inject(Store);
-      service = TestBed.inject(DataServiceFacade);
-      actions = TestBed.inject(Actions);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxsModule.forRoot([UsersState]), HttpClientModule],
+      providers: [DataServiceFacade],
+    }).compileComponents();
+    store = TestBed.inject(Store);
+    service = TestBed.inject(DataServiceFacade);
+    actions = TestBed.inject(Actions);
+  }));
 
   it('should initialize values', () => {
     const UsersState: UsersStateModel = {
@@ -61,57 +59,48 @@ describe('UsersState', () => {
 
   describe('Selector', () => {
     describe('getUsers', () => {
-      it(
-        'should return an array of Users',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: userArray,
-              error: '',
-              currentUser: null,
-            },
-          };
-          store.reset(appState);
+      it('should return an array of Users', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: userArray,
+            error: '',
+            currentUser: null,
+          },
+        };
+        store.reset(appState);
 
-          expect(UsersState.getUsers(appState.users)).toEqual(userArray);
-        })
-      );
+        expect(UsersState.getUsers(appState.users)).toEqual(userArray);
+      }));
     });
 
     describe('getcurrentUser', () => {
-      it(
-        'should return an object',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: [],
-              error: '',
-              currentUser: currentUser,
-            },
-          };
-          store.reset(appState);
+      it('should return an object', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: [],
+            error: '',
+            currentUser: currentUser,
+          },
+        };
+        store.reset(appState);
 
-          expect(UsersState.getCurrentUser(appState.users)).toEqual(currentUser);
-        })
-      );
+        expect(UsersState.getCurrentUser(appState.users)).toEqual(currentUser);
+      }));
     });
 
     describe('getError', () => {
-      it(
-        'should return an string',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: [],
-              error: 'Error',
-              currentUser: null,
-            },
-          };
-          store.reset(appState);
+      it('should return an string', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: [],
+            error: 'Error',
+            currentUser: null,
+          },
+        };
+        store.reset(appState);
 
-          expect(UsersState.getError(appState.users)).toEqual('Error');
-        })
-      );
+        expect(UsersState.getError(appState.users)).toEqual('Error');
+      }));
     });
   });
 
@@ -158,55 +147,49 @@ describe('UsersState', () => {
     });
 
     describe('DeleteFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: [],
-              error: '',
-              currentUser: currentUser,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: [],
+            error: '',
+            currentUser: currentUser,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new UserActions.DeleteUserFail('Error'));
+        store.dispatch(new UserActions.DeleteUserFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.users)
-            .subscribe((actual) => {
-              expect(actual.error).toEqual('Error');
-              expect(actual.currentUser).toEqual(null);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.users)
+          .subscribe((actual) => {
+            expect(actual.error).toEqual('Error');
+            expect(actual.currentUser).toEqual(null);
+          });
+      }));
     });
 
     describe('DeleteSuccess', () => {
-      it(
-        'should remove requested item from users array',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: userArray,
-              error: '',
-              currentUser: currentUser,
-            },
-          };
-          store.reset(appState);
+      it('should remove requested item from users array', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: userArray,
+            error: '',
+            currentUser: currentUser,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new UserActions.DeleteUserSuccess(3));
+        store.dispatch(new UserActions.DeleteUserSuccess(3));
 
-          store
-            .selectOnce((state: AppModel) => state.users)
-            .subscribe((actual) => {
-              expect(actual.users.length).toEqual(2);
-              expect(actual.users[0].id).toBe(1);
-              expect(actual.users[1].id).toBe(2);
-              expect(actual.currentUser).toEqual(null);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.users)
+          .subscribe((actual) => {
+            expect(actual.users.length).toEqual(2);
+            expect(actual.users[0].id).toBe(1);
+            expect(actual.users[1].id).toBe(2);
+            expect(actual.currentUser).toEqual(null);
+          });
+      }));
     });
 
     describe('Get', () => {
@@ -251,53 +234,47 @@ describe('UsersState', () => {
     });
 
     describe('GetFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: [],
-              error: '',
-              currentUser: currentUser,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: [],
+            error: '',
+            currentUser: currentUser,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new UserActions.GetUserFail('Error'));
+        store.dispatch(new UserActions.GetUserFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.users)
-            .subscribe((actual) => {
-              expect(actual.error).toEqual('Error');
-              expect(actual.currentUser).toEqual(null);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.users)
+          .subscribe((actual) => {
+            expect(actual.error).toEqual('Error');
+            expect(actual.currentUser).toEqual(null);
+          });
+      }));
     });
 
     describe('GetSuccess', () => {
-      it(
-        'should set currentUser with requested record and clear error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: [],
-              error: 'Test',
-              currentUser: null,
-            },
-          };
-          store.reset(appState);
+      it('should set currentUser with requested record and clear error', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: [],
+            error: 'Test',
+            currentUser: null,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new UserActions.GetUserSuccess(currentUser));
+        store.dispatch(new UserActions.GetUserSuccess(currentUser));
 
-          store
-            .selectOnce((state: AppModel) => state.users)
-            .subscribe((actual) => {
-              expect(actual.currentUser).toEqual(currentUser);
-              expect(actual.error).toEqual('');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.users)
+          .subscribe((actual) => {
+            expect(actual.currentUser).toEqual(currentUser);
+            expect(actual.error).toEqual('');
+          });
+      }));
     });
 
     describe('Load', () => {
@@ -342,53 +319,47 @@ describe('UsersState', () => {
     });
 
     describe('LoadFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: userArray,
-              error: '',
-              currentUser: null,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: userArray,
+            error: '',
+            currentUser: null,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new UserActions.LoadUsersFail('Error'));
+        store.dispatch(new UserActions.LoadUsersFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.users)
-            .subscribe((actual) => {
-              expect(actual.users.length).toEqual(0);
-              expect(actual.error).toEqual('Error');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.users)
+          .subscribe((actual) => {
+            expect(actual.users.length).toEqual(0);
+            expect(actual.error).toEqual('Error');
+          });
+      }));
     });
 
     describe('LoadSuccess', () => {
-      it(
-        'should set the users array to returned values and clear error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: [],
-              error: 'Test',
-              currentUser: null,
-            },
-          };
-          store.reset(appState);
+      it('should set the users array to returned values and clear error', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: [],
+            error: 'Test',
+            currentUser: null,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new UserActions.LoadUsersSuccess(userArray));
+        store.dispatch(new UserActions.LoadUsersSuccess(userArray));
 
-          store
-            .selectOnce((state: AppModel) => state.users)
-            .subscribe((actual) => {
-              expect(actual.users).toEqual(userArray);
-              expect(actual.error).toEqual('');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.users)
+          .subscribe((actual) => {
+            expect(actual.users).toEqual(userArray);
+            expect(actual.error).toEqual('');
+          });
+      }));
     });
 
     describe('Patch', () => {
@@ -403,7 +374,7 @@ describe('UsersState', () => {
           },
         };
         store.reset(appState);
-        const action = new UserActions.PatchUser();
+        const action = new UserActions.PatchUser(3, patchUser);
         const expected = new UserActions.PatchUserSuccess(patchUser);
         const callbacksCalled = [];
 
@@ -433,7 +404,7 @@ describe('UsersState', () => {
           },
         };
         store.reset(appState);
-        const action = new UserActions.PatchUser();
+        const action = new UserActions.PatchUser(3, patchUser);
         const expected = new UserActions.PatchUserFail('Error');
         const callbacksCalled = [];
 
@@ -453,61 +424,55 @@ describe('UsersState', () => {
     });
 
     describe('PatchFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: [],
-              error: '',
-              currentUser: null,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: [],
+            error: '',
+            currentUser: null,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new UserActions.PatchUserFail('Error'));
+        store.dispatch(new UserActions.PatchUserFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.users)
-            .subscribe((actual) => {
-              expect(actual.error).toEqual('Error');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.users)
+          .subscribe((actual) => {
+            expect(actual.error).toEqual('Error');
+          });
+      }));
     });
 
     describe('PatchSuccess', () => {
-      it(
-        'should update the source array with new value',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            users: {
-              users: userArray,
-              error: 'Test',
-              currentUser: currentUser,
-            },
-          };
-          store.reset(appState);
+      it('should update the source array with new value', waitForAsync(() => {
+        const appState: AppModel = {
+          users: {
+            users: userArray,
+            error: 'Test',
+            currentUser: currentUser,
+          },
+        };
+        store.reset(appState);
 
-          const expected: User = {
-            id: 3,
-            name: 'Joan',
-            email: 'joan@joe.com',
-            password: 'abc',
-            role: 'user',
-          };
-          store.dispatch(new UserActions.PatchUserSuccess(expected));
+        const expected: User = {
+          id: 3,
+          name: 'Joan',
+          email: 'joan@joe.com',
+          password: 'abc',
+          role: 'user',
+        };
+        store.dispatch(new UserActions.PatchUserSuccess(expected));
 
-          store
-            .selectOnce((state: AppModel) => state.users)
-            .subscribe((actual) => {
-              expect(actual.users.length).toEqual(userArray.length);
-              expect(actual.users[2]).toEqual(expected);
-              expect(actual.error).toEqual('');
-              expect(actual.currentUser).toEqual(null);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.users)
+          .subscribe((actual) => {
+            expect(actual.users.length).toEqual(userArray.length);
+            expect(actual.users[2]).toEqual(expected);
+            expect(actual.error).toEqual('');
+            expect(actual.currentUser).toEqual(null);
+          });
+      }));
     });
   });
 });

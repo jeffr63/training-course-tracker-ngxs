@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import * as _ from 'lodash';
 
-import { User } from '../../shared/user';
+import { User } from '../../models/user';
 
 @Injectable({
   providedIn: 'root',
