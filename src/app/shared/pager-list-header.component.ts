@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-
 @Component({
   selector: 'app-pager-list-header',
 
@@ -20,7 +18,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
       </div>
       <div class="col" *ngIf="isAuthenticated">
         <button class="btn btn-sm" (click)="newClicked()" title="Add">
-          <fa-icon [icon]="faPlusCircle" class="fa-2x text-success"></fa-icon>
+          <i class="bi bi-plus-circle-fill display-6 text-success"></i>
         </button>
       </div>
     </header>
@@ -37,7 +35,6 @@ export class PagerListHeaderComponent {
   @Output() currentChange: EventEmitter<number> = new EventEmitter<number>();
   @Output() newCourse = new EventEmitter();
   @Output() refreshTable = new EventEmitter();
-  faPlusCircle = faPlusCircle;
 
   onPageChange() {
     this.currentChange.emit(this.current);

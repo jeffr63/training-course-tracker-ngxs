@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { faBan, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { ModalDataService } from './modal-data.service';
 
 @Component({
@@ -21,10 +20,10 @@ import { ModalDataService } from './modal-data.service';
     </div>
     <div class="modal-footer">
       <button class="btn btn-danger" (click)="modal.close('delete')" title="Delete">
-        <fa-icon [icon]="faTrashAlt"></fa-icon> Delete
+        <i class="bi bi-trash3-fill"></i> Delete
       </button>
       <button class="btn btn-secondary" (click)="modal.dismiss()" title="Cancel">
-        <fa-icon [icon]="faBan"></fa-icon> Cancel
+        <i class="bi bi-x-circle"></i> Cancel
       </button>
     </div>
   `,
@@ -36,8 +35,6 @@ export class DeleteComponent implements OnInit {
     body: '',
     warning: '',
   };
-  faTrashAlt = faTrashAlt;
-  faBan = faBan;
 
   constructor(public modal: NgbActiveModal, private modalDataService: ModalDataService) {}
 

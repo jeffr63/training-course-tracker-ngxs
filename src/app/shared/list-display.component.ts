@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-
 @Component({
   selector: 'app-list-display',
 
@@ -20,10 +18,10 @@ import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
           </td>
           <td *ngIf="isAuthenticated">
             <button class="btn btn-info btn-sm me-2" (click)="editClicked(item.id)" title="Edit">
-              <fa-icon [icon]="faPencilAlt"></fa-icon>
+              <i class="bi bi-pencil-fill"></i>
             </button>
             <button class="btn btn-danger btn-sm" (click)="deleteClicked(item.id)" title="Delete">
-              <fa-icon [icon]="faTrashAlt"></fa-icon>
+              <i class="bi bi-trash3-fill"></i>
             </button>
           </td>
         </tr>
@@ -40,9 +38,6 @@ export class ListDisplayComponent {
   @Input() isAuthenticated: boolean;
   @Output() deleteItem = new EventEmitter();
   @Output() editItem = new EventEmitter();
-
-  faPencilAlt = faPencilAlt;
-  faTrashAlt = faTrashAlt;
 
   constructor() {}
 

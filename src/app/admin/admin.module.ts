@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AdminComponent } from './admin.component';
@@ -47,7 +46,6 @@ const routes = [
   ],
   imports: [
     CommonModule,
-    FontAwesomeModule,
     NgbModule,
     ReactiveFormsModule,
     SharedModule,

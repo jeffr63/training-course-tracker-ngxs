@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { Source } from '../shared/sources';
 
@@ -32,10 +31,10 @@ import { SourcesFacade } from './sources.facade';
               title="Save"
               [disabled]="!sourceEditForm.valid"
             >
-              <fa-icon [icon]="faSave"></fa-icon> Save
+              <i class="bi bi-save"></i> Save
             </button>
             <a class="btn btn-secondary" (click)="facade.cancelEdit()" title="Cancel">
-              <fa-icon [icon]="faBan"></fa-icon> Cancel
+              <i class="bi bi-x-circle"></i> Cancel
             </a>
           </div>
         </form>
@@ -58,8 +57,6 @@ import { SourcesFacade } from './sources.facade';
   ],
 })
 export class SourceEditComponent implements OnInit, OnDestroy {
-  faSave = faSave;
-  faBan = faBan;
   sourceEditForm!: FormGroup;
   private sub = new Subscription();
   private source: Source;

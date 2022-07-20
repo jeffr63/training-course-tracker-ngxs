@@ -1,16 +1,14 @@
 import { Component, Output, EventEmitter } from "@angular/core";
 
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-
 @Component({
-  selector: "app-list-header",
+  selector: 'app-list-header',
 
   template: `
     <header class="row">
       <div class="col">&nbsp;</div>
       <div class="col">
         <button class="btn btn-sm" (click)="newClicked()" title="Add">
-          <fa-icon [icon]="faPlusCircle" class="fa-2x text-success"></fa-icon>
+          <i class="bi bi-plus-circle-fill display-6 text-success"></i>
         </button>
       </div>
     </header>
@@ -20,7 +18,6 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 })
 export class ListHeaderComponent {
   @Output() newItem = new EventEmitter();
-  faPlusCircle = faPlusCircle;
 
   newClicked() {
     this.newItem.emit();

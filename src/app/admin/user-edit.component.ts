@@ -2,8 +2,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { faSave, faBan } from '@fortawesome/free-solid-svg-icons';
-
 import { UsersFacade } from './users.facade';
 import { Subscriber, Subscription } from 'rxjs';
 
@@ -54,10 +52,10 @@ import { Subscriber, Subscription } from 'rxjs';
 
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
             <button class="btn btn-primary me-sm-2" (click)="saveUser()" title="Save" [disabled]="!userEditForm.valid">
-              <fa-icon [icon]="faSave"></fa-icon> Save
+              <i class="bi bi-save"></i> Save
             </button>
             <a class="btn btn-secondary" (click)="facade.cancelEdit()" title="Cancel">
-              <fa-icon [icon]="faBan"></fa-icon> Cancel
+              <i class="bi bi-x-circle"></i> Cancel
             </a>
           </div>
         </form>
@@ -80,8 +78,6 @@ import { Subscriber, Subscription } from 'rxjs';
   ],
 })
 export class UserEditComponent implements OnInit, OnDestroy {
-  faSave = faSave;
-  faBan = faBan;
   userEditForm!: FormGroup;
   private id: number = 0;
   private sub = new Subscription();

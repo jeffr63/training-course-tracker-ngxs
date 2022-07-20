@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 // third party modules
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxsModule } from '@ngxs/store';
@@ -31,7 +30,6 @@ import { UsersState } from './state/users/users.state';
     BrowserModule,
     BrowserAnimationsModule,
     DataServiceModule,
-    FontAwesomeModule,
     HttpClientModule,
     NgbModule,
     NgxChartsModule,
