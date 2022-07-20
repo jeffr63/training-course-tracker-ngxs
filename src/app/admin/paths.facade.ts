@@ -8,7 +8,7 @@ import { Select, Store } from '@ngxs/store';
 
 import { DeleteComponent } from './../modals/delete.component';
 import { ModalDataService } from '../modals/modal-data.service';
-import { Path } from '../shared/paths';
+import { Path } from '../models/paths';
 import { PathsActions } from '../state/paths/paths.actions';
 import { PathsState } from '../state/paths/paths.state';
 

@@ -5,7 +5,7 @@ import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
 import { CoursesState, CoursesStateModel } from './course.state';
-import { Course, CourseData } from '../../shared/course';
+import { Course, CourseData } from '../../models/course';
 import { DataServiceFacade } from '../../services/data-service-facade';
 import { CourseActions } from './course.actions';
 

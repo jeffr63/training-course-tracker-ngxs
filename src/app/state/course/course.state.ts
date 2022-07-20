@@ -4,7 +4,7 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
-import { Course, CourseData } from '../../shared/course';
+import { Course, CourseData } from '../../models/course';
 import { CourseActions } from './course.actions';
 import { DataServiceFacade } from '../../services/data-service-facade';
 

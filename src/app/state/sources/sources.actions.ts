@@ -1,4 +1,4 @@
-import { Source } from '../../shared/sources';
+import { Source } from '../../models/sources';
 
 export namespace SourcesActions {
   export class DeleteSource {

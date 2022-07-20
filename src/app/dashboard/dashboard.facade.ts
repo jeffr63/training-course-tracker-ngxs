@@ -4,7 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
 import { CourseActions } from '../state/course/course.actions';
-import { CourseData } from '../shared/course';
+import { CourseData } from '../models/course';
 import { CoursesState } from '../state/course/course.state';
 
 @Injectable({

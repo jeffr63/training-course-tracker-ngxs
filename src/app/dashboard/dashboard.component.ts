@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { CourseData } from './../shared/course';
+import { CourseData } from '../models/course';
 import { DashboardFacade } from './dashboard.facade';
 
 @Component({

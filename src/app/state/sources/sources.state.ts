@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { DataServiceFacade } from '../../services/data-service-facade';
 import { SourcesActions } from './sources.actions';
-import { Source } from '../../shared/sources';
+import { Source } from '../../models/sources';
 
 export interface SourcesStateModel {
   sources: Source[];

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
-import { Path } from '../shared/paths';
+import { Path } from '../models/paths';
 
 import { PathsFacade } from './paths.facade';
 

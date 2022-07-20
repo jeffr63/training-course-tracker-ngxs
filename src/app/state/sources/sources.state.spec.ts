@@ -7,7 +7,7 @@ import { of, throwError } from 'rxjs';
 import { DataServiceFacade } from '../../services/data-service-facade';
 import { SourcesActions } from './sources.actions';
 import { SourcesState, SourcesStateModel } from './sources.state';
-import { Source } from '../../shared/sources';
+import { Source } from '../../models/sources';
 
 const sourceArray: Source[] = [
   { id: 1, name: 'ABC' },
@@ -29,17 +29,15 @@ describe('sources', () => {
   let service: DataServiceFacade;
   let actions: Actions;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NgxsModule.forRoot([SourcesState]), HttpClientModule],
-        providers: [DataServiceFacade],
-      }).compileComponents();
-      store = TestBed.inject(Store);
-      service = TestBed.inject(DataServiceFacade);
-      actions = TestBed.inject(Actions);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxsModule.forRoot([SourcesState]), HttpClientModule],
+      providers: [DataServiceFacade],
+    }).compileComponents();
+    store = TestBed.inject(Store);
+    service = TestBed.inject(DataServiceFacade);
+    actions = TestBed.inject(Actions);
+  }));
 
   it('should initialize values', () => {
     const sourcesState: SourcesStateModel = {
@@ -58,57 +56,48 @@ describe('sources', () => {
 
   describe('Selector', () => {
     describe('getSources', () => {
-      it(
-        'should return an array of Sources',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: sourceArray,
-              error: '',
-              currentSource: null,
-            },
-          };
-          store.reset(appState);
+      it('should return an array of Sources', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: sourceArray,
+            error: '',
+            currentSource: null,
+          },
+        };
+        store.reset(appState);
 
-          expect(SourcesState.getSources(appState.sources)).toEqual(sourceArray);
-        })
-      );
+        expect(SourcesState.getSources(appState.sources)).toEqual(sourceArray);
+      }));
     });
 
     describe('getcurrentSource', () => {
-      it(
-        'should return an object',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: [],
-              error: '',
-              currentSource: currentSource,
-            },
-          };
-          store.reset(appState);
+      it('should return an object', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: [],
+            error: '',
+            currentSource: currentSource,
+          },
+        };
+        store.reset(appState);
 
-          expect(SourcesState.getCurrentSource(appState.sources)).toEqual(currentSource);
-        })
-      );
+        expect(SourcesState.getCurrentSource(appState.sources)).toEqual(currentSource);
+      }));
     });
 
     describe('getError', () => {
-      it(
-        'should return an string',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: [],
-              error: 'Error',
-              currentSource: null,
-            },
-          };
-          store.reset(appState);
+      it('should return an string', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: [],
+            error: 'Error',
+            currentSource: null,
+          },
+        };
+        store.reset(appState);
 
-          expect(SourcesState.getError(appState.sources)).toEqual('Error');
-        })
-      );
+        expect(SourcesState.getError(appState.sources)).toEqual('Error');
+      }));
     });
   });
 
@@ -155,55 +144,49 @@ describe('sources', () => {
     });
 
     describe('DeleteFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: [],
-              error: '',
-              currentSource: currentSource,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: [],
+            error: '',
+            currentSource: currentSource,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new SourcesActions.DeleteSourceFail('Error'));
+        store.dispatch(new SourcesActions.DeleteSourceFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.sources)
-            .subscribe((actual) => {
-              expect(actual.error).toEqual('Error');
-              expect(actual.currentSource).toEqual(null);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.sources)
+          .subscribe((actual) => {
+            expect(actual.error).toEqual('Error');
+            expect(actual.currentSource).toEqual(null);
+          });
+      }));
     });
 
     describe('DeleteSuccess', () => {
-      it(
-        'should remove requested item from sources array',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: sourceArray,
-              error: '',
-              currentSource: currentSource,
-            },
-          };
-          store.reset(appState);
+      it('should remove requested item from sources array', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: sourceArray,
+            error: '',
+            currentSource: currentSource,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new SourcesActions.DeleteSourceSuccess(3));
+        store.dispatch(new SourcesActions.DeleteSourceSuccess(3));
 
-          store
-            .selectOnce((state: AppModel) => state.sources)
-            .subscribe((actual) => {
-              expect(actual.sources.length).toEqual(2);
-              expect(actual.sources[0].id).toBe(1);
-              expect(actual.sources[1].id).toBe(2);
-              expect(actual.currentSource).toEqual(null);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.sources)
+          .subscribe((actual) => {
+            expect(actual.sources.length).toEqual(2);
+            expect(actual.sources[0].id).toBe(1);
+            expect(actual.sources[1].id).toBe(2);
+            expect(actual.currentSource).toEqual(null);
+          });
+      }));
     });
 
     describe('Get', () => {
@@ -248,78 +231,69 @@ describe('sources', () => {
     });
 
     describe('GetFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: [],
-              error: '',
-              currentSource: currentSource,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: [],
+            error: '',
+            currentSource: currentSource,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new SourcesActions.GetSourceFail('Error'));
+        store.dispatch(new SourcesActions.GetSourceFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.sources)
-            .subscribe((actual) => {
-              expect(actual.error).toEqual('Error');
-              expect(actual.currentSource).toEqual(null);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.sources)
+          .subscribe((actual) => {
+            expect(actual.error).toEqual('Error');
+            expect(actual.currentSource).toEqual(null);
+          });
+      }));
     });
 
     describe('GetSuccess', () => {
-      it(
-        'should set currentSource with requested record and clear error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: [],
-              error: 'Test',
-              currentSource: null,
-            },
-          };
-          store.reset(appState);
+      it('should set currentSource with requested record and clear error', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: [],
+            error: 'Test',
+            currentSource: null,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new SourcesActions.GetSourceSuccess(currentSource));
+        store.dispatch(new SourcesActions.GetSourceSuccess(currentSource));
 
-          store
-            .selectOnce((state: AppModel) => state.sources)
-            .subscribe((actual) => {
-              expect(actual.currentSource).toEqual(currentSource);
-              expect(actual.error).toEqual('');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.sources)
+          .subscribe((actual) => {
+            expect(actual.currentSource).toEqual(currentSource);
+            expect(actual.error).toEqual('');
+          });
+      }));
     });
 
     describe('New Source', () => {
-      it(
-        'should initialize currentSource values for a new record',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: [],
-              error: '',
-              currentSource: null,
-            },
-          };
-          store.reset(appState);
+      it('should initialize currentSource values for a new record', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: [],
+            error: '',
+            currentSource: null,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new SourcesActions.NewSource());
+        store.dispatch(new SourcesActions.NewSource());
 
-          store
-            .selectOnce((state: AppModel) => state.sources.currentSource)
-            .subscribe((current) => {
-              expect(current.id).toEqual(null);
-              expect(current.name).toEqual('');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.sources.currentSource)
+          .subscribe((current) => {
+            expect(current.id).toEqual(null);
+            expect(current.name).toEqual('');
+          });
+      }));
     });
 
     describe('Load', () => {
@@ -364,53 +338,47 @@ describe('sources', () => {
     });
 
     describe('LoadFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: sourceArray,
-              error: '',
-              currentSource: null,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: sourceArray,
+            error: '',
+            currentSource: null,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new SourcesActions.LoadSourcesFail('Error'));
+        store.dispatch(new SourcesActions.LoadSourcesFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.sources)
-            .subscribe((actual) => {
-              expect(actual.sources.length).toEqual(0);
-              expect(actual.error).toEqual('Error');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.sources)
+          .subscribe((actual) => {
+            expect(actual.sources.length).toEqual(0);
+            expect(actual.error).toEqual('Error');
+          });
+      }));
     });
 
     describe('LoadSuccess', () => {
-      it(
-        'should set the sources array to returned values and clear error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: [],
-              error: 'Test',
-              currentSource: null,
-            },
-          };
-          store.reset(appState);
+      it('should set the sources array to returned values and clear error', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: [],
+            error: 'Test',
+            currentSource: null,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new SourcesActions.LoadSourcesSuccess(sourceArray));
+        store.dispatch(new SourcesActions.LoadSourcesSuccess(sourceArray));
 
-          store
-            .selectOnce((state: AppModel) => state.sources)
-            .subscribe((actual) => {
-              expect(actual.sources).toEqual(sourceArray);
-              expect(actual.error).toEqual('');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.sources)
+          .subscribe((actual) => {
+            expect(actual.sources).toEqual(sourceArray);
+            expect(actual.error).toEqual('');
+          });
+      }));
     });
 
     describe('Save', () => {
@@ -424,7 +392,7 @@ describe('sources', () => {
           },
         };
         store.reset(appState);
-        const action = new SourcesActions.SaveSource();
+        const action = new SourcesActions.SaveSource(currentSource);
         const expected = new SourcesActions.SaveSourceSuccess(currentSource);
         const callbacksCalled = [];
 
@@ -445,7 +413,7 @@ describe('sources', () => {
 
       it('should dispatch SaveFail when errors', fakeAsync(() => {
         // arrange
-        const action = new SourcesActions.SaveSource();
+        const action = new SourcesActions.SaveSource(currentSource);
         const expected = new SourcesActions.SaveSourceFail('Error');
         const callbacksCalled = [];
 
@@ -465,58 +433,52 @@ describe('sources', () => {
     });
 
     describe('SaveFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: [],
-              error: '',
-              currentSource: null,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: [],
+            error: '',
+            currentSource: null,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new SourcesActions.SaveSourceFail('Error'));
+        store.dispatch(new SourcesActions.SaveSourceFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.sources)
-            .subscribe((actual) => {
-              expect(actual.error).toEqual('Error');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.sources)
+          .subscribe((actual) => {
+            expect(actual.error).toEqual('Error');
+          });
+      }));
     });
 
     describe('SaveSuccess', () => {
-      it(
-        'should update the source array with new value',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            sources: {
-              sources: sourceArray,
-              error: 'Test',
-              currentSource: currentSource,
-            },
-          };
-          store.reset(appState);
+      it('should update the source array with new value', waitForAsync(() => {
+        const appState: AppModel = {
+          sources: {
+            sources: sourceArray,
+            error: 'Test',
+            currentSource: currentSource,
+          },
+        };
+        store.reset(appState);
 
-          const expected: Source = {
-            id: 3,
-            name: 'XYZ',
-          };
-          store.dispatch(new SourcesActions.SaveSourceSuccess(expected));
+        const expected: Source = {
+          id: 3,
+          name: 'XYZ',
+        };
+        store.dispatch(new SourcesActions.SaveSourceSuccess(expected));
 
-          store
-            .selectOnce((state: AppModel) => state.sources)
-            .subscribe((actual) => {
-              expect(actual.sources.length).toEqual(sourceArray.length);
-              expect(actual.sources[2]).toEqual(expected);
-              expect(actual.error).toEqual('');
-              expect(actual.currentSource).toEqual(null);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.sources)
+          .subscribe((actual) => {
+            expect(actual.sources.length).toEqual(sourceArray.length);
+            expect(actual.sources[2]).toEqual(expected);
+            expect(actual.error).toEqual('');
+            expect(actual.currentSource).toEqual(null);
+          });
+      }));
     });
   });
 });

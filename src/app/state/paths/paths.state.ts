@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { DataServiceFacade } from '../../services/data-service-facade';
 import { PathsActions } from './paths.actions';
-import { Path } from '../../shared/paths';
+import { Path } from '../../models/paths';
 
 export interface PathsStateModel {
   paths: Path[];

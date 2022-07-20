@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
 
-import { Course } from '../shared/course';
+import { Course } from '../models/course';
 import { CoursesFacade } from './courses.facade';
 
 @Component({

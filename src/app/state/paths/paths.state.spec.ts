@@ -7,7 +7,7 @@ import { of, throwError } from 'rxjs';
 import { DataServiceFacade } from '../../services/data-service-facade';
 import { PathsActions } from './paths.actions';
 import { PathsState, PathsStateModel } from './paths.state';
-import { Path } from '../../shared/paths';
+import { Path } from '../../models/paths';
 
 const pathsArray: Path[] = [
   { id: 1, name: 'ABC' },

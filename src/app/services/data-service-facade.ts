@@ -1,10 +1,10 @@
 import { Injectable, Injector } from '@angular/core';
 
-import { Course } from '../shared/course';
+import { Course } from '../models/course';
 import { CoursesService } from './courses/courses.service';
-import { Path } from '../shared/paths';
+import { Path } from '../models/paths';
 import { PathsService } from './paths/paths.service';
-import { Source } from '../shared/sources';
+import { Source } from '../models/sources';
 import { SourcesService } from './sources/sources.service';
 import { UsersService } from './users/users.service';
 
