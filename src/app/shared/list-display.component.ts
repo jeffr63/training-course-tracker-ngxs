@@ -1,7 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-list-display',
+  standalone: true,
+  imports: [CommonModule, NgbModule],
 
   template: `
     <table class="table table-striped">

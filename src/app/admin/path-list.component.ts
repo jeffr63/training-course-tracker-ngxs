@@ -1,9 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { ListDisplayComponent } from '../shared/list-display.component';
+import { ListHeaderComponent } from '../shared/list-header.component';
 import { PathsFacade } from './paths.facade';
 
 @Component({
   selector: 'app-path-list',
+  standalone: true,
+  imports: [CommonModule, ListDisplayComponent, ListHeaderComponent, NgbModule],
+  providers: [PathsFacade],
 
   template: `
     <section>

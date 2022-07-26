@@ -142,8 +142,9 @@
       }
     }
   },
-  "defaultProject": "course-list",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

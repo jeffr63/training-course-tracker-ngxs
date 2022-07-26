@@ -1,14 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 
 import { Course } from '../models/course';
 import { CoursesFacade } from './courses.facade';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-course-edit',
+  standalone: true,
+  imports: [CommonModule, NgbModule, ReactiveFormsModule],
+  providers: [CoursesFacade],
 
   template: `
     <section class="container">

@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { AuthService } from '../auth/auth.service';
 import { LoginComponent } from '../modals/login.component';
 
 @Component({
   selector: 'app-menu',
+  standalone: true,
+  imports: [CommonModule, NgbModule, ReactiveFormsModule, RouterModule],
 
   template: `
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">

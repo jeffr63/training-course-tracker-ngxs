@@ -1,10 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { ModalDataService } from './modal-data.service';
 
 @Component({
   selector: 'app-delete',
+  standalone: true,
+  imports: [CommonModule, NgbModule],
+
   template: `
     <div class="modal-header">
       <h5 class="modal-title">Delete?</h5>

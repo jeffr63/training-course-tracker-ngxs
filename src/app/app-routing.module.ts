@@ -4,8 +4,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'admin', loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule) },
-  { path: 'courses', loadChildren: () => import('./courses/courses.module').then((m) => m.CoursesModule) },
+  { path: 'admin', loadChildren: () => import('./admin/admin.routes').then((m) => m.ADMIN_ROUTES) },
+  { path: 'courses', loadChildren: () => import('./courses/course.routes').then((m) => m.COURSE_ROUTES) },
   { path: 'home', component: DashboardComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];

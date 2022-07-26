@@ -1,14 +1,19 @@
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
-import { Source } from '../models/sources';
 
+import { Source } from '../models/sources';
 import { SourcesFacade } from './sources.facade';
 
 @Component({
   selector: 'app-source-edit',
+  standalone: true,
+  imports: [CommonModule, NgbModule, ReactiveFormsModule, RouterModule],
+  providers: [SourcesFacade],
 
   template: `
     <section class="container">

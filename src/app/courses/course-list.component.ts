@@ -1,10 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { AuthService } from '../auth/auth.service';
+
 import { CoursesFacade } from './courses.facade';
+import { ListDisplayComponent } from '../shared/list-display.component';
+import { PagerListHeaderComponent } from '../shared/pager-list-header.component';
 
 @Component({
   selector: 'app-course-list',
+  standalone: true,
+  imports: [CommonModule, ListDisplayComponent, PagerListHeaderComponent, NgbModule],
+  providers: [CoursesFacade],
 
   template: `
     <section>

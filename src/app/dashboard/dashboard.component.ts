@@ -1,12 +1,20 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Observable } from 'rxjs';
 
-import { CourseData } from '../models/course';
+import { CoursesFacade } from '../courses/courses.facade';
 import { DashboardFacade } from './dashboard.facade';
+import { SourcesFacade } from '../admin/sources.facade';
+import { CourseData } from '../models/course';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule, NgbModule, NgxChartsModule],
+  providers: [CoursesFacade, SourcesFacade],
 
   template: `
     <section>

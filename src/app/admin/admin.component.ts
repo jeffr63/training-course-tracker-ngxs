@@ -1,8 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UsersFacade } from './users.facade';
 
 @Component({
   selector: 'app-admin',
+  standalone: true,
+  imports: [CommonModule, NgbModule, RouterModule],
+  providers: [UsersFacade],
 
   template: `
     <section>

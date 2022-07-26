@@ -1,9 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { ListDisplayComponent } from '../shared/list-display.component';
+import { ListHeaderComponent } from '../shared/list-header.component';
 import { SourcesFacade } from './sources.facade';
 
 @Component({
   selector: 'app-source-list',
+  standalone: true,
+  imports: [CommonModule, NgbModule, ListDisplayComponent, ListHeaderComponent],
+  providers: [SourcesFacade],
 
   template: `
     <section>

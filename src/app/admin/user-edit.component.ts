@@ -1,12 +1,18 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 
 import { UsersFacade } from './users.facade';
-import { Subscriber, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-edit',
+  standalone: true,
+  imports: [CommonModule, NgbModule, ReactiveFormsModule, RouterModule],
+  providers: [UsersFacade],
 
   template: `
     <section class="container">
