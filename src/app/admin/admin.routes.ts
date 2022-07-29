@@ -13,32 +13,32 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: 'sources',
         title: 'Sources',
-        loadComponent: () => import('./source-list.component').then((m) => m.SourceListComponent),
+        loadComponent: () => import('./sources/source-list.component').then((m) => m.SourceListComponent),
       },
       {
         path: 'sources/:id',
         title: SourceTitleResolverService,
-        loadComponent: () => import('./source-edit.component').then((m) => m.SourceEditComponent),
+        loadComponent: () => import('./sources/source-edit.component').then((m) => m.SourceEditComponent),
       },
       {
         path: 'paths',
         title: 'Paths',
-        loadComponent: () => import('./path-list.component').then((m) => m.PathListComponent),
+        loadComponent: () => import('./paths/path-list.component').then((m) => m.PathListComponent),
       },
       {
         path: 'paths/:id',
         title: PathTitleResolverService,
-        loadComponent: () => import('./path-edit.component').then((m) => m.PathEditComponent),
+        loadComponent: () => import('./paths/path-edit.component').then((m) => m.PathEditComponent),
       },
       {
         path: 'users',
         title: 'Users',
-        loadComponent: () => import('./user-list.component').then((m) => m.UserListComponent),
+        loadComponent: () => import('./users/user-list.component').then((m) => m.UserListComponent),
       },
       {
         path: 'users/:id',
         title: UserTitleResolverService,
-        loadComponent: () => import('./user-edit.component').then((m) => m.UserEditComponent),
+        loadComponent: () => import('./users/user-edit.component').then((m) => m.UserEditComponent),
       },
     ],
     canActivate: [CanActivateAdmin],

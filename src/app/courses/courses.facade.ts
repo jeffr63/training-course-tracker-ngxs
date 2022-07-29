@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { Store, Select, Actions, ofActionSuccessful } from '@ngxs/store';
+import { Select, Actions, ofActionSuccessful } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
@@ -17,6 +17,7 @@ import { PathsState } from '../state/paths/paths.state';
 import { Source } from '../models/sources';
 import { SourcesActions } from '../state/sources/sources.actions';
 import { SourcesState } from '../state/sources/sources.state';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 
 @Injectable()
 export class CoursesFacade {
@@ -33,18 +34,32 @@ export class CoursesFacade {
 
   constructor(
     private actions$: Actions,
-    private store: Store,
     private modal: NgbModal,
     private location: Location,
     private router: Router,
     private modalDataService: ModalDataService
   ) {}
 
-  public cancelEdit() {
+  @Dispatch() deleteCourse = (id) =>
+    new CourseActions.DeleteCourse({
+      id: id,
+      current: this.current,
+      pageSize: this.pageSize,
+    });
+  @Dispatch() loadCourse = (id) => [
+    id === 'new' ? new CourseActions.NewCourse() : new CourseActions.GetCourse(id),
+    new PathsActions.LoadPaths(),
+    new SourcesActions.LoadSources(),
+  ];
+  @Dispatch() loadCourses = () => new CourseActions.LoadCourses();
+  @Dispatch() refreshTable = () => new CourseActions.GetCoursesPage({ current: this.current, pageSize: this.pageSize });
+  @Dispatch() saveCourse = (course) => new CourseActions.SaveCourse(course);
+
+  public cancel() {
     this.location.back();
   }
 
-  public deleteCourse(id) {
+  public delete(id) {
     const modalOptions = {
       title: 'Are you sure you want to delete this course?',
       body: 'All information associated to this source will be permanently deleted.',
@@ -54,13 +69,7 @@ export class CoursesFacade {
     this.modal.open(DeleteComponent).result.then(
       (result) => {
         this.closedResult = `Closed with ${result}`;
-        this.store.dispatch(
-          new CourseActions.DeleteCourse({
-            id: id,
-            current: this.current,
-            pageSize: this.pageSize,
-          })
-        );
+        this.deleteCourse(id);
       },
       (reason) => {
         this.closedResult = `Dismissed with ${reason}`;
@@ -68,41 +77,26 @@ export class CoursesFacade {
     );
   }
 
-  public editCourse(id) {
+  public edit(id) {
     this.router.navigate(['/courses', id]);
   }
 
-  public loadCourses() {
-    this.store.dispatch(new CourseActions.LoadCourses());
+  public loadAll() {
+    this.loadCourses();
     this.actions$.pipe(ofActionSuccessful(CourseActions.LoadCourses)).subscribe(() => {
       this.refreshTable();
     });
   }
 
-  public loadCourse(id) {
-    if (id === 'new') {
-      this.store.dispatch(new CourseActions.NewCourse());
-    } else {
-      this.store.dispatch(new CourseActions.GetCourse(id));
-    }
-
-    this.store.dispatch(new PathsActions.LoadPaths());
-    this.store.dispatch(new SourcesActions.LoadSources());
-  }
-
-  public newCourse() {
+  public new() {
     this.router.navigate(['/courses/new']);
   }
 
-  public refreshTable() {
-    this.store.dispatch(new CourseActions.GetCoursesPage({ current: this.current, pageSize: this.pageSize }));
-  }
-
-  public saveCourse(id: string, course: Course) {
-    this.store.dispatch(new CourseActions.SaveCourse(course));
+  public save(id: string, course: Course) {
+    this.saveCourse(course);
     this.actions$.pipe(ofActionSuccessful(CourseActions.SaveCourse)).subscribe(() => {
       if (id === 'New') {
-        this.store.dispatch(new CourseActions.LoadCourses());
+        this.loadCourses();
         this.actions$.pipe(ofActionSuccessful(CourseActions.LoadCourses)).subscribe(() => {
           this.refreshTable();
         });

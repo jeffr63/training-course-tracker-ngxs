@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { Store, Select } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
-import { DeleteComponent } from '../modals/delete.component';
-import { ModalDataService } from '../modals/modal-data.service';
-import { User } from '../models/user';
-import { UserActions } from '../state/users/users.actions';
-import { UsersState } from '../state/users/users.state';
+import { DeleteComponent } from '../../modals/delete.component';
+import { ModalDataService } from '../../modals/modal-data.service';
+import { User } from '../../models/user';
+import { UserActions } from '../../state/users/users.actions';
+import { UsersState } from '../../state/users/users.state';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 
 @Injectable()
 export class UsersFacade {
@@ -21,18 +22,22 @@ export class UsersFacade {
   public isAuthenticated = true;
 
   constructor(
-    private store: Store,
     private router: Router,
     private modal: NgbModal,
     private location: Location,
     private modalDataService: ModalDataService
   ) {}
 
-  public cancelEdit() {
+  @Dispatch() deleteUser = (id: number) => new UserActions.DeleteUser(id);
+  @Dispatch() loadUser = (id) => new UserActions.GetUser(id);
+  @Dispatch() loadUsers = () => new UserActions.LoadUsers();
+  @Dispatch() patchUser = (id: number, payload: any) => new UserActions.PatchUser(id, payload);
+
+  public cancel() {
     this.location.back();
   }
 
-  public deleteUser(id: number) {
+  public delete(id: number) {
     const modalOptions = {
       title: 'Are you sure you want to delete this user?',
       body: 'All information associated to this source will be permanently deleted.',
@@ -40,24 +45,16 @@ export class UsersFacade {
     };
     this.modalDataService.setDeleteModalOptions(modalOptions);
     this.modal.open(DeleteComponent).result.then((_result) => {
-      this.store.dispatch(new UserActions.DeleteUser(id));
+      this.deleteUser(id);
     });
   }
 
-  public editUser(id: number) {
+  public edit(id: number) {
     this.router.navigate(['/admin/users', id]);
   }
 
-  public loadUser(id) {
-    this.store.dispatch(new UserActions.GetUser(id));
-  }
-
-  public loadUsers() {
-    this.store.dispatch(new UserActions.LoadUsers());
-  }
-
-  public patchUser(id: number, payload: any) {
-    this.store.dispatch(new UserActions.PatchUser(id, payload));
+  public patch(id: number, payload: any) {
+    this.patchUser(id, payload);
     this.location.back();
   }
 }

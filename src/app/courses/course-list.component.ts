@@ -30,7 +30,7 @@ import { PagerListHeaderComponent } from '../shared/pager-list-header.component'
             [(current)]="facade.current"
             [isAuthenticated]="auth.isAuthenticated"
             (refreshTable)="facade.refreshTable()"
-            (newCourse)="facade.newCourse()"
+            (newCourse)="facade.new()"
           >
           </app-pager-list-header>
 
@@ -39,8 +39,8 @@ import { PagerListHeaderComponent } from '../shared/pager-list-header.component'
             [columns]="columns"
             [items]="facade.courses$ | async"
             [isAuthenticated]="auth.isAuthenticated"
-            (deleteItem)="facade.deleteCourse($event)"
-            (editItem)="facade.editCourse($event)"
+            (deleteItem)="facade.delete($event)"
+            (editItem)="facade.edit($event)"
           ></app-list-display>
         </section>
       </section>
@@ -56,6 +56,6 @@ export class CourseListComponent implements OnInit {
   constructor(public auth: AuthService, public facade: CoursesFacade) {}
 
   ngOnInit() {
-    this.facade.loadCourses();
+    this.facade.loadAll();
   }
 }

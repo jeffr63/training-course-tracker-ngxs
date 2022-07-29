@@ -94,13 +94,13 @@ import { CommonModule } from '@angular/common';
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
             <button
               class="btn btn-primary me-sm-2"
-              (click)="saveCourse()"
+              (click)="save()"
               title="Save"
               [disabled]="!courseEditForm.valid"
             >
               <i class="bi bi-save"></i> Save
             </button>
-            <a class="btn btn-secondary" (click)="facade.cancelEdit()" title="Cancel">
+            <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel">
               <i class="bi bi-x-circle"></i> Cancel
             </a>
           </div>
@@ -162,11 +162,11 @@ export class CourseEditComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe;
   }
 
-  saveCourse() {
+  save() {
     this.course.title = this.courseEditForm.controls.title.value;
     this.course.instructor = this.courseEditForm.controls.instructor.value;
     this.course.path = this.courseEditForm.controls.path.value;
     this.course.source = this.courseEditForm.controls.source.value;
-    this.facade.saveCourse(this.id, this.course);
+    this.facade.save(this.id, this.course);
   }
 }

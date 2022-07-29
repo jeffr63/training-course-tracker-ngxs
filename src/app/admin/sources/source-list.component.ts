@@ -3,30 +3,32 @@ import { Component, OnInit } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ListDisplayComponent } from '../shared/list-display.component';
-import { ListHeaderComponent } from '../shared/list-header.component';
-import { UsersFacade } from './users.facade';
+import { ListDisplayComponent } from '../../shared/list-display.component';
+import { ListHeaderComponent } from '../../shared/list-header.component';
+import { SourcesFacade } from './sources.facade';
 
 @Component({
-  selector: 'app-user-list',
+  selector: 'app-source-list',
   standalone: true,
   imports: [CommonModule, NgbModule, ListDisplayComponent, ListHeaderComponent],
-  providers: [UsersFacade],
+  providers: [SourcesFacade],
 
   template: `
     <section>
       <section class="card">
         <header>
-          <h1 class="card-header">Users</h1>
+          <h1 class="card-header">Sources</h1>
         </header>
         <section class="card-body">
+          <app-list-header (newItem)="facade.new()"></app-list-header>
+
           <app-list-display
             [headers]="headers"
             [columns]="columns"
-            [items]="facade.users$ | async"
+            [items]="facade.sources$ | async"
             [isAuthenticated]="isAuthenticated"
-            (deleteItem)="facade.deleteUser($event)"
-            (editItem)="facade.editUser($event)"
+            (deleteItem)="facade.delete($event)"
+            (editItem)="facade.edit($event)"
           ></app-list-display>
         </section>
       </section>
@@ -41,14 +43,14 @@ import { UsersFacade } from './users.facade';
     `,
   ],
 })
-export class UserListComponent implements OnInit {
-  columns = ['name', 'email', 'role'];
-  headers = ['Name', 'Email', 'Role'];
+export class SourceListComponent implements OnInit {
+  columns = ['name'];
+  headers = ['Source'];
   isAuthenticated = true;
 
-  constructor(public facade: UsersFacade) {}
+  constructor(public facade: SourcesFacade) {}
 
   ngOnInit() {
-    this.facade.loadUsers();
+    this.facade.loadSources();
   }
 }

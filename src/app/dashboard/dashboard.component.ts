@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 import { CoursesFacade } from '../courses/courses.facade';
 import { DashboardFacade } from './dashboard.facade';
-import { SourcesFacade } from '../admin/sources.facade';
+import { SourcesFacade } from '../admin/sources/sources.facade';
 import { CourseData } from '../models/course';
 import { DataServiceFacade } from '../services/data-service-facade';
 

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { CourseActions } from '../state/course/course.actions';
 import { CourseData } from '../models/course';
 import { CoursesState } from '../state/course/course.state';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,11 @@ export class DashboardFacade {
 
   constructor(private store: Store) {}
 
+  @Dispatch() getCourseData = () => new CourseActions.GetCourseData();
+
   loadChartData() {
     this.store.dispatch(new CourseActions.LoadCourses()).subscribe(() => {
-      this.store.dispatch(new CourseActions.GetCourseData());
+      this.getCourseData();
     });
   }
 }

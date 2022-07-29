@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { Store, Select } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
-import { DeleteComponent } from './../modals/delete.component';
-import { ModalDataService } from './../modals/modal-data.service';
-import { Source } from '../models/sources';
-import { SourcesActions } from '../state/sources/sources.actions';
-import { SourcesState } from '../state/sources/sources.state';
+import { DeleteComponent } from '../../modals/delete.component';
+import { ModalDataService } from '../../modals/modal-data.service';
+import { Source } from '../../models/sources';
+import { SourcesActions } from '../../state/sources/sources.actions';
+import { SourcesState } from '../../state/sources/sources.state';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 
 @Injectable()
 export class SourcesFacade {
@@ -21,18 +22,22 @@ export class SourcesFacade {
   public isAuthenticated = true;
 
   constructor(
-    private store: Store,
     private router: Router,
     private modal: NgbModal,
     private location: Location,
     private modalDataService: ModalDataService
   ) {}
 
-  public cancelEdit() {
+  @Dispatch() deleteSource = (id: number) => new SourcesActions.DeleteSource(id);
+  @Dispatch() loadSource = (id) => (id === 'new' ? new SourcesActions.NewSource() : new SourcesActions.GetSource(id));
+  @Dispatch() loadSources = () => new SourcesActions.LoadSources();
+  @Dispatch() saveSource = (source: Source) => new SourcesActions.SaveSource(source);
+
+  public cancel() {
     this.location.back();
   }
 
-  public deleteSource(id: number) {
+  public delete(id: number) {
     const modalOptions = {
       title: 'Are you sure you want to delete this source?',
       body: 'All information associated to this source will be permanently deleted.',
@@ -40,32 +45,20 @@ export class SourcesFacade {
     };
     this.modalDataService.setDeleteModalOptions(modalOptions);
     this.modal.open(DeleteComponent).result.then((_result) => {
-      this.store.dispatch(new SourcesActions.DeleteSource(id));
+      this.deleteSource(id);
     });
   }
 
-  public editSource(id: number) {
+  public edit(id: number) {
     this.router.navigate(['/admin/sources', id]);
   }
 
-  public loadSource(id) {
-    if (id === 'new') {
-      this.store.dispatch(new SourcesActions.NewSource());
-    } else {
-      this.store.dispatch(new SourcesActions.GetSource(id));
-    }
-  }
-
-  public loadSources() {
-    this.store.dispatch(new SourcesActions.LoadSources());
-  }
-
-  public newSource() {
+  public new() {
     this.router.navigate(['/admin/sources/new']);
   }
 
-  public saveSource(source: Source) {
-    this.store.dispatch(new SourcesActions.SaveSource(source));
+  public save(source: Source) {
+    this.saveSource(source);
     this.location.back();
   }
 }

@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 
-import { Source } from '../models/sources';
+import { Source } from '../../models/sources';
 import { SourcesFacade } from './sources.facade';
 
 @Component({
@@ -30,15 +30,10 @@ import { SourcesFacade } from './sources.facade';
           </fieldset>
 
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
-            <button
-              class="btn btn-primary mr-sm-2"
-              (click)="saveSource()"
-              title="Save"
-              [disabled]="!sourceEditForm.valid"
-            >
+            <button class="btn btn-primary mr-sm-2" (click)="save()" title="Save" [disabled]="!sourceEditForm.valid">
               <i class="bi bi-save"></i> Save
             </button>
-            <a class="btn btn-secondary" (click)="facade.cancelEdit()" title="Cancel">
+            <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel">
               <i class="bi bi-x-circle"></i> Cancel
             </a>
           </div>
@@ -92,8 +87,8 @@ export class SourceEditComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  saveSource() {
+  save() {
     this.source.name = this.sourceEditForm.controls.name.value;
-    this.facade.saveSource(this.source);
+    this.facade.save(this.source);
   }
 }

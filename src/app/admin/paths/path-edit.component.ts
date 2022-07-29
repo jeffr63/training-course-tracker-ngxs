@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 
-import { Path } from '../models/paths';
+import { Path } from '../../models/paths';
 import { PathsFacade } from './paths.facade';
 
 @Component({
@@ -30,10 +30,10 @@ import { PathsFacade } from './paths.facade';
           </fieldset>
 
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
-            <button class="btn btn-primary me-sm-2" (click)="savePath()" title="Save" [disabled]="!pathEditForm.valid">
+            <button class="btn btn-primary me-sm-2" (click)="save()" title="Save" [disabled]="!pathEditForm.valid">
               <i class="bi bi-save"></i> Save
             </button>
-            <a class="btn btn-secondary" (click)="facade.cancelEdit()" title="Cancel">
+            <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel">
               <i class="bi bi-x-circle"></i> Cancel
             </a>
           </div>
@@ -87,7 +87,7 @@ export class PathEditComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  savePath() {
+  save() {
     this.path.name = this.pathEditForm.controls.name.value;
     this.facade.save(this.path);
   }

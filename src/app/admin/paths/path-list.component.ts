@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ListDisplayComponent } from '../shared/list-display.component';
-import { ListHeaderComponent } from '../shared/list-header.component';
+import { ListDisplayComponent } from '../../shared/list-display.component';
+import { ListHeaderComponent } from '../../shared/list-header.component';
 import { PathsFacade } from './paths.facade';
 
 @Component({
@@ -20,15 +20,15 @@ import { PathsFacade } from './paths.facade';
           <h1 class="card-header">Paths</h1>
         </header>
         <section class="card-body">
-          <app-list-header (newItem)="facade.newPath()"></app-list-header>
+          <app-list-header (newItem)="facade.new()"></app-list-header>
 
           <app-list-display
             [headers]="headers"
             [columns]="columns"
             [items]="facade.paths$ | async"
             [isAuthenticated]="isAuthenticated"
-            (deleteItem)="facade.deletePath($event)"
-            (editItem)="facade.editPath($event)"
+            (deleteItem)="facade.delete($event)"
+            (editItem)="facade.edit($event)"
           ></app-list-display>
         </section>
       </section>

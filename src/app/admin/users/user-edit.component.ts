@@ -57,10 +57,10 @@ import { UsersFacade } from './users.facade';
           </fieldset>
 
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
-            <button class="btn btn-primary me-sm-2" (click)="saveUser()" title="Save" [disabled]="!userEditForm.valid">
+            <button class="btn btn-primary me-sm-2" (click)="save()" title="Save" [disabled]="!userEditForm.valid">
               <i class="bi bi-save"></i> Save
             </button>
-            <a class="btn btn-secondary" (click)="facade.cancelEdit()" title="Cancel">
+            <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel">
               <i class="bi bi-x-circle"></i> Cancel
             </a>
           </div>
@@ -117,12 +117,12 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  saveUser() {
+  save() {
     const patch = {
       name: this.userEditForm.controls.name.value,
       email: this.userEditForm.controls.email.value,
       role: this.userEditForm.controls.role.value,
     };
-    this.facade.patchUser(this.id, patch);
+    this.facade.patch(this.id, patch);
   }
 }

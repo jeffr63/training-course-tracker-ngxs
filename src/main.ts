@@ -4,8 +4,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, TitleStrategy } from '@angular/router';
 
-import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsModule } from '@ngxs/store';
+import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 
 import { environment } from './environments/environment';
 import { APP_ROUTES } from './app/app.routes';
@@ -28,6 +29,7 @@ bootstrapApplication(AppComponent, {
       NgxsModule.forRoot([CoursesState, SourcesState, PathsState, UsersState], {
         selectorOptions: { suppressErrors: false, injectContainerState: false },
       }),
+      NgxsDispatchPluginModule.forRoot(),
       NgxsReduxDevtoolsPluginModule.forRoot(),
       RouterModule.forRoot(APP_ROUTES, { relativeLinkResolution: 'legacy' })
     ),

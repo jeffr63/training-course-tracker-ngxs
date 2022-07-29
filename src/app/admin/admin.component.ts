@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { UsersFacade } from './users.facade';
+import { UsersFacade } from './users/users.facade';
 
 @Component({
   selector: 'app-admin',
