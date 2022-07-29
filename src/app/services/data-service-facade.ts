@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { Course } from '../models/course';
 import { CoursesService } from './courses/courses.service';
@@ -8,41 +8,16 @@ import { Source } from '../models/sources';
 import { SourcesService } from './sources/sources.service';
 import { UsersService } from './users/users.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DataServiceFacade {
-  private _coursesService: CoursesService;
-  public get coursesService(): CoursesService {
-    if (!this._coursesService) {
-      this._coursesService = this.injector.get(CoursesService);
-    }
-    return this._coursesService;
-  }
-
-  private _pathsService: PathsService;
-  public get pathsService(): PathsService {
-    if (!this._pathsService) {
-      this._pathsService = this.injector.get(PathsService);
-    }
-    return this._pathsService;
-  }
-
-  private _sourcesService: SourcesService;
-  public get sourcesService(): SourcesService {
-    if (!this._sourcesService) {
-      this._sourcesService = this.injector.get(SourcesService);
-    }
-    return this._sourcesService;
-  }
-
-  private _usersService: UsersService;
-  public get usersService(): UsersService {
-    if (!this._sourcesService) {
-      this._usersService = this.injector.get(UsersService);
-    }
-    return this._usersService;
-  }
-
-  constructor(private injector: Injector) {}
+  constructor(
+    private coursesService: CoursesService,
+    private pathsService: PathsService,
+    private sourcesService: SourcesService,
+    private usersService: UsersService
+  ) {}
 
   // course service methods
   deleteCourse(id) {

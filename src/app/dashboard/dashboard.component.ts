@@ -9,12 +9,13 @@ import { CoursesFacade } from '../courses/courses.facade';
 import { DashboardFacade } from './dashboard.facade';
 import { SourcesFacade } from '../admin/sources.facade';
 import { CourseData } from '../models/course';
+import { DataServiceFacade } from '../services/data-service-facade';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, NgbModule, NgxChartsModule],
-  providers: [CoursesFacade, SourcesFacade],
+  providers: [DataServiceFacade, CoursesFacade, SourcesFacade],
 
   template: `
     <section>
