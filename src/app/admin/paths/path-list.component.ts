@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +10,7 @@ import { PathsFacade } from './paths.facade';
 @Component({
   selector: 'app-path-list',
   standalone: true,
-  imports: [CommonModule, ListDisplayComponent, ListHeaderComponent, NgbModule],
+  imports: [AsyncPipe, ListDisplayComponent, ListHeaderComponent, NgbModule],
   providers: [PathsFacade],
 
   template: `

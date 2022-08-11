@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -7,7 +7,7 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, NgbModule, ReactiveFormsModule],
+  imports: [NgIf, NgbModule, ReactiveFormsModule],
 
   template: `
     <div class="modal-header">

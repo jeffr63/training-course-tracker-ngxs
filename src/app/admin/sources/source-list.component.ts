@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +10,7 @@ import { SourcesFacade } from './sources.facade';
 @Component({
   selector: 'app-source-list',
   standalone: true,
-  imports: [CommonModule, NgbModule, ListDisplayComponent, ListHeaderComponent],
+  imports: [AsyncPipe, NgbModule, ListDisplayComponent, ListHeaderComponent],
   providers: [SourcesFacade],
 
   template: `

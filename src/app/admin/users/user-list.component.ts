@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +10,7 @@ import { UsersFacade } from './users.facade';
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule, NgbModule, ListDisplayComponent, ListHeaderComponent],
+  imports: [AsyncPipe, NgbModule, ListDisplayComponent, ListHeaderComponent],
   providers: [UsersFacade],
 
   template: `

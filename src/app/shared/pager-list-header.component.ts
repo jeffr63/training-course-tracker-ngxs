@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -6,7 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-pager-list-header',
   standalone: true,
-  imports: [CommonModule, NgbModule],
+  imports: [NgIf, NgbModule],
 
   template: `
     <header class="row">

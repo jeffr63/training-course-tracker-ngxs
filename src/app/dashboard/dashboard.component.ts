@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -14,7 +13,7 @@ import { DataServiceFacade } from '../services/data-service-facade';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, NgbModule, NgxChartsModule],
+  imports: [NgbModule, NgxChartsModule],
   providers: [DataServiceFacade, CoursesFacade, SourcesFacade],
 
   template: `

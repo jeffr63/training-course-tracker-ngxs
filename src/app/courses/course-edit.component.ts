@@ -1,18 +1,18 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 
 import { Course } from '../models/course';
 import { CoursesFacade } from './courses.facade';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-course-edit',
   standalone: true,
-  imports: [CommonModule, NgbModule, ReactiveFormsModule],
+  imports: [AsyncPipe, NgForOf, NgIf, NgbModule, ReactiveFormsModule],
   providers: [CoursesFacade],
 
   template: `
@@ -92,12 +92,7 @@ import { CommonModule } from '@angular/common';
           </fieldset>
 
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
-            <button
-              class="btn btn-primary me-sm-2"
-              (click)="save()"
-              title="Save"
-              [disabled]="!courseEditForm.valid"
-            >
+            <button class="btn btn-primary me-sm-2" (click)="save()" title="Save" [disabled]="!courseEditForm.valid">
               <i class="bi bi-save"></i> Save
             </button>
             <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel">

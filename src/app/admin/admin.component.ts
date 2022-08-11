@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
@@ -8,7 +7,7 @@ import { UsersFacade } from './users/users.facade';
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, NgbModule, RouterModule],
+  imports: [NgbModule, RouterModule],
   providers: [UsersFacade],
 
   template: `
