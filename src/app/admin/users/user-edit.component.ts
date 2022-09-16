@@ -1,4 +1,4 @@
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { UsersFacade } from './users.facade';
 @Component({
   selector: 'app-user-edit',
   standalone: true,
-  imports: [NgIf, NgbModule, ReactiveFormsModule, RouterModule],
+  imports: [NgIf, NgbModule, ReactiveFormsModule],
   providers: [UsersFacade],
 
   template: `

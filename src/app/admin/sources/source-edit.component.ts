@@ -1,4 +1,4 @@
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
@@ -12,7 +12,7 @@ import { SourcesFacade } from './sources.facade';
 @Component({
   selector: 'app-source-edit',
   standalone: true,
-  imports: [NgIf, NgbModule, ReactiveFormsModule, RouterModule],
+  imports: [NgIf, NgbModule, ReactiveFormsModule],
   providers: [SourcesFacade],
 
   template: `

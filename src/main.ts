@@ -2,7 +2,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, TitleStrategy } from '@angular/router';
+import { provideRouter, TitleStrategy } from '@angular/router';
 
 import { NgxsModule } from '@ngxs/store';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
@@ -30,9 +30,9 @@ bootstrapApplication(AppComponent, {
         selectorOptions: { suppressErrors: false, injectContainerState: false },
       }),
       NgxsDispatchPluginModule.forRoot(),
-      NgxsReduxDevtoolsPluginModule.forRoot(),
-      RouterModule.forRoot(APP_ROUTES, { relativeLinkResolution: 'legacy' })
+      NgxsReduxDevtoolsPluginModule.forRoot()
     ),
     { provide: TitleStrategy, useClass: CustomTitleStrategyService },
+    provideRouter(APP_ROUTES),
   ],
 }).catch((err) => console.error(err));
