@@ -83,7 +83,7 @@ import { UsersFacade } from './users.facade';
     `,
   ],
 })
-export class UserEditComponent implements OnInit, OnDestroy {
+export default class UserEditComponent implements OnInit, OnDestroy {
   userEditForm!: FormGroup;
   private id: number = 0;
   private sub = new Subscription();

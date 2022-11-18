@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLinkWithHref } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -11,7 +11,7 @@ import { LoginComponent } from '../modals/login.component';
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [NgIf, NgbModule, ReactiveFormsModule, RouterLinkWithHref],
+  imports: [NgIf, NgbModule, ReactiveFormsModule, RouterLink],
 
   template: `
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">

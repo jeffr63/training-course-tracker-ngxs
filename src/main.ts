@@ -1,7 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { enableProdMode, importProvidersFrom } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
 import { provideRouter, TitleStrategy } from '@angular/router';
 
 import { NgxsModule } from '@ngxs/store';
@@ -24,8 +24,6 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
-      BrowserAnimationsModule,
-      HttpClientModule,
       NgxsModule.forRoot([CoursesState, SourcesState, PathsState, UsersState], {
         selectorOptions: { suppressErrors: false, injectContainerState: false },
       }),
@@ -33,6 +31,8 @@ bootstrapApplication(AppComponent, {
       NgxsReduxDevtoolsPluginModule.forRoot()
     ),
     { provide: TitleStrategy, useClass: CustomTitleStrategyService },
+    provideAnimations(),
+    provideHttpClient(),
     provideRouter(APP_ROUTES),
   ],
 }).catch((err) => console.error(err));

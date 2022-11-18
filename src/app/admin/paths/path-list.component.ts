@@ -43,7 +43,7 @@ import { PathsFacade } from './paths.facade';
     `,
   ],
 })
-export class PathListComponent implements OnInit {
+export default class PathListComponent implements OnInit {
   columns = ['name'];
   headers = ['Path'];
   isAuthenticated = true;

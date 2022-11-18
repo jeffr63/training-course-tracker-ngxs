@@ -56,7 +56,7 @@ import { SourcesFacade } from './sources.facade';
     `,
   ],
 })
-export class SourceEditComponent implements OnInit, OnDestroy {
+export default class SourceEditComponent implements OnInit, OnDestroy {
   sourceEditForm!: FormGroup;
   private sub = new Subscription();
   private source: Source;

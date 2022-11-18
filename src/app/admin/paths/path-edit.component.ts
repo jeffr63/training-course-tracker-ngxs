@@ -56,7 +56,7 @@ import { PathsFacade } from './paths.facade';
     `,
   ],
 })
-export class PathEditComponent implements OnInit, OnDestroy {
+export default class PathEditComponent implements OnInit, OnDestroy {
   pathEditForm!: FormGroup;
   private path: Path;
   private sub = new Subscription();

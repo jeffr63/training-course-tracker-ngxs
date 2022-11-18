@@ -43,7 +43,7 @@ import { SourcesFacade } from './sources.facade';
     `,
   ],
 })
-export class SourceListComponent implements OnInit {
+export default class SourceListComponent implements OnInit {
   columns = ['name'];
   headers = ['Source'];
   isAuthenticated = true;

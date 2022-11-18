@@ -49,7 +49,7 @@ import { PagerListHeaderComponent } from '../shared/pager-list-header.component'
 
   styles: [],
 })
-export class CourseListComponent implements OnInit {
+export default class CourseListComponent implements OnInit {
   columns = ['title', 'instructor', 'path', 'source'];
   headers = ['Title', 'Instructor', 'Path', 'Source'];
 

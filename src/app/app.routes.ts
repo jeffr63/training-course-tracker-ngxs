@@ -7,12 +7,12 @@ export const APP_ROUTES: Routes = [
   {
     path: 'admin',
     title: 'Administration',
-    loadChildren: () => import('./admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+    loadChildren: () => import('./admin/admin.routes'),
   },
   {
     path: 'courses',
     title: 'Courses',
-    loadChildren: () => import('./courses/course.routes').then((m) => m.COURSE_ROUTES),
+    loadChildren: () => import('./courses/course.routes'),
   },
   { path: 'home', title: 'Home', component: DashboardComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },

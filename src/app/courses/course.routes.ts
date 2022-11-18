@@ -1,19 +1,20 @@
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { Route } from '@angular/router';
 
-import { CanActivateEdit } from '../auth/canActiveateEdit.guard';
+import { AuthService } from '../auth/auth.service';
 import { CourseTitleResolverService } from '../services/courses/course-title-resolver.service';
 
-export const COURSE_ROUTES: Routes = [
+export default [
   {
     path: '',
     children: [
-      { path: '', loadComponent: () => import('./course-list.component').then((m) => m.CourseListComponent) },
+      { path: '', loadComponent: () => import('./course-list.component') },
       {
         path: ':id',
         title: CourseTitleResolverService,
-        loadComponent: () => import('./course-edit.component').then((m) => m.CourseEditComponent),
-        canActivate: [CanActivateEdit],
+        loadComponent: () => import('./course-edit.component'),
+        canActivate: [() => inject(AuthService).isLoggedIn()],
       },
     ],
   },
-];
+] as Route[];

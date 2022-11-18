@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterLinkWithHref } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UsersFacade } from './users/users.facade';
@@ -7,7 +7,7 @@ import { UsersFacade } from './users/users.facade';
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [NgbModule, RouterLinkWithHref],
+  imports: [NgbModule, RouterLink],
   providers: [UsersFacade],
 
   template: `
@@ -60,6 +60,6 @@ import { UsersFacade } from './users/users.facade';
     `,
   ],
 })
-export class AdminComponent {
+export default class AdminComponent {
   constructor(router: Router) {}
 }

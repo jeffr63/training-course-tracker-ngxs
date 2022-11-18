@@ -118,7 +118,7 @@ import { CoursesFacade } from './courses.facade';
     `,
   ],
 })
-export class CourseEditComponent implements OnInit, OnDestroy {
+export default class CourseEditComponent implements OnInit, OnDestroy {
   id = '';
   courseEditForm!: FormGroup;
   private course: Course;
