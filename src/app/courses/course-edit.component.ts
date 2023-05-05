@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 import { Course } from '../models/course';
 import { CoursesFacade } from './courses.facade';
@@ -119,12 +119,14 @@ import { CoursesFacade } from './courses.facade';
   ],
 })
 export default class CourseEditComponent implements OnInit, OnDestroy {
-  id = '';
-  courseEditForm!: FormGroup;
-  private course: Course;
-  private sub = new Subscription();
+  facade = inject(CoursesFacade);
+  fb = inject(FormBuilder);
+  route = inject(ActivatedRoute);
 
-  constructor(private route: ActivatedRoute, public facade: CoursesFacade, private fb: FormBuilder) {}
+  destroy$: Subject<boolean> = new Subject<boolean>();
+  course: Course;
+  courseEditForm!: FormGroup;
+  id = '';
 
   ngOnInit(): void {
     this.courseEditForm = this.fb.group({
@@ -134,27 +136,24 @@ export default class CourseEditComponent implements OnInit, OnDestroy {
       source: ['', Validators.required],
     });
 
-    this.sub.add(
-      this.route.params.subscribe((params) => {
-        this.id = params.id;
-        if (params.id === 'New') return;
-        this.facade.loadCourse(params.id);
-        this.sub.add(
-          this.facade.course$.subscribe((course) => {
-            if (!course) return;
-            this.course = { ...course };
-            this.courseEditForm.get('title').setValue(course.title);
-            this.courseEditForm.get('instructor').setValue(course.instructor);
-            this.courseEditForm.get('path').setValue(course.path);
-            this.courseEditForm.get('source').setValue(course.source);
-          })
-        );
-      })
-    );
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      this.id = params.id;
+      if (params.id === 'New') return;
+      this.facade.loadCourse(params.id);
+      this.facade.course$.pipe(takeUntil(this.destroy$)).subscribe((course) => {
+        if (!course) return;
+        this.course = { ...course };
+        this.courseEditForm.get('title').setValue(course.title);
+        this.courseEditForm.get('instructor').setValue(course.instructor);
+        this.courseEditForm.get('path').setValue(course.path);
+        this.courseEditForm.get('source').setValue(course.source);
+      });
+    });
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe;
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   save() {

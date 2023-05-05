@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 import { Source } from '../../models/sources';
 import { SourcesFacade } from './sources.facade';
@@ -57,34 +57,33 @@ import { SourcesFacade } from './sources.facade';
   ],
 })
 export default class SourceEditComponent implements OnInit, OnDestroy {
-  sourceEditForm!: FormGroup;
-  private sub = new Subscription();
-  private source: Source;
+  facade = inject(SourcesFacade);
+  fb = inject(FormBuilder);
+  route = inject(ActivatedRoute);
 
-  constructor(private route: ActivatedRoute, public facade: SourcesFacade, private fb: FormBuilder) {}
+  destroy$: Subject<boolean> = new Subject<boolean>();
+  sourceEditForm!: FormGroup;
+  source: Source;
 
   ngOnInit() {
     this.sourceEditForm = this.fb.group({
       name: ['', Validators.required],
     });
 
-    this.sub.add(
-      this.route.params.subscribe((params) => {
-        if (params.id === 'New') return;
-        this.facade.loadSource(params.id);
-        this.sub.add(
-          this.facade.source$.subscribe((source) => {
-            if (!source) return;
-            this.source = { ...source };
-            this.sourceEditForm.get('name').setValue(this.source.name);
-          })
-        );
-      })
-    );
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      if (params.id === 'New') return;
+      this.facade.loadSource(params.id);
+      this.facade.source$.pipe(takeUntil(this.destroy$)).subscribe((source) => {
+        if (!source) return;
+        this.source = { ...source };
+        this.sourceEditForm.get('name').setValue(this.source.name);
+      });
+    });
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   save() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { AuthService } from './auth/auth.service';
@@ -19,9 +19,7 @@ import { MenuComponent } from './menu/menu.component';
   styles: [],
 })
 export class AppComponent implements OnInit {
-  title = 'Training Course Tracker';
-
-  constructor(public authService: AuthService) {}
+  authService = inject(AuthService);
 
   ngOnInit() {
     this.authService.checkLogin();

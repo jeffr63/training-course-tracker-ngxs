@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -42,11 +42,11 @@ import { UsersFacade } from './users.facade';
   ],
 })
 export default class UserListComponent implements OnInit {
+  facade = inject(UsersFacade);
+
   columns = ['name', 'email', 'role'];
   headers = ['Name', 'Email', 'Role'];
   isAuthenticated = true;
-
-  constructor(public facade: UsersFacade) {}
 
   ngOnInit() {
     this.facade.loadUsers();

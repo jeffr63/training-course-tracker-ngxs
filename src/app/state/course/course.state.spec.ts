@@ -637,7 +637,7 @@ describe('Courses', () => {
           },
         };
         store.reset(appState);
-        const action = new CourseActions.SaveCourse();
+       // const action = new CourseActions.SaveCourse();
         const expected = new CourseActions.SaveCourseSuccess(currentCourse);
         const callbacksCalled = [];
 

@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -51,9 +51,11 @@ import { LoginComponent } from '../modals/login.component';
   ],
 })
 export class MenuComponent {
-  public isNavbarCollapsed = true;
+  auth = inject(AuthService);
+  modalService = inject(NgbModal);
+  router = inject(Router);
 
-  constructor(public auth: AuthService, private modalService: NgbModal, private router: Router) {}
+  public isNavbarCollapsed = true;
 
   open() {
     this.modalService.open(LoginComponent, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {

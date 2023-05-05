@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import * as _ from 'lodash';
@@ -6,12 +6,12 @@ import * as _ from 'lodash';
 import { Source } from '../../models/sources';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SourcesService {
-  private baseUrl = 'http://localhost:3000';
+  http = inject(HttpClient);
 
-  constructor(private http: HttpClient) { }
+  private baseUrl = 'http://localhost:3000';
 
   private addSource(source: Source) {
     return this.http.post(`${this.baseUrl}/sources`, source);
@@ -40,5 +40,4 @@ export class SourcesService {
   private updateSource(source: Source) {
     return this.http.put(`${this.baseUrl}/sources/${source.id}`, source);
   }
-
 }

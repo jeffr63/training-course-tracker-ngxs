@@ -1,18 +1,17 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { map, Observable, Subscription } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot } from '@angular/router';
+
+import { map, Observable } from 'rxjs';
 
 import { DataServiceFacade } from '../data-service-facade';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CourseTitleResolverService implements Resolve<string> {
-  private sub = new Subscription();
+export class CourseTitleResolverService {
+  dataService = inject(DataServiceFacade);
 
-  constructor(private dataService: DataServiceFacade) {}
-
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): string | Observable<string> | Promise<string> {
+  resolve(route: ActivatedRouteSnapshot): string | Observable<string> | Promise<string> {
     const id = route.paramMap.get('id');
     if (id == 'new') {
       return 'New Course';

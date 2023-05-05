@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -50,10 +50,11 @@ import { PagerListHeaderComponent } from '../shared/pager-list-header.component'
   styles: [],
 })
 export default class CourseListComponent implements OnInit {
+  auth = inject(AuthService);
+  facade = inject(CoursesFacade);
+
   columns = ['title', 'instructor', 'path', 'source'];
   headers = ['Title', 'Instructor', 'Path', 'Source'];
-
-  constructor(public auth: AuthService, public facade: CoursesFacade) {}
 
   ngOnInit() {
     this.facade.loadAll();

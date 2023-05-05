@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -44,11 +44,11 @@ import { SourcesFacade } from './sources.facade';
   ],
 })
 export default class SourceListComponent implements OnInit {
+  facade = inject(SourcesFacade);
+
   columns = ['name'];
   headers = ['Source'];
   isAuthenticated = true;
-
-  constructor(public facade: SourcesFacade) {}
 
   ngOnInit() {
     this.facade.loadSources();

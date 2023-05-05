@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -15,18 +15,17 @@ import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 
 @Injectable()
 export class UsersFacade {
-  @Select(UsersState.getCurrentUser) public user$: Observable<User>;
-  @Select(UsersState.getUsers) public users$: Observable<User[]>;
+  router = inject(Router);
+  modal = inject(NgbModal);
+  location = inject(Location);
+  modalDataService = inject(ModalDataService);
+
   public columns = ['name', 'email', 'role'];
   public headers = ['Name', 'Email', 'Role'];
   public isAuthenticated = true;
-
-  constructor(
-    private router: Router,
-    private modal: NgbModal,
-    private location: Location,
-    private modalDataService: ModalDataService
-  ) {}
+  
+  @Select(UsersState.getCurrentUser) public user$: Observable<User>;
+  @Select(UsersState.getUsers) public users$: Observable<User[]>;
 
   @Dispatch() deleteUser = (id: number) => new UserActions.DeleteUser(id);
   @Dispatch() loadUser = (id) => new UserActions.GetUser(id);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -12,16 +12,18 @@ import { Dispatch } from '@ngxs-labs/dispatch-decorator';
   providedIn: 'root',
 })
 export class DashboardFacade {
+  store = inject(Store);
+
   @Select(CoursesState.getCoursesByPath) courses$: Observable<CourseData[]>;
   @Select(CoursesState.getCoursesBySource) sources$: Observable<CourseData[]>;
-
-  constructor(private store: Store) {}
 
   @Dispatch() getCourseData = () => new CourseActions.GetCourseData();
 
   loadChartData() {
-    this.store.dispatch(new CourseActions.LoadCourses()).subscribe(() => {
-      this.getCourseData();
-    });
+    this.store
+      .dispatch(new CourseActions.LoadCourses())
+      .subscribe(() => {
+        this.getCourseData();
+      });
   }
 }

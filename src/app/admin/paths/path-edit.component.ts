@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 import { Path } from '../../models/paths';
 import { PathsFacade } from './paths.facade';
@@ -57,34 +57,33 @@ import { PathsFacade } from './paths.facade';
   ],
 })
 export default class PathEditComponent implements OnInit, OnDestroy {
-  pathEditForm!: FormGroup;
-  private path: Path;
-  private sub = new Subscription();
+  facade = inject(PathsFacade);
+  fb = inject(FormBuilder);
+  route = inject(ActivatedRoute);
 
-  constructor(private route: ActivatedRoute, public facade: PathsFacade, private fb: FormBuilder) {}
+  destroy$: Subject<boolean> = new Subject<boolean>();
+  path: Path;
+  pathEditForm!: FormGroup;
 
   ngOnInit() {
     this.pathEditForm = this.fb.group({
       name: ['', Validators.required],
     });
 
-    this.sub.add(
-      this.route.params.subscribe((params) => {
-        if (params.id === 'New') return;
-        this.facade.loadPath(params.id);
-        this.sub.add(
-          this.facade.path$.subscribe((path) => {
-            if (!path) return;
-            this.path = { ...path };
-            this.pathEditForm.get('name').setValue(this.path.name);
-          })
-        );
-      })
-    );
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      if (params.id === 'New') return;
+      this.facade.loadPath(params.id);
+      this.facade.path$.pipe(takeUntil(this.destroy$)).subscribe((path) => {
+        if (!path) return;
+        this.path = { ...path };
+        this.pathEditForm.get('name').setValue(this.path.name);
+      });
+    });
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   save() {

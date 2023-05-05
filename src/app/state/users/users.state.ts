@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
@@ -23,7 +23,7 @@ export interface UsersStateModel {
 })
 @Injectable()
 export class UsersState {
-  constructor(private dataFacade: DataServiceFacade) {}
+  dataFacade = inject(DataServiceFacade);
 
   @Selector([UsersState])
   static getUsers(state: UsersStateModel): User[] {

@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Select } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
@@ -11,22 +12,20 @@ import { ModalDataService } from '../../modals/modal-data.service';
 import { Source } from '../../models/sources';
 import { SourcesActions } from '../../state/sources/sources.actions';
 import { SourcesState } from '../../state/sources/sources.state';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 
 @Injectable()
 export class SourcesFacade {
-  @Select(SourcesState.getCurrentSource) public source$: Observable<Source>;
-  @Select(SourcesState.getSources) public sources$: Observable<Source[]>;
+  router = inject(Router);
+  modal = inject(NgbModal);
+  location = inject(Location);
+  modalDataService = inject(ModalDataService);
+
   public columns = ['name'];
   public headers = ['Source'];
   public isAuthenticated = true;
 
-  constructor(
-    private router: Router,
-    private modal: NgbModal,
-    private location: Location,
-    private modalDataService: ModalDataService
-  ) {}
+  @Select(SourcesState.getCurrentSource) public source$: Observable<Source>;
+  @Select(SourcesState.getSources) public sources$: Observable<Source[]>;
 
   @Dispatch() deleteSource = (id: number) => new SourcesActions.DeleteSource(id);
   @Dispatch() loadSource = (id) => (id === 'new' ? new SourcesActions.NewSource() : new SourcesActions.GetSource(id));

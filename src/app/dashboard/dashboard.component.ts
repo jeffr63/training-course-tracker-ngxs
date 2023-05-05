@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -63,10 +63,10 @@ import { DataServiceFacade } from '../services/data-service-facade';
   ],
 })
 export class DashboardComponent implements OnInit {
+  facade = inject(DashboardFacade);
+
   courses$: Observable<CourseData[]> = this.facade.courses$;
   sources$: Observable<CourseData[]> = this.facade.sources$;
-
-  constructor(private facade: DashboardFacade) {}
 
   ngOnInit() {
     this.facade.loadChartData();

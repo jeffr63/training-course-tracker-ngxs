@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -44,11 +44,11 @@ import { PathsFacade } from './paths.facade';
   ],
 })
 export default class PathListComponent implements OnInit {
+  facade = inject(PathsFacade);
+
   columns = ['name'];
   headers = ['Path'];
   isAuthenticated = true;
-
-  constructor(public facade: PathsFacade) {}
 
   ngOnInit() {
     this.facade.loadPaths();

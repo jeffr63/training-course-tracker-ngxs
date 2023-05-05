@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 import { UsersFacade } from './users.facade';
 
@@ -84,11 +84,13 @@ import { UsersFacade } from './users.facade';
   ],
 })
 export default class UserEditComponent implements OnInit, OnDestroy {
-  userEditForm!: FormGroup;
-  private id: number = 0;
-  private sub = new Subscription();
+  route = inject(ActivatedRoute);
+  facade = inject(UsersFacade);
+  fb = inject(FormBuilder);
 
-  constructor(private route: ActivatedRoute, public facade: UsersFacade, private fb: FormBuilder) {}
+  userEditForm!: FormGroup;
+  id: number = 0;
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   ngOnInit() {
     this.userEditForm = this.fb.group({
@@ -97,24 +99,21 @@ export default class UserEditComponent implements OnInit, OnDestroy {
       role: ['', Validators.required],
     });
 
-    this.sub.add(
-      this.route.params.subscribe((params) => {
-        this.facade.loadUser(params.id);
-        this.sub.add(
-          this.facade.user$.subscribe((user) => {
-            if (!user) return;
-            this.id = user.id;
-            this.userEditForm.get('name').setValue(user.name);
-            this.userEditForm.get('email').setValue(user.email);
-            this.userEditForm.get('role').setValue(user.role);
-          })
-        );
-      })
-    );
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      this.facade.loadUser(params.id);
+      this.facade.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+        if (!user) return;
+        this.id = user.id;
+        this.userEditForm.get('name').setValue(user.name);
+        this.userEditForm.get('email').setValue(user.email);
+        this.userEditForm.get('role').setValue(user.role);
+      });
+    });
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   save() {

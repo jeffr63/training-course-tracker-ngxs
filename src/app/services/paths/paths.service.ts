@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Path } from '../../models/paths';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PathsService {
-  private baseUrl = 'http://localhost:3000';
+  http = inject(HttpClient);
 
-  constructor(private http: HttpClient) { }
+  private baseUrl = 'http://localhost:3000';
 
   private addPath(path: Path) {
     return this.http.post(`${this.baseUrl}/paths`, path);
@@ -39,4 +39,3 @@ export class PathsService {
     return this.http.put(`${this.baseUrl}/paths/${path.id}`, path);
   }
 }
-

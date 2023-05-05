@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -15,15 +15,13 @@ import { PathsState } from '../../state/paths/paths.state';
 
 @Injectable()
 export class PathsFacade {
+  modal = inject(NgbModal);
+  router = inject(Router);
+  location = inject(Location);
+  modalDataService = inject(ModalDataService);
+
   @Select(PathsState.getCurrentPath) public path$: Observable<Path>;
   @Select(PathsState.getPaths) public paths$: Observable<Path[]>;
-
-  constructor(
-    private modal: NgbModal,
-    private router: Router,
-    private location: Location,
-    private modalDataService: ModalDataService
-  ) {}
 
   @Dispatch() deletePath = (id: number) => new PathsActions.DeletePath(id);
   @Dispatch() loadPath = (id) => (id === 'new' ? new PathsActions.NewPath() : new PathsActions.GetPath(id));

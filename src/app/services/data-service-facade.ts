@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Course } from '../models/course';
 import { CoursesService } from './courses/courses.service';
@@ -12,12 +12,10 @@ import { UsersService } from './users/users.service';
   providedIn: 'root',
 })
 export class DataServiceFacade {
-  constructor(
-    private coursesService: CoursesService,
-    private pathsService: PathsService,
-    private sourcesService: SourcesService,
-    private usersService: UsersService
-  ) {}
+  coursesService = inject(CoursesService);
+  pathsService = inject(PathsService);
+  sourcesService = inject(SourcesService);
+  usersService = inject(UsersService);
 
   // course service methods
   deleteCourse(id) {

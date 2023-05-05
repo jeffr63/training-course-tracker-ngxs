@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Course } from '../../models/course';
@@ -7,9 +7,9 @@ import { Course } from '../../models/course';
   providedIn: 'root',
 })
 export class CoursesService {
+  http = inject(HttpClient);
+  
   private baseUrl = 'http://localhost:3000';
-
-  constructor(private http: HttpClient) {}
 
   private addCourse(course: Course) {
     return this.http.post(`${this.baseUrl}/courses`, course);

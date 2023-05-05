@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -21,26 +21,24 @@ import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 
 @Injectable()
 export class CoursesFacade {
-  @Select(CoursesState.getCourse) public course$: Observable<Course>;
-  @Select(CoursesState.getPagedCourses) public courses$: Observable<Course[]>;
-  @Select(PathsState.getPaths) public paths$: Observable<Path[]>;
-  @Select(SourcesState.getSources) public sources$: Observable<Source[]>;
-  @Select(CoursesState.getTotalCourses)
-  public totalCourses$: Observable<number>;
+  actions$ = inject(Actions);
+  modal = inject(NgbModal);
+  location = inject(Location);
+  router = inject(Router);
+  modalDataService = inject(ModalDataService);
 
   public closedResult = '';
   public current = 1;
   public pageSize = 10;
 
-  constructor(
-    private actions$: Actions,
-    private modal: NgbModal,
-    private location: Location,
-    private router: Router,
-    private modalDataService: ModalDataService
-  ) {}
+  @Select(CoursesState.getCourse) public course$: Observable<Course>;
+  @Select(CoursesState.getPagedCourses) public courses$: Observable<Course[]>;
+  @Select(PathsState.getPaths) public paths$: Observable<Path[]>;
+  @Select(SourcesState.getSources) public sources$: Observable<Source[]>;
+  @Select(CoursesState.getTotalCourses) public totalCourses$: Observable<number>;
 
-  @Dispatch() deleteCourse = (id) =>
+  @Dispatch()
+  deleteCourse = (id) =>
     new CourseActions.DeleteCourse({
       id: id,
       current: this.current,
