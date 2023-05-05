@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Subject, takeUntil } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 import { Course } from '../models/course';
 import { CoursesFacade } from './courses.facade';
@@ -123,7 +123,7 @@ export default class CourseEditComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);
   route = inject(ActivatedRoute);
 
-  destroy$: Subject<boolean> = new Subject<boolean>();
+  destroy$ = new ReplaySubject<void>(1);
   course: Course;
   courseEditForm!: FormGroup;
   id = '';
@@ -152,8 +152,7 @@ export default class CourseEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy$.next();
   }
 
   save() {

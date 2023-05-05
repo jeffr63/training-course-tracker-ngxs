@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Subject, takeUntil } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 import { UsersFacade } from './users.facade';
 
@@ -90,7 +90,7 @@ export default class UserEditComponent implements OnInit, OnDestroy {
 
   userEditForm!: FormGroup;
   id: number = 0;
-  destroy$: Subject<boolean> = new Subject<boolean>();
+  destroy$ = new ReplaySubject<void>(1);
 
   ngOnInit() {
     this.userEditForm = this.fb.group({
@@ -112,8 +112,7 @@ export default class UserEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy$.next();
   }
 
   save() {

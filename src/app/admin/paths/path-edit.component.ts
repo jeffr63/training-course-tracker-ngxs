@@ -4,7 +4,7 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Subject, takeUntil } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 import { Path } from '../../models/paths';
 import { PathsFacade } from './paths.facade';
@@ -61,7 +61,7 @@ export default class PathEditComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);
   route = inject(ActivatedRoute);
 
-  destroy$: Subject<boolean> = new Subject<boolean>();
+  destroy$ = new ReplaySubject<void>(1);
   path: Path;
   pathEditForm!: FormGroup;
 
@@ -82,8 +82,7 @@ export default class PathEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy$.next();
   }
 
   save() {
