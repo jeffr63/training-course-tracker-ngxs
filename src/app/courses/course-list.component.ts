@@ -3,11 +3,11 @@ import { Component, OnInit, inject } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../shared/services/auth.service';
 
-import { CoursesFacade } from './courses.facade';
-import { ListDisplayComponent } from '../shared/list-display.component';
-import { PagerListHeaderComponent } from '../shared/pager-list-header.component';
+import { CoursesFacade } from '../shared/facades/courses.facade';
+import { ListDisplayComponent } from '../shared/components/list-display.component';
+import { PagerListHeaderComponent } from '../shared/components/pager-list-header.component';
 
 @Component({
   selector: 'app-course-list',

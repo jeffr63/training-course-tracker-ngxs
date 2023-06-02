@@ -3,9 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { DataServiceFacade } from '../../services/data-service-facade';
+import { DataServiceFacade } from '../../shared/facades/data-service-facade';
 import { PathsActions } from './paths.actions';
-import { Path } from '../../models/paths';
+import { Path } from '../../shared/models/paths';
 
 export interface PathsStateModel {
   paths: Path[];

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { UsersFacade } from './users/users.facade';
+import { UsersFacade } from '../shared/facades/users.facade';
 
 @Component({
   selector: 'app-admin',

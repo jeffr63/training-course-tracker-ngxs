@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
-import { UsersFacade } from './users.facade';
+import { UsersFacade } from '../shared/facades/users.facade';
 
 @Component({
   selector: 'app-user-edit',

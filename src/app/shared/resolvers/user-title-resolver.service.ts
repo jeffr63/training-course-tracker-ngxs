@@ -3,7 +3,8 @@ import { inject, Injectable } from '@angular/core';
 
 import { map, Observable } from 'rxjs';
 
-import { DataServiceFacade } from '../data-service-facade';
+import { DataServiceFacade } from '../facades/data-service-facade';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class UserTitleResolverService {
     if (id == 'new') {
       return 'New User';
     } else {
-      return this.dataService.getUser(id).pipe(map((user) => user.name));
+      return this.dataService.getUser(id).pipe(map((user: User) => user.name));
     }
   }
 }

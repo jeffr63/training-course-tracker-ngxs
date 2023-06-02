@@ -1,14 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Course } from '../../models/course';
+import { Course } from '../../shared/models/course';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CoursesService {
   http = inject(HttpClient);
-  
+
   private baseUrl = 'http://localhost:3000';
 
   private addCourse(course: Course) {

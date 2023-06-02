@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 
 import { Course } from '../models/course';
-import { CoursesService } from './courses/courses.service';
+import { CoursesService } from '../services/courses.service';
 import { Path } from '../models/paths';
-import { PathsService } from './paths/paths.service';
+import { PathsService } from '../services/paths.service';
 import { Source } from '../models/sources';
-import { SourcesService } from './sources/sources.service';
-import { UsersService } from './users/users.service';
+import { SourcesService } from '../services/sources.service';
+import { UsersService } from '../services/users.service';
 
 @Injectable({
   providedIn: 'root',

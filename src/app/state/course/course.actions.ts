@@ -1,4 +1,4 @@
-import { Course } from '../../models/course';
+import { Course } from '../../shared/models/course';
 
 export namespace CourseActions {
   export class DeleteCourse {

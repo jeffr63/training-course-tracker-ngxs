@@ -1,4 +1,4 @@
-import { Path } from '../../models/paths';
+import { Path } from '../../shared/models/paths';
 
 export namespace PathsActions {
   export class DeletePath {

@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Select } from '@ngxs/store';
 
-import { DeleteComponent } from '../../modals/delete.component';
-import { ModalDataService } from '../../modals/modal-data.service';
-import { Path } from '../../models/paths';
+import { DeleteComponent } from '../../shared/modals/delete.component';
+import { ModalDataService } from '../../shared/modals/modal-data.service';
+import { Path } from '../../shared/models/paths';
 import { PathsActions } from '../../state/paths/paths.actions';
 import { PathsState } from '../../state/paths/paths.state';
 

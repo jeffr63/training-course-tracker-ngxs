@@ -6,8 +6,8 @@ import { NgIf } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
-import { Source } from '../../models/sources';
-import { SourcesFacade } from './sources.facade';
+import { Source } from '../shared/models/sources';
+import { SourcesFacade } from '../shared/facades/sources.facade';
 
 @Component({
   selector: 'app-source-edit',

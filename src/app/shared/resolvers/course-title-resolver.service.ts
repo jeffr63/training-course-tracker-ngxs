@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 
 import { map, Observable } from 'rxjs';
 
-import { DataServiceFacade } from '../data-service-facade';
+import { DataServiceFacade } from '../facades/data-service-facade';
 
 @Injectable({
   providedIn: 'root',

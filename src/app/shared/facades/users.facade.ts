@@ -2,16 +2,16 @@ import { Injectable, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { Select } from '@ngxs/store';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
-import { DeleteComponent } from '../../modals/delete.component';
-import { ModalDataService } from '../../modals/modal-data.service';
-import { User } from '../../models/user';
+import { DeleteComponent } from '../modals/delete.component';
+import { ModalDataService } from '../modals/modal-data.service';
+import { User } from '../models/user';
 import { UserActions } from '../../state/users/users.actions';
 import { UsersState } from '../../state/users/users.state';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 
 @Injectable()
 export class UsersFacade {
@@ -23,7 +23,7 @@ export class UsersFacade {
   public columns = ['name', 'email', 'role'];
   public headers = ['Name', 'Email', 'Role'];
   public isAuthenticated = true;
-  
+
   @Select(UsersState.getCurrentUser) public user$: Observable<User>;
   @Select(UsersState.getUsers) public users$: Observable<User[]>;
 

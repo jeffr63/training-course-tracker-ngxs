@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { UsersService } from './users.service';
+import { UsersService } from '../users.service';
 import { User } from '../../models/user';
 
 const baseUrl = 'http://localhost:3000';

@@ -2,14 +2,14 @@ import { ApplicationConfig } from '@angular/core';
 import { importProvidersFrom } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
-import { TitleStrategy, provideRouter } from '@angular/router';
+import { TitleStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsModule } from '@ngxs/store';
 
 import { APP_ROUTES } from './app.routes';
-import { CustomTitleStrategyService } from './services/custom-title-strategy.service';
+import { CustomTitleStrategyService } from './shared/resolvers/custom-title-strategy.service';
 import { CoursesState } from './state/course/course.state';
 import { SourcesState } from './state/sources/sources.state';
 import { PathsState } from './state/paths/paths.state';
@@ -27,6 +27,6 @@ export const appConfig: ApplicationConfig = {
     { provide: TitleStrategy, useClass: CustomTitleStrategyService },
     provideAnimations(),
     provideHttpClient(),
-    provideRouter(APP_ROUTES),
+    provideRouter(APP_ROUTES, withComponentInputBinding()),
   ],
 };

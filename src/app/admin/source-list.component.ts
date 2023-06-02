@@ -3,21 +3,21 @@ import { Component, OnInit, inject } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ListDisplayComponent } from '../../shared/list-display.component';
-import { ListHeaderComponent } from '../../shared/list-header.component';
-import { PathsFacade } from './paths.facade';
+import { ListDisplayComponent } from '../shared/components/list-display.component';
+import { ListHeaderComponent } from '../shared/components/list-header.component';
+import { SourcesFacade } from '../shared/facades/sources.facade';
 
 @Component({
-  selector: 'app-path-list',
+  selector: 'app-source-list',
   standalone: true,
-  imports: [AsyncPipe, ListDisplayComponent, ListHeaderComponent, NgbModule],
-  providers: [PathsFacade],
+  imports: [AsyncPipe, NgbModule, ListDisplayComponent, ListHeaderComponent],
+  providers: [SourcesFacade],
 
   template: `
     <section>
       <section class="card">
         <header>
-          <h1 class="card-header">Paths</h1>
+          <h1 class="card-header">Sources</h1>
         </header>
         <section class="card-body">
           <app-list-header (newItem)="facade.new()"></app-list-header>
@@ -25,7 +25,7 @@ import { PathsFacade } from './paths.facade';
           <app-list-display
             [headers]="headers"
             [columns]="columns"
-            [items]="facade.paths$ | async"
+            [items]="facade.sources$ | async"
             [isAuthenticated]="isAuthenticated"
             (deleteItem)="facade.delete($event)"
             (editItem)="facade.edit($event)"
@@ -43,14 +43,14 @@ import { PathsFacade } from './paths.facade';
     `,
   ],
 })
-export default class PathListComponent implements OnInit {
-  facade = inject(PathsFacade);
+export default class SourceListComponent implements OnInit {
+  facade = inject(SourcesFacade);
 
   columns = ['name'];
-  headers = ['Path'];
+  headers = ['Source'];
   isAuthenticated = true;
 
   ngOnInit() {
-    this.facade.loadPaths();
+    this.facade.loadSources();
   }
 }

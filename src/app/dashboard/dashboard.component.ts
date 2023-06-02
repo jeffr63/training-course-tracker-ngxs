@@ -4,11 +4,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Observable } from 'rxjs';
 
-import { CoursesFacade } from '../courses/courses.facade';
+import { CoursesFacade } from '../shared/facades/courses.facade';
 import { DashboardFacade } from './dashboard.facade';
-import { SourcesFacade } from '../admin/sources/sources.facade';
-import { CourseData } from '../models/course';
-import { DataServiceFacade } from '../services/data-service-facade';
+import { SourcesFacade } from '../shared/facades/sources.facade';
+import { CourseData } from '../shared/models/course';
+import { DataServiceFacade } from '../shared/facades/data-service-facade';
 
 @Component({
   selector: 'app-dashboard',

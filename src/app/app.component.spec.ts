@@ -7,24 +7,22 @@ import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './shared/services/auth.service';
 
 describe('AppComponent', () => {
   let service: AuthService;
   let httpTestingController: HttpTestingController;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NgbModule, HttpClientTestingModule, RouterTestingModule],
-        declarations: [AppComponent, DashboardComponent, MenuComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgbModule, HttpClientTestingModule, RouterTestingModule],
+      declarations: [AppComponent, DashboardComponent, MenuComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
-      httpTestingController = TestBed.inject(HttpTestingController);
-      service = TestBed.inject(AuthService);
-    })
-  );
+    httpTestingController = TestBed.inject(HttpTestingController);
+    service = TestBed.inject(AuthService);
+  }));
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);

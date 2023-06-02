@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { PathsService } from './paths.service';
+import { PathsService } from '../paths.service';
 import { Path } from '../../models/paths';
 
 const baseUrl = 'http://localhost:3000';
@@ -13,7 +13,7 @@ describe('PathsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [PathsService]
+      providers: [PathsService],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController);

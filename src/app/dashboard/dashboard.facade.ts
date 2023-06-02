@@ -4,7 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
 import { CourseActions } from '../state/course/course.actions';
-import { CourseData } from '../models/course';
+import { CourseData } from '../shared/models/course';
 import { CoursesState } from '../state/course/course.state';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 
@@ -20,10 +20,8 @@ export class DashboardFacade {
   @Dispatch() getCourseData = () => new CourseActions.GetCourseData();
 
   loadChartData() {
-    this.store
-      .dispatch(new CourseActions.LoadCourses())
-      .subscribe(() => {
-        this.getCourseData();
-      });
+    this.store.dispatch(new CourseActions.LoadCourses()).subscribe(() => {
+      this.getCourseData();
+    });
   }
 }
