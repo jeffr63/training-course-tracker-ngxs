@@ -4,10 +4,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
-import { DataServiceFacade } from '../../services/data-service-facade';
+import { DataServiceFacade } from '@facades/data-service-facade';
 import { PathsActions } from './paths.actions';
 import { PathsState, PathsStateModel } from './paths.state';
-import { Path } from '../../models/paths';
+import { Path } from '@models/paths';
 
 const pathsArray: Path[] = [
   { id: 1, name: 'ABC' },
@@ -421,7 +421,7 @@ describe('Paths', () => {
           },
         };
         store.reset(appState);
-        const action = new PathsActions.SavePath();
+        const action = new PathsActions.SavePath(currentPath);
         const expected = new PathsActions.SavePathSuccess(currentPath);
         const callbacksCalled = [];
 
@@ -441,11 +441,11 @@ describe('Paths', () => {
       }));
 
       it('should dispatch SaveFail when errors', fakeAsync(() => {
-        const action = new PathsActions.SavePath();
+        const action = new PathsActions.SavePath(currentPath);
         const expected = new PathsActions.SavePathFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'savePath').and.returnValue(throwError('Error'));
+        spyOn(service, 'savePath').and.returnValue(throwError(() => 'Error'));
 
         // action
         actions.pipe(ofActionSuccessful(PathsActions.SavePathFail)).subscribe((x) => {

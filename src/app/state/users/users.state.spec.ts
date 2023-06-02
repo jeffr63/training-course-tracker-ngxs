@@ -4,10 +4,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
-import { DataServiceFacade } from '../../services/data-service-facade';
+import { DataServiceFacade } from '@facades/data-service-facade';
 import { UserActions } from './users.actions';
 import { UsersState, UsersStateModel } from './users.state';
-import { User } from '../../models/user';
+import { User } from '@models/user';
 
 const userArray: User[] = [
   { id: 1, name: 'Joe', email: 'joe@joe.com', password: 'abc', role: 'admin' },

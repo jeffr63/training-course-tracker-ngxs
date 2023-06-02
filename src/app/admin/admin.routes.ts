@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
 import { Route } from '@angular/router';
 
-import { AuthService } from '../shared/services/auth.service';
-import { PathTitleResolverService } from '../shared/resolvers/path-title-resolver.service';
-import { SourceTitleResolverService } from '../shared/resolvers/source-title-resolver.service';
-import { UserTitleResolverService } from '../shared/resolvers/user-title-resolver.service';
+import { AuthService } from '@services/auth.service';
+import { PathTitleResolverService } from '@resolvers/path-title-resolver.service';
+import { SourceTitleResolverService } from '@resolvers/source-title-resolver.service';
+import { UserTitleResolverService } from '@resolvers/user-title-resolver.service';
 
 export default [
   {

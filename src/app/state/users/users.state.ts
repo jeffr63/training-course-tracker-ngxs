@@ -3,9 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { DataServiceFacade } from '../../shared/facades/data-service-facade';
+import { DataServiceFacade } from '@facades/data-service-facade';
 import { UserActions } from './users.actions';
-import { User } from '../../shared/models/user';
+import { User } from '@models/user';
 
 export interface UsersStateModel {
   users: User[];

@@ -4,10 +4,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
-import { DataServiceFacade } from '../../services/data-service-facade';
+import { DataServiceFacade } from '@facades/data-service-facade';
 import { SourcesActions } from './sources.actions';
 import { SourcesState, SourcesStateModel } from './sources.state';
-import { Source } from '../../models/sources';
+import { Source } from '@models/sources';
 
 const sourceArray: Source[] = [
   { id: 1, name: 'ABC' },

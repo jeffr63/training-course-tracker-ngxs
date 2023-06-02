@@ -3,11 +3,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { AppComponent } from './app.component';
-import { MenuComponent } from './menu/menu.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { AppComponent } from './app.component';
+import { AuthService } from '@services/auth.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AuthService } from './shared/services/auth.service';
+import { MenuComponent } from './menu/menu.component';
 
 describe('AppComponent', () => {
   let service: AuthService;

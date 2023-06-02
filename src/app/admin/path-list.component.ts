@@ -3,9 +3,9 @@ import { Component, OnInit, inject } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ListDisplayComponent } from '../shared/components/list-display.component';
-import { ListHeaderComponent } from '../shared/components/list-header.component';
-import { PathsFacade } from '../shared/facades/paths.facade';
+import { ListDisplayComponent } from '@components/list-display.component';
+import { ListHeaderComponent } from '@components/list-header.component';
+import { PathsFacade } from '@facades/paths.facade';
 
 @Component({
   selector: 'app-path-list',

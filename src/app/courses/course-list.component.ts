@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthService } from '../shared/services/auth.service';
 
-import { CoursesFacade } from '../shared/facades/courses.facade';
-import { ListDisplayComponent } from '../shared/components/list-display.component';
-import { PagerListHeaderComponent } from '../shared/components/pager-list-header.component';
+import { CoursesFacade } from '@facades/courses.facade';
+import { ListDisplayComponent } from '@components/list-display.component';
+import { PagerListHeaderComponent } from '@components/pager-list-header.component';
 
 @Component({
   selector: 'app-course-list',

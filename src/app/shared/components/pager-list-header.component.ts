@@ -1,5 +1,5 @@
-import { NgIf } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { NgIf } from '@angular/common';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 

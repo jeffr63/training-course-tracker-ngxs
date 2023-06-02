@@ -7,11 +7,11 @@ import { Select } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
-import { DeleteComponent } from '../modals/delete.component';
-import { ModalDataService } from '../modals/modal-data.service';
-import { Source } from '../models/sources';
-import { SourcesActions } from '../../state/sources/sources.actions';
-import { SourcesState } from '../../state/sources/sources.state';
+import { DeleteComponent } from '@modals/delete.component';
+import { ModalDataService } from '@modals/modal-data.service';
+import { Source } from '@models/sources';
+import { SourcesActions } from '@state/sources/sources.actions';
+import { SourcesState } from '@state/sources/sources.state';
 
 @Injectable()
 export class SourcesFacade {

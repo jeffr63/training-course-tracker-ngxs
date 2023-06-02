@@ -2,22 +2,22 @@ import { Injectable, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Select, Actions, ofActionSuccessful } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
-import { Course } from '../models/course';
-import { CourseActions } from '../../state/course/course.actions';
-import { CoursesState } from '../../state/course/course.state';
-import { DeleteComponent } from './../modals/delete.component';
-import { ModalDataService } from './../modals/modal-data.service';
-import { Path } from '../models/paths';
-import { PathsActions } from '../../state/paths/paths.actions';
-import { PathsState } from '../../state/paths/paths.state';
-import { Source } from '../models/sources';
-import { SourcesActions } from '../../state/sources/sources.actions';
-import { SourcesState } from '../../state/sources/sources.state';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
+import { Course } from '@models/course';
+import { CourseActions } from '@state/course/course.actions';
+import { CoursesState } from '@state/course/course.state';
+import { DeleteComponent } from '@modals/delete.component';
+import { ModalDataService } from '@modals/modal-data.service';
+import { Path } from '@models/paths';
+import { PathsActions } from '@state/paths/paths.actions';
+import { PathsState } from '@state/paths/paths.state';
+import { Source } from '@models/sources';
+import { SourcesActions } from '@state/sources/sources.actions';
+import { SourcesState } from '@state/sources/sources.state';
 
 @Injectable()
 export class CoursesFacade {

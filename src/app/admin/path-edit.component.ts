@@ -6,8 +6,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
-import { Path } from '../shared/models/paths';
-import { PathsFacade } from '../shared/facades/paths.facade';
+import { Path } from '@models/paths';
+import { PathsFacade } from '@facades/paths.facade';
 
 @Component({
   selector: 'app-path-edit',

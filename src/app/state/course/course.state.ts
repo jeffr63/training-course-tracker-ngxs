@@ -4,9 +4,9 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
-import { Course, CourseData } from '../../shared/models/course';
+import { Course, CourseData } from '@models/course';
 import { CourseActions } from './course.actions';
-import { DataServiceFacade } from '../../shared/facades/data-service-facade';
+import { DataServiceFacade } from '@facades/data-service-facade';
 
 export interface CoursesStateModel {
   courses: Course[];

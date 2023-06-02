@@ -6,8 +6,8 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReplaySubject, takeUntil } from 'rxjs';
 
-import { Course } from '../shared/models/course';
-import { CoursesFacade } from '../shared/facades/courses.facade';
+import { Course } from '@models/course';
+import { CoursesFacade } from '@facades/courses.facade';
 
 @Component({
   selector: 'app-course-edit',

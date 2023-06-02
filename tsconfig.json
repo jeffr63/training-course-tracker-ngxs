@@ -9,6 +9,16 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "importHelpers": true,
+    "paths": {
+      "@components/*": ["./src/app/shared/components/*"],
+      "@facades/*": ["./src/app/shared/facades/*"],
+      "@models/*": ["./src/app/shared/models/*"],
+      "@modals/*": ["./src/app/shared/modals/*"],
+      "@resolvers/*": ["./src/app/shared/resolvers/*"],
+      "@services/*": ["./src/app/shared/services/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@state/*": ["./src/app/state/*"],
+    },
     "target": "ES2022",
     "typeRoots": [
       "node_modules/@types"

@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
-import { CourseActions } from '../state/course/course.actions';
-import { CourseData } from '../shared/models/course';
-import { CoursesState } from '../state/course/course.state';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
+import { CourseActions } from '@state/course/course.actions';
+import { CourseData } from '@models/course';
+import { CoursesState } from '@state/course/course.state';
 
 @Injectable({
   providedIn: 'root',

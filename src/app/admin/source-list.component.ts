@@ -3,9 +3,9 @@ import { Component, OnInit, inject } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ListDisplayComponent } from '../shared/components/list-display.component';
-import { ListHeaderComponent } from '../shared/components/list-header.component';
-import { SourcesFacade } from '../shared/facades/sources.facade';
+import { ListDisplayComponent } from '@components/list-display.component';
+import { ListHeaderComponent } from '@components/list-header.component';
+import { SourcesFacade } from '@facades/sources.facade';
 
 @Component({
   selector: 'app-source-list',

@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { map, Observable } from 'rxjs';
 
-import { DataServiceFacade } from '../facades/data-service-facade';
+import { DataServiceFacade } from '@facades/data-service-facade';
 import { User } from '../models/user';
 
 @Injectable({

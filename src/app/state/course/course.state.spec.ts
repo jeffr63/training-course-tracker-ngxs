@@ -5,8 +5,8 @@ import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
 import { CoursesState, CoursesStateModel } from './course.state';
-import { Course, CourseData } from '../../models/course';
-import { DataServiceFacade } from '../../services/data-service-facade';
+import { Course, CourseData } from '@models/course';
+import { DataServiceFacade } from '@facades/data-service-facade';
 import { CourseActions } from './course.actions';
 
 const courseArray: Course[] = [
@@ -47,17 +47,15 @@ describe('Courses', () => {
   let service: DataServiceFacade;
   let actions: Actions;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NgxsModule.forRoot([CoursesState]), HttpClientModule],
-        providers: [DataServiceFacade],
-      }).compileComponents();
-      store = TestBed.inject(Store);
-      service = TestBed.inject(DataServiceFacade);
-      actions = TestBed.inject(Actions);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [NgxsModule.forRoot([CoursesState]), HttpClientModule],
+      providers: [DataServiceFacade],
+    }).compileComponents();
+    store = TestBed.inject(Store);
+    service = TestBed.inject(DataServiceFacade);
+    actions = TestBed.inject(Actions);
+  }));
 
   it('should initialize values', () => {
     const coursesState: CoursesStateModel = {
@@ -80,157 +78,136 @@ describe('Courses', () => {
 
   describe('Selectors', () => {
     describe('getCourse', () => {
-      it(
-        'should return an object',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: currentCourse,
-              error: '',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should return an object', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: currentCourse,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          expect(CoursesState.getCourse(appState.courses)).toEqual(currentCourse);
-        })
-      );
+        expect(CoursesState.getCourse(appState.courses)).toEqual(currentCourse);
+      }));
     });
 
     describe('getCourses', () => {
-      it(
-        'should return an array of Courses',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: courseArray,
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: '',
-              pagedCourses: [],
-              totalCourses: 3,
-            },
-          };
-          store.reset(appState);
+      it('should return an array of Courses', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: courseArray,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 3,
+          },
+        };
+        store.reset(appState);
 
-          expect(CoursesState.getCourses(appState.courses)).toEqual(courseArray);
-        })
-      );
+        expect(CoursesState.getCourses(appState.courses)).toEqual(courseArray);
+      }));
     });
 
     describe('getCoursesByPath', () => {
-      it(
-        'should return an array',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: byPathArray,
-              coursesBySource: [],
-              currentCourse: null,
-              error: '',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should return an array', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: byPathArray,
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          expect(CoursesState.getCoursesByPath(appState.courses)).toEqual(byPathArray);
-        })
-      );
+        expect(CoursesState.getCoursesByPath(appState.courses)).toEqual(byPathArray);
+      }));
     });
 
     describe('getCoursesBySource', () => {
-      it(
-        'should return an array',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: bySourceArray,
-              currentCourse: null,
-              error: '',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should return an array', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: bySourceArray,
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          expect(CoursesState.getCoursesBySource(appState.courses)).toEqual(bySourceArray);
-        })
-      );
+        expect(CoursesState.getCoursesBySource(appState.courses)).toEqual(bySourceArray);
+      }));
     });
 
     describe('getError', () => {
-      it(
-        'should return an string',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: 'Error',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should return an string', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: 'Error',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          expect(CoursesState.getError(appState.courses)).toEqual('Error');
-        })
-      );
+        expect(CoursesState.getError(appState.courses)).toEqual('Error');
+      }));
     });
 
     describe('getPagedCourses', () => {
-      it(
-        'should return an string',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: '',
-              pagedCourses: courseArray,
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should return an string', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: courseArray,
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          expect(CoursesState.getPagedCourses(appState.courses)).toEqual(courseArray);
-        })
-      );
+        expect(CoursesState.getPagedCourses(appState.courses)).toEqual(courseArray);
+      }));
     });
 
     describe('getTotalCourses', () => {
-      it(
-        'should return a number',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: '',
-              pagedCourses: [],
-              totalCourses: 3,
-            },
-          };
-          store.reset(appState);
+      it('should return a number', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 3,
+          },
+        };
+        store.reset(appState);
 
-          expect(CoursesState.getTotalCourses(appState.courses)).toEqual(3);
-        })
-      );
+        expect(CoursesState.getTotalCourses(appState.courses)).toEqual(3);
+      }));
     });
   });
 
@@ -278,59 +255,53 @@ describe('Courses', () => {
     });
 
     describe('DeleteFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              pagedCourses: [],
-              error: '',
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            pagedCourses: [],
+            error: '',
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new CourseActions.DeleteCourseFail('Error'));
+        store.dispatch(new CourseActions.DeleteCourseFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.courses.error)
-            .subscribe((error) => {
-              expect(error).toEqual('Error');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses.error)
+          .subscribe((error) => {
+            expect(error).toEqual('Error');
+          });
+      }));
     });
 
     describe('DeleteSuccess', () => {
-      it(
-        'should remove requested item from courses array',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: 'Error',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should remove requested item from courses array', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: 'Error',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new CourseActions.DeleteCourseSuccess());
+        store.dispatch(new CourseActions.DeleteCourseSuccess());
 
-          store
-            .selectOnce((state: AppModel) => state.courses.error)
-            .subscribe((error) => {
-              expect(error).toEqual('');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses.error)
+          .subscribe((error) => {
+            expect(error).toEqual('');
+          });
+      }));
     });
 
     describe('GetCourse', () => {
@@ -375,118 +346,106 @@ describe('Courses', () => {
     });
 
     describe('GetCourseFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: currentCourse,
-              error: '',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: currentCourse,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new CourseActions.GetCourseFail('Error'));
+        store.dispatch(new CourseActions.GetCourseFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.courses)
-            .subscribe((actual) => {
-              expect(actual.error).toEqual('Error');
-              expect(actual.currentCourse).toEqual(null);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses)
+          .subscribe((actual) => {
+            expect(actual.error).toEqual('Error');
+            expect(actual.currentCourse).toEqual(null);
+          });
+      }));
     });
 
     describe('GetCourseSuccess', () => {
-      it(
-        'should set currentCourse with requested record and clear error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: 'Error',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should set currentCourse with requested record and clear error', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: 'Error',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new CourseActions.GetCourseSuccess(currentCourse));
+        store.dispatch(new CourseActions.GetCourseSuccess(currentCourse));
 
-          store
-            .selectOnce((state: AppModel) => state.courses)
-            .subscribe((actual) => {
-              expect(actual.currentCourse).toEqual(currentCourse);
-              expect(actual.error).toEqual('');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses)
+          .subscribe((actual) => {
+            expect(actual.currentCourse).toEqual(currentCourse);
+            expect(actual.error).toEqual('');
+          });
+      }));
     });
 
     describe('GetPage', () => {
-      it(
-        'should update the pagedCourses with request page info ',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: courseArray,
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: '',
-              pagedCourses: [],
-              totalCourses: 3,
-            },
-          };
-          store.reset(appState);
+      it('should update the pagedCourses with request page info ', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: courseArray,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 3,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new CourseActions.GetCoursesPage({ current: 1, pageSize: 2 }));
+        store.dispatch(new CourseActions.GetCoursesPage({ current: 1, pageSize: 2 }));
 
-          store
-            .selectOnce((state: AppModel) => state.courses)
-            .subscribe((actual) => {
-              expect(actual.pagedCourses).toEqual(pagedCourseArray);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses)
+          .subscribe((actual) => {
+            expect(actual.pagedCourses).toEqual(pagedCourseArray);
+          });
+      }));
     });
 
     describe('GetCourseData', () => {
-      it(
-        'should update the coursesByPath and coursesBySource store values',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: courseArray,
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: '',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should update the coursesByPath and coursesBySource store values', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: courseArray,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new CourseActions.GetCourseData());
+        store.dispatch(new CourseActions.GetCourseData());
 
-          store
-            .selectOnce((state: AppModel) => state.courses)
-            .subscribe((actual) => {
-              expect(actual.coursesByPath).toEqual(byPathArray);
-              expect(actual.coursesBySource).toEqual(bySourceArray);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses)
+          .subscribe((actual) => {
+            expect(actual.coursesByPath).toEqual(byPathArray);
+            expect(actual.coursesBySource).toEqual(bySourceArray);
+          });
+      }));
     });
 
     describe('Load', () => {
@@ -531,95 +490,86 @@ describe('Courses', () => {
     });
 
     describe('LoadFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: courseArray,
-              coursesByPath: byPathArray,
-              coursesBySource: bySourceArray,
-              currentCourse: null,
-              error: '',
-              pagedCourses: pagedCourseArray,
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: courseArray,
+            coursesByPath: byPathArray,
+            coursesBySource: bySourceArray,
+            currentCourse: null,
+            error: '',
+            pagedCourses: pagedCourseArray,
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new CourseActions.LoadCoursesFail('Error'));
+        store.dispatch(new CourseActions.LoadCoursesFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.courses)
-            .subscribe((actual) => {
-              expect(actual.courses.length).toEqual(0);
-              expect(actual.coursesByPath.length).toEqual(0);
-              expect(actual.coursesBySource.length).toEqual(0);
-              expect(actual.pagedCourses.length).toEqual(0);
-              expect(actual.error).toEqual('Error');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses)
+          .subscribe((actual) => {
+            expect(actual.courses.length).toEqual(0);
+            expect(actual.coursesByPath.length).toEqual(0);
+            expect(actual.coursesBySource.length).toEqual(0);
+            expect(actual.pagedCourses.length).toEqual(0);
+            expect(actual.error).toEqual('Error');
+          });
+      }));
     });
 
     describe('LoadSuccess', () => {
-      it(
-        'should set the courses array to returned values and clear error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: 'Error',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should set the courses array to returned values and clear error', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: 'Error',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new CourseActions.LoadCoursesSuccess(courseArray));
+        store.dispatch(new CourseActions.LoadCoursesSuccess(courseArray));
 
-          store
-            .selectOnce((state: AppModel) => state.courses)
-            .subscribe((actual) => {
-              expect(actual.courses).toEqual(courseArray);
-              expect(actual.totalCourses).toEqual(3);
-              expect(actual.error).toEqual('');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses)
+          .subscribe((actual) => {
+            expect(actual.courses).toEqual(courseArray);
+            expect(actual.totalCourses).toEqual(3);
+            expect(actual.error).toEqual('');
+          });
+      }));
     });
 
     describe('New Course', () => {
-      it(
-        'should initialize currentCourse values for a new record',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: [],
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: '',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should initialize currentCourse values for a new record', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: [],
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          const expected: Course = { id: null, title: '', instructor: '', path: '', source: '' };
+        const expected: Course = { id: null, title: '', instructor: '', path: '', source: '' };
 
-          store.dispatch(new CourseActions.NewCourse());
+        store.dispatch(new CourseActions.NewCourse());
 
-          store
-            .selectOnce((state: AppModel) => state.courses.currentCourse)
-            .subscribe((current) => {
-              expect(current).toEqual(expected);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses.currentCourse)
+          .subscribe((current) => {
+            expect(current).toEqual(expected);
+          });
+      }));
     });
 
     describe('Save', () => {
@@ -637,7 +587,7 @@ describe('Courses', () => {
           },
         };
         store.reset(appState);
-       // const action = new CourseActions.SaveCourse();
+        // const action = new CourseActions.SaveCourse();
         const expected = new CourseActions.SaveCourseSuccess(currentCourse);
         const callbacksCalled = [];
 
@@ -649,7 +599,7 @@ describe('Courses', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
+        store.dispatch(actions);
         tick(1);
 
         // assert
@@ -657,11 +607,11 @@ describe('Courses', () => {
       }));
 
       it('should dispatch SaveFail when errors', fakeAsync(() => {
-        const action = new CourseActions.SaveCourse();
+        const action = new CourseActions.SaveCourse(currentCourse);
         const expected = new CourseActions.SaveCourseFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'saveCourse').and.returnValue(throwError('Error'));
+        spyOn(service, 'saveCourse').and.returnValue(throwError(() => 'Error'));
 
         // action
         actions.pipe(ofActionSuccessful(CourseActions.SaveCourseFail)).subscribe((x) => {
@@ -677,66 +627,60 @@ describe('Courses', () => {
     });
 
     describe('SaveFail', () => {
-      it(
-        'should return string in Error',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: courseArray,
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: null,
-              error: '',
-              pagedCourses: [],
-              totalCourses: 0,
-            },
-          };
-          store.reset(appState);
+      it('should return string in Error', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: courseArray,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: null,
+            error: '',
+            pagedCourses: [],
+            totalCourses: 0,
+          },
+        };
+        store.reset(appState);
 
-          store.dispatch(new CourseActions.SaveCourseFail('Error'));
+        store.dispatch(new CourseActions.SaveCourseFail('Error'));
 
-          store
-            .selectOnce((state: AppModel) => state.courses)
-            .subscribe((actual) => {
-              expect(actual.courses.length).toBe(0);
-              expect(actual.error).toEqual('Error');
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses)
+          .subscribe((actual) => {
+            expect(actual.courses.length).toBe(0);
+            expect(actual.error).toEqual('Error');
+          });
+      }));
     });
 
     describe('SaveSuccess', () => {
-      it(
-        'should update the course array with new value',
-        waitForAsync(() => {
-          const appState: AppModel = {
-            courses: {
-              courses: courseArray,
-              coursesByPath: [],
-              coursesBySource: [],
-              currentCourse: currentCourse,
-              error: 'Error',
-              pagedCourses: pagedCourseArray,
-              totalCourses: 3,
-            },
-          };
-          store.reset(appState);
+      it('should update the course array with new value', waitForAsync(() => {
+        const appState: AppModel = {
+          courses: {
+            courses: courseArray,
+            coursesByPath: [],
+            coursesBySource: [],
+            currentCourse: currentCourse,
+            error: 'Error',
+            pagedCourses: pagedCourseArray,
+            totalCourses: 3,
+          },
+        };
+        store.reset(appState);
 
-          const expected: Course = { id: 2, title: 'XYZ', instructor: 'Joe', path: 'Updated', source: 'Updated' };
-          store.dispatch(new CourseActions.SaveCourseSuccess(expected));
+        const expected: Course = { id: 2, title: 'XYZ', instructor: 'Joe', path: 'Updated', source: 'Updated' };
+        store.dispatch(new CourseActions.SaveCourseSuccess(expected));
 
-          store
-            .selectOnce((state: AppModel) => state.courses)
-            .subscribe((actual) => {
-              expect(actual.courses.length).toEqual(courseArray.length);
-              expect(actual.courses[1]).toEqual(expected);
-              expect(actual.pagedCourses.length).toEqual(pagedCourseArray.length);
-              expect(actual.pagedCourses[1]).toEqual(expected);
-              expect(actual.error).toEqual('');
-              expect(actual.currentCourse).toEqual(null);
-            });
-        })
-      );
+        store
+          .selectOnce((state: AppModel) => state.courses)
+          .subscribe((actual) => {
+            expect(actual.courses.length).toEqual(courseArray.length);
+            expect(actual.courses[1]).toEqual(expected);
+            expect(actual.pagedCourses.length).toEqual(pagedCourseArray.length);
+            expect(actual.pagedCourses[1]).toEqual(expected);
+            expect(actual.error).toEqual('');
+            expect(actual.currentCourse).toEqual(null);
+          });
+      }));
     });
   });
 });

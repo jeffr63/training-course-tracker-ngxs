@@ -1,4 +1,4 @@
-import { User } from '../../shared/models/user';
+import { User } from '@models/user';
 
 export namespace UserActions {
   export class DeleteUser {

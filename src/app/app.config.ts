@@ -9,11 +9,11 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsModule } from '@ngxs/store';
 
 import { APP_ROUTES } from './app.routes';
-import { CustomTitleStrategyService } from './shared/resolvers/custom-title-strategy.service';
-import { CoursesState } from './state/course/course.state';
-import { SourcesState } from './state/sources/sources.state';
-import { PathsState } from './state/paths/paths.state';
-import { UsersState } from './state/users/users.state';
+import { CustomTitleStrategyService } from '@resolvers/custom-title-strategy.service';
+import { CoursesState } from '@state/course/course.state';
+import { SourcesState } from '@state/sources/sources.state';
+import { PathsState } from '@state/paths/paths.state';
+import { UsersState } from '@state/users/users.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
