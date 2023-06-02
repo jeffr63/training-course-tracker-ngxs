@@ -21,11 +21,11 @@ import { SourcesState } from '@state/sources/sources.state';
 
 @Injectable()
 export class CoursesFacade {
-  actions$ = inject(Actions);
-  modal = inject(NgbModal);
-  location = inject(Location);
-  router = inject(Router);
-  modalDataService = inject(ModalDataService);
+  private actions$ = inject(Actions);
+  private modal = inject(NgbModal);
+  private location = inject(Location);
+  private router = inject(Router);
+  private modalDataService = inject(ModalDataService);
 
   public closedResult = '';
   public current = 1;

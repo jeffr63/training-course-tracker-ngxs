@@ -9,7 +9,7 @@ import { DataServiceFacade } from '@facades/data-service-facade';
   providedIn: 'root',
 })
 export class SourceTitleResolverService {
-  dataService = inject(DataServiceFacade);
+  private dataService = inject(DataServiceFacade);
 
   resolve(route: ActivatedRouteSnapshot): string | Observable<string> | Promise<string> {
     const id = route.paramMap.get('id');

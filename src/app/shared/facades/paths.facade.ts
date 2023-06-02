@@ -15,10 +15,10 @@ import { PathsState } from '@state/paths/paths.state';
 
 @Injectable()
 export class PathsFacade {
-  modal = inject(NgbModal);
-  router = inject(Router);
-  location = inject(Location);
-  modalDataService = inject(ModalDataService);
+  private modal = inject(NgbModal);
+  private router = inject(Router);
+  private location = inject(Location);
+  private modalDataService = inject(ModalDataService);
 
   @Select(PathsState.getCurrentPath) public path$: Observable<Path>;
   @Select(PathsState.getPaths) public paths$: Observable<Path[]>;

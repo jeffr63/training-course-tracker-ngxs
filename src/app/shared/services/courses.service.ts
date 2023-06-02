@@ -7,7 +7,7 @@ import { Course } from '@models/course';
   providedIn: 'root',
 })
 export class CoursesService {
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
   private baseUrl = 'http://localhost:3000';
 

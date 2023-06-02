@@ -1,5 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
@@ -119,14 +118,13 @@ import { CoursesFacade } from '@facades/courses.facade';
   ],
 })
 export default class CourseEditComponent implements OnInit, OnDestroy {
-  facade = inject(CoursesFacade);
-  fb = inject(FormBuilder);
-  route = inject(ActivatedRoute);
+  public facade = inject(CoursesFacade);
+  private fb = inject(FormBuilder);
 
+  @Input() id;
   destroy$ = new ReplaySubject<void>(1);
   course: Course;
   courseEditForm!: FormGroup;
-  id = '';
 
   ngOnInit(): void {
     this.courseEditForm = this.fb.group({
@@ -136,18 +134,16 @@ export default class CourseEditComponent implements OnInit, OnDestroy {
       source: ['', Validators.required],
     });
 
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      this.id = params.id;
-      if (params.id === 'New') return;
-      this.facade.loadCourse(params.id);
-      this.facade.course$.pipe(takeUntil(this.destroy$)).subscribe((course) => {
-        if (!course) return;
-        this.course = { ...course };
-        this.courseEditForm.get('title').setValue(course.title);
-        this.courseEditForm.get('instructor').setValue(course.instructor);
-        this.courseEditForm.get('path').setValue(course.path);
-        this.courseEditForm.get('source').setValue(course.source);
-      });
+    if (this.id === 'New') return;
+
+    this.facade.loadCourse(this.id);
+    this.facade.course$.pipe(takeUntil(this.destroy$)).subscribe((course) => {
+      if (!course) return;
+      this.course = { ...course };
+      this.courseEditForm.get('title').setValue(course.title);
+      this.courseEditForm.get('instructor').setValue(course.instructor);
+      this.courseEditForm.get('path').setValue(course.path);
+      this.courseEditForm.get('source').setValue(course.source);
     });
   }
 

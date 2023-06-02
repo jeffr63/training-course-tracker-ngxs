@@ -15,10 +15,10 @@ import { SourcesState } from '@state/sources/sources.state';
 
 @Injectable()
 export class SourcesFacade {
-  router = inject(Router);
-  modal = inject(NgbModal);
-  location = inject(Location);
-  modalDataService = inject(ModalDataService);
+  private router = inject(Router);
+  private modal = inject(NgbModal);
+  private location = inject(Location);
+  private modalDataService = inject(ModalDataService);
 
   public columns = ['name'];
   public headers = ['Source'];

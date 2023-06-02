@@ -42,7 +42,7 @@ import { UsersFacade } from '@facades/users.facade';
   ],
 })
 export default class UserListComponent implements OnInit {
-  facade = inject(UsersFacade);
+  public facade = inject(UsersFacade);
 
   columns = ['name', 'email', 'role'];
   headers = ['Name', 'Email', 'Role'];

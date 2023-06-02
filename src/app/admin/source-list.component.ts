@@ -44,7 +44,7 @@ import { SourcesFacade } from '@facades/sources.facade';
   ],
 })
 export default class SourceListComponent implements OnInit {
-  facade = inject(SourcesFacade);
+  public facade = inject(SourcesFacade);
 
   columns = ['name'];
   headers = ['Source'];

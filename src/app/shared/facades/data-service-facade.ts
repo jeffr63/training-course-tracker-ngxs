@@ -12,10 +12,10 @@ import { UsersService } from '@services/users.service';
   providedIn: 'root',
 })
 export class DataServiceFacade {
-  coursesService = inject(CoursesService);
-  pathsService = inject(PathsService);
-  sourcesService = inject(SourcesService);
-  usersService = inject(UsersService);
+  private coursesService = inject(CoursesService);
+  private pathsService = inject(PathsService);
+  private sourcesService = inject(SourcesService);
+  private usersService = inject(UsersService);
 
   // course service methods
   deleteCourse(id) {

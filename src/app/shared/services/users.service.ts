@@ -9,7 +9,7 @@ import { User } from '@models/user';
   providedIn: 'root',
 })
 export class UsersService {
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
   private baseUrl = 'http://localhost:3000';
 

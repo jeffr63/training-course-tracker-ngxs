@@ -44,7 +44,7 @@ import { PathsFacade } from '@facades/paths.facade';
   ],
 })
 export default class PathListComponent implements OnInit {
-  facade = inject(PathsFacade);
+  public facade = inject(PathsFacade);
 
   columns = ['name'];
   headers = ['Path'];

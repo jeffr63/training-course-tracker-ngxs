@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { map } from 'rxjs/operators';
@@ -14,10 +14,12 @@ class AuthToken {
   providedIn: 'root',
 })
 export class AuthService {
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
-  public isAdmin = false;
-  public isAuthenticated = false;
+  #isAdmin = signal(false);
+  #isLoggedIn = signal(false);
+  isLoggedIn = this.#isLoggedIn.asReadonly();
+  isLoggedInAsAdmin = computed(() => this.#isLoggedIn() && this.#isAdmin());
 
   login(email: string, password: string) {
     return this.http.post<any>('http://localhost:3000/login', { email, password }).pipe(
@@ -33,8 +35,8 @@ export class AuthService {
             expires: token.exp,
           };
           localStorage.setItem('tct_auth', JSON.stringify(auth));
-          this.isAuthenticated = true;
-          this.isAdmin = response.user.role === 'admin' ? true : false;
+          this.#isLoggedIn.set(true);
+          this.#isAdmin.set(response.user.role === 'admin' ? true : false);
         }
         return response;
       })
@@ -43,8 +45,8 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('tct_auth');
-    this.isAuthenticated = false;
-    this.isAdmin = false;
+    this.#isLoggedIn.set(false);
+    this.#isAdmin.set(false);
   }
 
   checkLogin() {
@@ -53,14 +55,14 @@ export class AuthService {
 
     const now = Date.now() / 1000;
     if (auth.expires > now) {
-      this.isAuthenticated = true;
-      this.isAdmin = auth.role === 'admin' ? true : false;
+      this.#isLoggedIn.set(true);
+      this.#isAdmin.set(auth.role === 'admin' ? true : false);
     } else {
       this.logout();
     }
   }
 
-  parseJwt(token) {
+  private parseJwt(token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     var jsonPayload = decodeURIComponent(
@@ -73,13 +75,5 @@ export class AuthService {
     );
 
     return JSON.parse(jsonPayload);
-  }
-
-  isLoggedIn() {
-    return this.isAuthenticated;
-  }
-
-  isLoggedInAsAdmin() {
-    return this.isAuthenticated && this.isAdmin;
   }
 }

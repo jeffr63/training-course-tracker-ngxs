@@ -15,10 +15,10 @@ import { UsersState } from '@state/users/users.state';
 
 @Injectable()
 export class UsersFacade {
-  router = inject(Router);
-  modal = inject(NgbModal);
-  location = inject(Location);
-  modalDataService = inject(ModalDataService);
+  private router = inject(Router);
+  private modal = inject(NgbModal);
+  private location = inject(Location);
+  private modalDataService = inject(ModalDataService);
 
   public columns = ['name', 'email', 'role'];
   public headers = ['Name', 'Email', 'Role'];

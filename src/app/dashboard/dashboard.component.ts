@@ -1,13 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { Observable } from 'rxjs';
 
 import { CoursesFacade } from '@facades/courses.facade';
 import { DashboardFacade } from '@facades/dashboard.facade';
 import { SourcesFacade } from '@facades/sources.facade';
-import { CourseData } from '@models/course';
 import { DataServiceFacade } from '@facades/data-service-facade';
 
 @Component({
@@ -25,7 +24,7 @@ import { DataServiceFacade } from '@facades/data-service-facade';
               <h4 class="card-title">Completed Courses - Paths</h4>
               <ngx-charts-pie-chart
                 [view]="[400, 400]"
-                [results]="courses$ | async"
+                [results]="courses()"
                 [labels]="true"
                 [doughnut]="true"
                 [arcWidth]="0.5"
@@ -39,7 +38,7 @@ import { DataServiceFacade } from '@facades/data-service-facade';
               <h4 class="card-title">Completed Courses - Sources</h4>
               <ngx-charts-pie-chart
                 [view]="[400, 400]"
-                [results]="sources$ | async"
+                [results]="sources()"
                 [labels]="true"
                 [doughnut]="true"
                 [arcWidth]="0.5"
@@ -63,10 +62,10 @@ import { DataServiceFacade } from '@facades/data-service-facade';
   ],
 })
 export class DashboardComponent implements OnInit {
-  facade = inject(DashboardFacade);
+  private facade = inject(DashboardFacade);
 
-  courses$: Observable<CourseData[]> = this.facade.courses$;
-  sources$: Observable<CourseData[]> = this.facade.sources$;
+  courses = toSignal(this.facade.courses$, { initialValue: [] });
+  sources = toSignal(this.facade.sources$, { initialValue: [] });
 
   ngOnInit() {
     this.facade.loadChartData();

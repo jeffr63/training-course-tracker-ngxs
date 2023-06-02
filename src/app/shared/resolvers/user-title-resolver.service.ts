@@ -10,7 +10,7 @@ import { User } from '../models/user';
   providedIn: 'root',
 })
 export class UserTitleResolverService {
-  dataService = inject(DataServiceFacade);
+  private dataService = inject(DataServiceFacade);
 
   resolve(route: ActivatedRouteSnapshot): string | Observable<string> | Promise<string> {
     const id = route.paramMap.get('id');

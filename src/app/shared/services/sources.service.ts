@@ -9,7 +9,7 @@ import { Source } from '@models/sources';
   providedIn: 'root',
 })
 export class SourcesService {
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
   private baseUrl = 'http://localhost:3000';
 

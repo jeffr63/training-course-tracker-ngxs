@@ -1,6 +1,5 @@
-import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -57,10 +56,10 @@ import { PathsFacade } from '@facades/paths.facade';
   ],
 })
 export default class PathEditComponent implements OnInit, OnDestroy {
-  facade = inject(PathsFacade);
-  fb = inject(FormBuilder);
-  route = inject(ActivatedRoute);
+  public facade = inject(PathsFacade);
+  private fb = inject(FormBuilder);
 
+  @Input() id;
   destroy$ = new ReplaySubject<void>(1);
   path: Path;
   pathEditForm!: FormGroup;
@@ -70,14 +69,13 @@ export default class PathEditComponent implements OnInit, OnDestroy {
       name: ['', Validators.required],
     });
 
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      if (params.id === 'New') return;
-      this.facade.loadPath(params.id);
-      this.facade.path$.pipe(takeUntil(this.destroy$)).subscribe((path) => {
-        if (!path) return;
-        this.path = { ...path };
-        this.pathEditForm.get('name').setValue(this.path.name);
-      });
+    if (this.id === 'New') return;
+
+    this.facade.loadPath(this.id);
+    this.facade.path$.pipe(takeUntil(this.destroy$)).subscribe((path) => {
+      if (!path) return;
+      this.path = { ...path };
+      this.pathEditForm.get('name').setValue(this.path.name);
     });
   }
 

@@ -12,7 +12,7 @@ import { CoursesState } from '@state/course/course.state';
   providedIn: 'root',
 })
 export class DashboardFacade {
-  store = inject(Store);
+  private store = inject(Store);
 
   @Select(CoursesState.getCoursesByPath) courses$: Observable<CourseData[]>;
   @Select(CoursesState.getCoursesBySource) sources$: Observable<CourseData[]>;

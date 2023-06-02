@@ -1,6 +1,5 @@
-import { ActivatedRoute } from '@angular/router';
 import { NgIf } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -84,12 +83,11 @@ import { UsersFacade } from '@facades/users.facade';
   ],
 })
 export default class UserEditComponent implements OnInit, OnDestroy {
-  route = inject(ActivatedRoute);
-  facade = inject(UsersFacade);
-  fb = inject(FormBuilder);
+  public facade = inject(UsersFacade);
+  private fb = inject(FormBuilder);
 
+  @Input() id;
   userEditForm!: FormGroup;
-  id: number = 0;
   destroy$ = new ReplaySubject<void>(1);
 
   ngOnInit() {
@@ -99,15 +97,12 @@ export default class UserEditComponent implements OnInit, OnDestroy {
       role: ['', Validators.required],
     });
 
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      this.facade.loadUser(params.id);
-      this.facade.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
-        if (!user) return;
-        this.id = user.id;
-        this.userEditForm.get('name').setValue(user.name);
-        this.userEditForm.get('email').setValue(user.email);
-        this.userEditForm.get('role').setValue(user.role);
-      });
+    this.facade.loadUser(this.id);
+    this.facade.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+      if (!user) return;
+      this.userEditForm.get('name').setValue(user.name);
+      this.userEditForm.get('email').setValue(user.email);
+      this.userEditForm.get('role').setValue(user.role);
     });
   }
 
@@ -121,6 +116,6 @@ export default class UserEditComponent implements OnInit, OnDestroy {
       email: this.userEditForm.controls.email.value,
       role: this.userEditForm.controls.role.value,
     };
-    this.facade.patch(this.id, patch);
+    this.facade.patch(+this.id, patch);
   }
 }

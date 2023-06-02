@@ -1,5 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
 
@@ -57,10 +56,10 @@ import { SourcesFacade } from '@facades/sources.facade';
   ],
 })
 export default class SourceEditComponent implements OnInit, OnDestroy {
-  facade = inject(SourcesFacade);
-  fb = inject(FormBuilder);
-  route = inject(ActivatedRoute);
+  public facade = inject(SourcesFacade);
+  private fb = inject(FormBuilder);
 
+  @Input() id;
   destroy$ = new ReplaySubject<void>(1);
   sourceEditForm!: FormGroup;
   source: Source;
@@ -70,15 +69,14 @@ export default class SourceEditComponent implements OnInit, OnDestroy {
       name: ['', Validators.required],
     });
 
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      if (params.id === 'New') return;
-      this.facade.loadSource(params.id);
+    if (this.id === 'New') return;
+
+      this.facade.loadSource(this.id);
       this.facade.source$.pipe(takeUntil(this.destroy$)).subscribe((source) => {
         if (!source) return;
         this.source = { ...source };
         this.sourceEditForm.get('name').setValue(this.source.name);
       });
-    });
   }
 
   ngOnDestroy() {
