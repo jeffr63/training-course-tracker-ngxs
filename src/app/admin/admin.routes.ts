@@ -2,9 +2,9 @@ import { inject } from '@angular/core';
 import { Route } from '@angular/router';
 
 import { AuthService } from '@services/auth.service';
-import { PathTitleResolverService } from '@resolvers/path-title-resolver.service';
-import { SourceTitleResolverService } from '@resolvers/source-title-resolver.service';
-import { UserTitleResolverService } from '@resolvers/user-title-resolver.service';
+import { pathNameResolver } from '@resolvers/path-title-resolver.service';
+import { sourceNameResolver } from '@resolvers/source-title-resolver.service';
+import { userNameResolver } from '@resolvers/user-title-resolver.service';
 
 export default [
   {
@@ -18,7 +18,7 @@ export default [
       },
       {
         path: 'sources/:id',
-        title: SourceTitleResolverService,
+        title: sourceNameResolver,
         loadComponent: () => import('./source-edit.component'),
       },
       {
@@ -28,7 +28,7 @@ export default [
       },
       {
         path: 'paths/:id',
-        title: PathTitleResolverService,
+        title: pathNameResolver,
         loadComponent: () => import('./path-edit.component'),
       },
       {
@@ -38,7 +38,7 @@ export default [
       },
       {
         path: 'users/:id',
-        title: UserTitleResolverService,
+        title: userNameResolver,
         loadComponent: () => import('./user-edit.component'),
       },
     ],

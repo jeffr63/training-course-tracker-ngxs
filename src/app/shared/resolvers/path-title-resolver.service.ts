@@ -1,22 +1,17 @@
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { inject, Injectable } from '@angular/core';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
 
-import { map, Observable, } from 'rxjs';
+import { map } from 'rxjs';
 
 import { DataServiceFacade } from '@facades/data-service-facade';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class PathTitleResolverService {
-  private dataService = inject(DataServiceFacade);
-
-  resolve(route: ActivatedRouteSnapshot): string | Observable<string> | Promise<string> {
-    const id = route.paramMap.get('id');
-    if (id == 'new') {
-      return 'New Path';
-    } else {
-      return this.dataService.getPath(id).pipe(map((path) => path.name));
-    }
+export const pathNameResolver: ResolveFn<string> = (route: ActivatedRouteSnapshot) => {
+  const id = route.paramMap.get('id');
+  if (id == 'new') {
+    return 'New Path';
+  } else {
+    return inject(DataServiceFacade)
+      .getPath(id)
+      .pipe(map((path) => path.name));
   }
-}
+};
