@@ -15,7 +15,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "outputPath": "dist/course-list",
             "index": "src/index.html",
@@ -28,7 +28,8 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/css/cerulean.bootstrap.min.css"
+              "src/css/cerulean.bootstrap.min.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css"
             ],
             "scripts": [],
             "vendorChunk": true,
