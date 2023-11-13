@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { NgIf } from '@angular/common';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-pager-list-header',
   standalone: true,
-  imports: [NgIf, NgbModule],
+  imports: [NgbModule],
 
   template: `
     <header class="row">
@@ -18,14 +17,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
           [maxSize]="maxSize"
           [rotate]="true"
           [(page)]="current"
-          (pageChange)="onPageChange()"
-        ></ngb-pagination>
+          (pageChange)="onPageChange()"></ngb-pagination>
       </div>
-      <div class="col" *ngIf="isAuthenticated">
+      @if (isAuthenticated) {
+      <div class="col">
         <button class="btn btn-sm" (click)="newClicked()" title="Add">
           <i class="bi bi-plus-circle-fill display-6 text-success"></i>
         </button>
       </div>
+      }
     </header>
   `,
 

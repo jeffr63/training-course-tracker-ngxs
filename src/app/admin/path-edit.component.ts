@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnInit, OnDestroy, inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -11,20 +10,21 @@ import { PathsFacade } from '@facades/paths.facade';
 @Component({
   selector: 'app-path-edit',
   standalone: true,
-  imports: [NgIf, NgbModule, ReactiveFormsModule],
+  imports: [NgbModule, ReactiveFormsModule],
   providers: [PathsFacade],
 
   template: `
     <section class="container">
       <section class="card">
-        <form *ngIf="pathEditForm" [formGroup]="pathEditForm">
+        @if (pathEditForm) {
+        <form [formGroup]="pathEditForm">
           <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="name">Path Name</label>
             <div class="col-sm-6">
               <input type="text" class="form-control" formControlName="name" placeholder="Enter path name" />
-              <div *ngIf="pathEditForm.controls.name.errors?.required && pathEditForm.controls.name.touched">
-                <small class="text-danger">Path Name is required</small>
-              </div>
+              @if (pathEditForm.controls.name.errors?.required && pathEditForm.controls.name.touched) {
+              <small class="text-danger">Path Name is required</small>
+              }
             </div>
           </fieldset>
 
@@ -37,6 +37,7 @@ import { PathsFacade } from '@facades/paths.facade';
             </a>
           </div>
         </form>
+        }
       </section>
     </section>
   `,

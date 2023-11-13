@@ -1,5 +1,4 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { NgIf } from '@angular/common';
 
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -8,7 +7,7 @@ import { ModalDataService } from '@modals/modal-data.service';
 @Component({
   selector: 'app-delete',
   standalone: true,
-  imports: [NgIf, NgbModule],
+  imports: [NgbModule],
 
   template: `
     <div class="modal-header">
@@ -20,7 +19,9 @@ import { ModalDataService } from '@modals/modal-data.service';
       </p>
       <p>
         {{ modalOptions.body }}
-        <span class="text-danger" *ngIf="modalOptions.warning">{{ modalOptions.warning }}</span>
+        @if (modalOptions.warning) {
+        <span class="text-danger">{{ modalOptions.warning }}</span>
+        }
       </p>
     </div>
     <div class="modal-footer">

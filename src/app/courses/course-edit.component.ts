@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReplaySubject, takeUntil } from 'rxjs';
@@ -11,13 +11,14 @@ import { CoursesFacade } from '@facades/courses.facade';
 @Component({
   selector: 'app-course-edit',
   standalone: true,
-  imports: [AsyncPipe, NgForOf, NgIf, NgbModule, ReactiveFormsModule],
+  imports: [AsyncPipe, NgbModule, ReactiveFormsModule],
   providers: [CoursesFacade],
 
   template: `
     <section class="container">
       <section class="card">
-        <form *ngIf="courseEditForm" [formGroup]="courseEditForm">
+        @if (courseEditForm) {
+        <form [formGroup]="courseEditForm">
           <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="title">Title</label>
             <div class="col-sm-6">
@@ -25,11 +26,10 @@ import { CoursesFacade } from '@facades/courses.facade';
                 type="text"
                 class="form-control"
                 formControlName="title"
-                placeholder="Enter title of course taken"
-              />
-              <div *ngIf="courseEditForm.controls.title.errors?.required && courseEditForm.controls.title.touched">
-                <small class="text-danger">Title is required</small>
-              </div>
+                placeholder="Enter title of course taken" />
+              @if (courseEditForm.controls.title.errors?.required && courseEditForm.controls.title.touched) {
+              <small class="text-danger">Title is required</small>
+              }
             </div>
           </fieldset>
 
@@ -40,15 +40,10 @@ import { CoursesFacade } from '@facades/courses.facade';
                 type="text"
                 class="form-control"
                 formControlName="instructor"
-                placeholder="Enter name of course's intructor"
-              />
-              <div
-                *ngIf="
-                  courseEditForm.controls.instructor.errors?.required && courseEditForm.controls.instructor.touched
-                "
-              >
-                <small class="text-danger">Instructor is required</small>
-              </div>
+                placeholder="Enter name of course's intructor" />
+              @if (courseEditForm.controls.instructor.errors?.required && courseEditForm.controls.instructor.touched) {
+              <small class="text-danger">Instructor is required</small>
+              }
             </div>
           </fieldset>
 
@@ -60,14 +55,15 @@ import { CoursesFacade } from '@facades/courses.facade';
                 class="form-control"
                 formControlName="path"
                 list="path-helpers"
-                placeholder="Enter technical path of course (ex: Angular or React)"
-              />
+                placeholder="Enter technical path of course (ex: Angular or React)" />
               <datalist id="path-helpers">
-                <option *ngFor="let path of facade.paths$ | async" value="{{ path.name }}"></option>
+                @for (path of facade.paths$ | async; track path.id) {
+                <option value="{{ path.name }}"></option>
+                }
               </datalist>
-              <div *ngIf="courseEditForm.controls.path.errors?.required && courseEditForm.controls.path.touched">
-                <small class="text-danger">Path is required</small>
-              </div>
+              @if (courseEditForm.controls.path.errors?.required && courseEditForm.controls.path.touched) {
+              <small class="text-danger">Path is required</small>
+              }
             </div>
           </fieldset>
 
@@ -79,14 +75,15 @@ import { CoursesFacade } from '@facades/courses.facade';
                 class="form-control"
                 formControlName="source"
                 list="source-helpers"
-                placeholder="Enter where the course was sourced from (ex: Pluralsite)"
-              />
+                placeholder="Enter where the course was sourced from (ex: Pluralsite)" />
               <datalist id="source-helpers">
-                <option *ngFor="let source of facade.sources$ | async" value="{{ source.name }}"></option>
+                @for (source of facade.sources$ | async; track source.id) {
+                <option value="{{ source.name }}"></option>
+                }
               </datalist>
-              <div *ngIf="courseEditForm.controls.source.errors?.required && courseEditForm.controls.source.touched">
-                <small class="text-danger">Source is required</small>
-              </div>
+              @if (courseEditForm.controls.source.errors?.required && courseEditForm.controls.source.touched) {
+              <small class="text-danger">Source is required</small>
+              }
             </div>
           </fieldset>
 
@@ -99,6 +96,7 @@ import { CoursesFacade } from '@facades/courses.facade';
             </a>
           </div>
         </form>
+        }
       </section>
     </section>
   `,

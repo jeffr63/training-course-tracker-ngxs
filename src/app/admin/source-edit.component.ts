@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReplaySubject, takeUntil } from 'rxjs';
@@ -11,20 +10,21 @@ import { SourcesFacade } from '@facades/sources.facade';
 @Component({
   selector: 'app-source-edit',
   standalone: true,
-  imports: [NgIf, NgbModule, ReactiveFormsModule],
+  imports: [NgbModule, ReactiveFormsModule],
   providers: [SourcesFacade],
 
   template: `
     <section class="container">
       <section class="card">
-        <form *ngIf="sourceEditForm" [formGroup]="sourceEditForm">
+        @if (sourceEditForm) {
+        <form [formGroup]="sourceEditForm">
           <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="name">Source Name</label>
             <div class="col-sm-6">
               <input type="text" class="form-control" formControlName="name" placeholder="Enter source name" />
-              <div *ngIf="sourceEditForm.controls.name.errors?.required && sourceEditForm.controls.name.touched">
-                <small class="text-danger">Source Name is required</small>
-              </div>
+              @if (sourceEditForm.controls.name.errors?.required && sourceEditForm.controls.name.touched) {
+              <small class="text-danger">Source Name is required</small>
+              }
             </div>
           </fieldset>
 
@@ -37,6 +37,7 @@ import { SourcesFacade } from '@facades/sources.facade';
             </a>
           </div>
         </form>
+        }
       </section>
     </section>
   `,
@@ -71,12 +72,12 @@ export default class SourceEditComponent implements OnInit, OnDestroy {
 
     if (this.id === 'New') return;
 
-      this.facade.loadSource(this.id);
-      this.facade.source$.pipe(takeUntil(this.destroy$)).subscribe((source) => {
-        if (!source) return;
-        this.source = { ...source };
-        this.sourceEditForm.get('name').setValue(this.source.name);
-      });
+    this.facade.loadSource(this.id);
+    this.facade.source$.pipe(takeUntil(this.destroy$)).subscribe((source) => {
+      if (!source) return;
+      this.source = { ...source };
+      this.sourceEditForm.get('name').setValue(this.source.name);
+    });
   }
 
   ngOnDestroy() {

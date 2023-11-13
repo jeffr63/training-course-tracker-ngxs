@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -10,20 +9,21 @@ import { UsersFacade } from '@facades/users.facade';
 @Component({
   selector: 'app-user-edit',
   standalone: true,
-  imports: [NgIf, NgbModule, ReactiveFormsModule],
+  imports: [NgbModule, ReactiveFormsModule],
   providers: [UsersFacade],
 
   template: `
     <section class="container">
       <section class="card">
-        <form *ngIf="userEditForm" [formGroup]="userEditForm">
+        @if (userEditForm) {
+        <form [formGroup]="userEditForm">
           <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="name">Name</label>
             <div class="col-sm-6">
               <input type="text" class="form-control" formControlName="name" placeholder="Enter user's name" />
-              <div *ngIf="userEditForm.controls.name.errors?.required && userEditForm.controls.name.touched">
-                <small class="text-danger">Name is required</small>
-              </div>
+              @if (userEditForm.controls.name.errors?.required && userEditForm.controls.name.touched) {
+              <small class="text-danger">Name is required</small>
+              }
             </div>
           </fieldset>
 
@@ -31,12 +31,11 @@ import { UsersFacade } from '@facades/users.facade';
             <label class="col-form-label col-sm-2" for="email">Email</label>
             <div class="col-sm-6">
               <input type="text" class="form-control" formControlName="email" placeholder="Enter email address" />
-              <div *ngIf="userEditForm.controls.email.errors?.required && userEditForm.controls.email.touched">
-                <small class="text-danger">Email is required</small>
-              </div>
-              <div *ngIf="userEditForm.controls.email.errors?.email">
-                <small class="text-danger">Must be a valid email</small>
-              </div>
+              @if (userEditForm.controls.email.errors?.required && userEditForm.controls.email.touched) {
+              <small class="text-danger">Email is required</small>
+              } @if (userEditForm.controls.email.errors?.email) {
+              <small class="text-danger">Must be a valid email</small>
+              }
             </div>
           </fieldset>
 
@@ -45,9 +44,9 @@ import { UsersFacade } from '@facades/users.facade';
             <div class="form-check col-sm-3" style="margin-left:20px">
               <input type="radio" class="form-check-input" id="role1" value="admin" formControlName="role" />
               <label class="form-check-label" for="check1">Admin</label>
-              <div *ngIf="userEditForm.controls.role.errors?.required && userEditForm.controls.role.touched">
+              @if (userEditForm.controls.role.errors?.required && userEditForm.controls.role.touched) {
                 <small class="text-danger">Role is required</small>
-              </div>
+              }
             </div>
             <div class="form-check col-sm-3">
               <input type="radio" class="form-check-input" value="user" id="role2" formControlName="role" />
@@ -64,6 +63,7 @@ import { UsersFacade } from '@facades/users.facade';
             </a>
           </div>
         </form>
+        }
       </section>
     </section>
   `,

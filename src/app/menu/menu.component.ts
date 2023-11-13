@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -11,7 +10,7 @@ import { LoginComponent } from '@modals/login.component';
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [NgIf, NgbModule, ReactiveFormsModule, RouterLink],
+  imports: [NgbModule, ReactiveFormsModule, RouterLink],
 
   template: `
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -25,8 +24,7 @@ import { LoginComponent } from '@modals/login.component';
         aria-controls="navbarNavAltMarkup"
         aria-expanded="false"
         aria-label="Toggle navigation"
-        (click)="isNavbarCollapsed.set(!isNavbarCollapsed())"
-      >
+        (click)="isNavbarCollapsed.set(!isNavbarCollapsed())">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -34,9 +32,13 @@ import { LoginComponent } from '@modals/login.component';
         <div class="navbar-nav ms-auto">
           <a class="nav-item nav-link active" [routerLink]="['/']">Home</a>
           <a class="nav-item nav-link" [routerLink]="['/courses']">Courses</a>
-          <div *ngIf="!isLoggedIn()" class="nav-item nav-link" (click)="open()">Login</div>
-          <a *ngIf="isAdmin()" class="nav-item nav-link" [routerLink]="['/admin']">Admin</a>
-          <div *ngIf="isLoggedIn()" class="nav-item nav-link" (click)="logout()">Logout</div>
+          @if (isLoggedIn()) { @if (isAdmin()) {
+          <a class="nav-item nav-link" [routerLink]="['/admin']">Admin</a>
+          }
+          <div class="nav-item nav-link" (click)="logout()">Logout</div>
+          } @else {
+          <div class="nav-item nav-link" (click)="open()">Login</div>
+          }
         </div>
       </div>
     </nav>
