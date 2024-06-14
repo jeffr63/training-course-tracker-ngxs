@@ -1,5 +1,5 @@
 import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
@@ -32,9 +32,9 @@ describe('Paths', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgxsModule.forRoot([PathsState]), HttpClientModule],
-        providers: [DataServiceFacade],
-      }).compileComponents();
+    imports: [NgxsModule.forRoot([PathsState])],
+    providers: [DataServiceFacade, provideHttpClient(withInterceptorsFromDi())]
+}).compileComponents();
       store = TestBed.inject(Store);
       service = TestBed.inject(DataServiceFacade);
       actions = TestBed.inject(Actions);
