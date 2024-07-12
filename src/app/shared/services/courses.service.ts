@@ -7,37 +7,35 @@ import { Course } from '@models/course';
   providedIn: 'root',
 })
 export class CoursesService {
-  private http = inject(HttpClient);
+  readonly #http = inject(HttpClient);
 
-  private baseUrl = 'http://localhost:3000';
+  readonly #baseUrl = 'http://localhost:3000';
 
   private addCourse(course: Course) {
-    return this.http.post(`${this.baseUrl}/courses`, course);
+    return this.#http.post(`${this.#baseUrl}/courses`, course);
   }
 
-  deleteCourse(id) {
-    return this.http.delete(`${this.baseUrl}/courses/${id}`);
+  public deleteCourse(id) {
+    return this.#http.delete(`${this.#baseUrl}/courses/${id}`);
   }
 
-  getCourse(id) {
-    return this.http.get<Course>(`${this.baseUrl}/courses/${id}`);
+  public getCourse(id) {
+    return this.#http.get<Course>(`${this.#baseUrl}/courses/${id}`);
   }
 
-  getCourses() {
-    return this.http.get<Course[]>(`${this.baseUrl}/courses`);
+  public getCourses() {
+    return this.#http.get<Course[]>(`${this.#baseUrl}/courses`);
   }
 
-  getCoursesSorted() {
-    return this.http.get<Course[]>(`${this.baseUrl}/courses?_sort=title&_order=asc`);
+  public getCoursesSorted() {
+    return this.#http.get<Course[]>(`${this.#baseUrl}/courses?_sort=title&_order=asc`);
   }
 
-  getCoursesPaged(current, pageSize) {
-    return this.http.get<Course[]>(
-      `${this.baseUrl}/courses?_sort=title&_order=asc&_page=${current}&_limit=${pageSize}`
-    );
+  public getCoursesPaged(current, pageSize) {
+    return this.#http.get<Course[]>(`${this.#baseUrl}/courses?_sort=title&_order=asc&_page=${current}&_limit=${pageSize}`);
   }
 
-  saveCourse(course: Course) {
+  public saveCourse(course: Course) {
     if (course.id) {
       return this.updateCourse(course);
     } else {
@@ -46,7 +44,6 @@ export class CoursesService {
   }
 
   private updateCourse(course: Course) {
-    return this.http.put(`${this.baseUrl}/courses/${course.id}`, course);
+    return this.#http.put(`${this.#baseUrl}/courses/${course.id}`, course);
   }
 }
-

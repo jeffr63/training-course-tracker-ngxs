@@ -3,9 +3,8 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
-import { Select } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 
 import { DeleteComponent } from '@shared/modals/delete.component';
 import { ModalDataService } from '@shared/modals/modal-data.service';
@@ -15,21 +14,21 @@ import { PathsState } from '@state/paths/paths.state';
 
 @Injectable()
 export class PathsFacade {
-  private modal = inject(NgbModal);
-  private router = inject(Router);
-  private location = inject(Location);
-  private modalDataService = inject(ModalDataService);
+  readonly #modal = inject(NgbModal);
+  readonly #router = inject(Router);
+  readonly #location = inject(Location);
+  readonly #modalDataService = inject(ModalDataService);
 
-  @Select(PathsState.getCurrentPath) public path$: Observable<Path>;
-  @Select(PathsState.getPaths) public paths$: Observable<Path[]>;
+  public readonly path$ = inject(Store).select(PathsState.getCurrentPath);
+  public readonly paths$ = inject(Store).select(PathsState.getPaths);
 
-  @Dispatch() deletePath = (id: number) => new PathsActions.DeletePath(id);
-  @Dispatch() loadPath = (id) => (id === 'new' ? new PathsActions.NewPath() : new PathsActions.GetPath(id));
-  @Dispatch() loadPaths = () => new PathsActions.LoadPaths();
-  @Dispatch() savePath = (path: Path) => new PathsActions.SavePath(path);
+  @Dispatch() public deletePath = (id: number) => new PathsActions.DeletePath(id);
+  @Dispatch() public loadPath = (id) => (id === 'new' ? new PathsActions.NewPath() : new PathsActions.GetPath(id));
+  @Dispatch() public loadPaths = () => new PathsActions.LoadPaths();
+  @Dispatch() public savePath = (path: Path) => new PathsActions.SavePath(path);
 
   public cancel() {
-    this.location.back();
+    this.#location.back();
   }
 
   public delete(id: number) {
@@ -38,22 +37,22 @@ export class PathsFacade {
       body: 'All information associated to this source will be permanently deleted.',
       warning: 'This operation cannot be undone.',
     };
-    this.modalDataService.setDeleteModalOptions(modalOptions);
-    this.modal.open(DeleteComponent).result.then((_result) => {
+    this.#modalDataService.setDeleteModalOptions(modalOptions);
+    this.#modal.open(DeleteComponent).result.then((_result) => {
       this.deletePath(id);
     });
   }
 
   public edit(id: number) {
-    this.router.navigate(['/admin/paths', id]);
+    this.#router.navigate(['/admin/paths', id]);
   }
 
   public new() {
-    this.router.navigate(['/admin/paths/new']);
+    this.#router.navigate(['/admin/paths/new']);
   }
 
   public save = (path: Path) => {
     this.savePath(path);
-    this.location.back();
+    this.#location.back();
   };
 }

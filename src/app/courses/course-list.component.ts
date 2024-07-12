@@ -30,8 +30,7 @@ import { PagerListHeaderComponent } from '@components/pager-list-header.componen
             [(current)]="facade.current"
             [isAuthenticated]="isLoggedIn()"
             (refreshTable)="facade.refreshTable()"
-            (newCourse)="facade.new()"
-          >
+            (newCourse)="facade.new()">
           </app-pager-list-header>
 
           <app-list-display
@@ -40,8 +39,7 @@ import { PagerListHeaderComponent } from '@components/pager-list-header.componen
             [items]="facade.courses$ | async"
             [isAuthenticated]="isLoggedIn()"
             (deleteItem)="facade.delete($event)"
-            (editItem)="facade.edit($event)"
-          ></app-list-display>
+            (editItem)="facade.edit($event)"></app-list-display>
         </section>
       </section>
     </section>
@@ -50,13 +48,12 @@ import { PagerListHeaderComponent } from '@components/pager-list-header.componen
   styles: [],
 })
 export default class CourseListComponent implements OnInit {
-  private auth = inject(AuthService);
-  public facade = inject(CoursesFacade);
+  readonly #auth = inject(AuthService);
+  protected readonly facade = inject(CoursesFacade);
 
-  columns = ['title', 'instructor', 'path', 'source'];
-  headers = ['Title', 'Instructor', 'Path', 'Source'];
-
-  isLoggedIn = this.auth.isLoggedIn;
+  protected readonly columns = ['title', 'instructor', 'path', 'source'];
+  protected readonly headers = ['Title', 'Instructor', 'Path', 'Source'];
+  protected readonly isLoggedIn = this.#auth.isLoggedIn;
 
   ngOnInit() {
     this.facade.loadAll();

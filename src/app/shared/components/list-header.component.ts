@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, output } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -21,7 +21,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   styles: [],
 })
 export class ListHeaderComponent {
-  @Output() newItem = new EventEmitter();
+  newItem = output();
 
   newClicked() {
     this.newItem.emit();

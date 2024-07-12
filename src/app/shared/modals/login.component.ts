@@ -19,25 +19,18 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
       <form [formGroup]="loginForm">
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input
-            ngbAutofocus
-            id="email"
-            class="form-control"
-            placeholder="Enter email address"
-            formControlName="email"
-          />
+          <input ngbAutofocus id="email" class="form-control" placeholder="Enter email address" formControlName="email" />
           @if (loginForm.controls.email.errors?.required && loginForm.controls.email.touched) {
-            <small class="text-danger">Email is required</small>
-          }
-          @if (loginForm.controls.email.errors?.email) {
-            <small class="text-danger">Must be a valid email</small>
+          <small class="text-danger">Email is required</small>
+          } @if (loginForm.controls.email.errors?.email) {
+          <small class="text-danger">Must be a valid email</small>
           }
         </div>
         <div class="form-group">
           <label for="email">Password</label>
           <input type="password" id="password" class="form-control" formControlName="password" />
           @if (loginForm.controls.password.errors?.required && loginForm.controls.password.touched) {
-            <small class="text-danger">Password is required</small>
+          <small class="text-danger">Password is required</small>
           }
         </div>
       </form>
@@ -50,25 +43,25 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
   styles: [],
 })
 export class LoginComponent implements OnInit {
-  fb = inject(FormBuilder);
-  modal = inject(NgbActiveModal);
+  readonly #fb = inject(FormBuilder);
+  protected readonly modal = inject(NgbActiveModal);
 
   loginForm!: FormGroup;
-  private user = {
+  readonly #user = {
     email: '',
     password: '',
   };
 
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
+    this.loginForm = this.#fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
   }
 
-  login(): void {
-    this.user.email = this.loginForm.controls.email.value;
-    this.user.password = this.loginForm.controls.password.value;
-    this.modal.close(this.user);
+  protected login(): void {
+    this.#user.email = this.loginForm.controls.email.value;
+    this.#user.password = this.loginForm.controls.password.value;
+    this.modal.close(this.#user);
   }
 }

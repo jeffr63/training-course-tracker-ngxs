@@ -17,19 +17,19 @@ export class SourcesService {
     return this.http.post(`${this.baseUrl}/sources`, source);
   }
 
-  deleteSource(id) {
+  public deleteSource(id) {
     return this.http.delete<Source>(`${this.baseUrl}/sources/${id}`);
   }
 
-  getSource(id) {
+  public getSource(id) {
     return this.http.get<Source>(`${this.baseUrl}/sources/${id}`);
   }
 
-  loadSources() {
+  public loadSources() {
     return this.http.get<Source[]>(`${this.baseUrl}/sources?_sort=name&_order=asc`);
   }
 
-  saveSource(source: Source) {
+  public saveSource(source: Source) {
     if (source.id) {
       return this.updateSource(source);
     } else {

@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, inject, Input } from '@angular/core';
+import { Component, OnInit, inject, input, DestroyRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ReplaySubject, takeUntil } from 'rxjs';
 
 import { Path } from '@models/paths';
 import { PathsFacade } from '@facades/paths.facade';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-path-edit',
@@ -29,12 +29,8 @@ import { PathsFacade } from '@facades/paths.facade';
           </fieldset>
 
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
-            <button class="btn btn-primary me-sm-2" (click)="save()" title="Save" [disabled]="!pathEditForm.valid">
-              <i class="bi bi-save"></i> Save
-            </button>
-            <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel">
-              <i class="bi bi-x-circle"></i> Cancel
-            </a>
+            <button class="btn btn-primary me-sm-2" (click)="save()" title="Save" [disabled]="!pathEditForm.valid"><i class="bi bi-save"></i> Save</button>
+            <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel"> <i class="bi bi-x-circle"></i> Cancel </a>
           </div>
         </form>
         }
@@ -56,36 +52,32 @@ import { PathsFacade } from '@facades/paths.facade';
     `,
   ],
 })
-export default class PathEditComponent implements OnInit, OnDestroy {
-  public facade = inject(PathsFacade);
-  private fb = inject(FormBuilder);
+export default class PathEditComponent implements OnInit {
+  protected readonly facade = inject(PathsFacade);
+  readonly #fb = inject(FormBuilder);
+  readonly #ref = inject(DestroyRef);
 
-  @Input() id;
-  destroy$ = new ReplaySubject<void>(1);
-  path: Path;
-  pathEditForm!: FormGroup;
+  protected readonly id = input.required<string>();
+  #path: Path;
+  protected pathEditForm!: FormGroup;
 
   ngOnInit() {
-    this.pathEditForm = this.fb.group({
+    this.pathEditForm = this.#fb.group({
       name: ['', Validators.required],
     });
 
-    if (this.id === 'New') return;
+    if (this.id() === 'New') return;
 
-    this.facade.loadPath(this.id);
-    this.facade.path$.pipe(takeUntil(this.destroy$)).subscribe((path) => {
+    this.facade.loadPath(this.id());
+    this.facade.path$.pipe(takeUntilDestroyed(this.#ref)).subscribe((path) => {
       if (!path) return;
-      this.path = { ...path };
-      this.pathEditForm.get('name').setValue(this.path.name);
+      this.#path = { ...path };
+      this.pathEditForm.get('name').setValue(this.#path.name);
     });
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-  }
-
-  save() {
-    this.path.name = this.pathEditForm.controls.name.value;
-    this.facade.save(this.path);
+  protected save() {
+    this.#path.name = this.pathEditForm.controls.name.value;
+    this.facade.save(this.#path);
   }
 }

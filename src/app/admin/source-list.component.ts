@@ -28,8 +28,7 @@ import { SourcesFacade } from '@facades/sources.facade';
             [items]="facade.sources$ | async"
             [isAuthenticated]="isAuthenticated"
             (deleteItem)="facade.delete($event)"
-            (editItem)="facade.edit($event)"
-          ></app-list-display>
+            (editItem)="facade.edit($event)"></app-list-display>
         </section>
       </section>
     </section>
@@ -44,11 +43,11 @@ import { SourcesFacade } from '@facades/sources.facade';
   ],
 })
 export default class SourceListComponent implements OnInit {
-  public facade = inject(SourcesFacade);
+  protected readonly facade = inject(SourcesFacade);
 
-  columns = ['name'];
-  headers = ['Source'];
-  isAuthenticated = true;
+  protected readonly columns = ['name'];
+  protected readonly headers = ['Source'];
+  protected readonly isAuthenticated = true;
 
   ngOnInit() {
     this.facade.loadSources();

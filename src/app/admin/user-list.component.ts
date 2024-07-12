@@ -26,8 +26,7 @@ import { UsersFacade } from '@facades/users.facade';
             [items]="facade.users$ | async"
             [isAuthenticated]="isAuthenticated"
             (deleteItem)="facade.delete($event)"
-            (editItem)="facade.edit($event)"
-          ></app-list-display>
+            (editItem)="facade.edit($event)"></app-list-display>
         </section>
       </section>
     </section>
@@ -42,11 +41,11 @@ import { UsersFacade } from '@facades/users.facade';
   ],
 })
 export default class UserListComponent implements OnInit {
-  public facade = inject(UsersFacade);
+  protected readonly facade = inject(UsersFacade);
 
-  columns = ['name', 'email', 'role'];
-  headers = ['Name', 'Email', 'Role'];
-  isAuthenticated = true;
+  protected readonly columns = ['name', 'email', 'role'];
+  protected readonly headers = ['Name', 'Email', 'Role'];
+  protected readonly isAuthenticated = true;
 
   ngOnInit() {
     this.facade.loadUsers();

@@ -9,23 +9,23 @@ import { User } from '@models/user';
   providedIn: 'root',
 })
 export class UsersService {
-  private http = inject(HttpClient);
+  readonly #http = inject(HttpClient);
 
-  private baseUrl = 'http://localhost:3000';
+  readonly #baseUrl = 'http://localhost:3000';
 
-  deleteUser(id) {
-    return this.http.delete<User>(`${this.baseUrl}/users/${id}`);
+  public deleteUser(id) {
+    return this.#http.delete<User>(`${this.#baseUrl}/users/${id}`);
   }
 
-  getUser(id) {
-    return this.http.get<User>(`${this.baseUrl}/users/${id}`);
+  public getUser(id) {
+    return this.#http.get<User>(`${this.#baseUrl}/users/${id}`);
   }
 
-  loadUsers() {
-    return this.http.get<User[]>(`${this.baseUrl}/users?_sort=name&_order=asc`);
+  public loadUsers() {
+    return this.#http.get<User[]>(`${this.#baseUrl}/users?_sort=name&_order=asc`);
   }
 
-  patchUser(id: number, patch: any) {
-    return this.http.patch(`${this.baseUrl}/users/${id}`, patch);
+  public patchUser(id: number, patch: any) {
+    return this.#http.patch(`${this.#baseUrl}/users/${id}`, patch);
   }
 }

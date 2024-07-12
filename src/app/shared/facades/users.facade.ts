@@ -4,36 +4,30 @@ import { Router } from '@angular/router';
 
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Store } from '@ngxs/store';
 
 import { DeleteComponent } from '@modals/delete.component';
 import { ModalDataService } from '@modals/modal-data.service';
-import { User } from '@models/user';
 import { UserActions } from '@state/users/users.actions';
 import { UsersState } from '@state/users/users.state';
 
 @Injectable()
 export class UsersFacade {
-  private router = inject(Router);
-  private modal = inject(NgbModal);
-  private location = inject(Location);
-  private modalDataService = inject(ModalDataService);
+  readonly #router = inject(Router);
+  readonly #modal = inject(NgbModal);
+  readonly #location = inject(Location);
+  readonly #modalDataService = inject(ModalDataService);
 
-  public columns = ['name', 'email', 'role'];
-  public headers = ['Name', 'Email', 'Role'];
-  public isAuthenticated = true;
+  public readonly user$ = inject(Store).select(UsersState.getCurrentUser);
+  public readonly users$ = inject(Store).select(UsersState.getUsers);
 
-  @Select(UsersState.getCurrentUser) public user$: Observable<User>;
-  @Select(UsersState.getUsers) public users$: Observable<User[]>;
-
-  @Dispatch() deleteUser = (id: number) => new UserActions.DeleteUser(id);
-  @Dispatch() loadUser = (id) => new UserActions.GetUser(id);
-  @Dispatch() loadUsers = () => new UserActions.LoadUsers();
-  @Dispatch() patchUser = (id: number, payload: any) => new UserActions.PatchUser(id, payload);
+  @Dispatch() public deleteUser = (id: number) => new UserActions.DeleteUser(id);
+  @Dispatch() public loadUser = (id) => new UserActions.GetUser(id);
+  @Dispatch() public loadUsers = () => new UserActions.LoadUsers();
+  @Dispatch() public patchUser = (id: number, payload: any) => new UserActions.PatchUser(id, payload);
 
   public cancel() {
-    this.location.back();
+    this.#location.back();
   }
 
   public delete(id: number) {
@@ -42,18 +36,18 @@ export class UsersFacade {
       body: 'All information associated to this source will be permanently deleted.',
       warning: 'This operation cannot be undone.',
     };
-    this.modalDataService.setDeleteModalOptions(modalOptions);
-    this.modal.open(DeleteComponent).result.then((_result) => {
+    this.#modalDataService.setDeleteModalOptions(modalOptions);
+    this.#modal.open(DeleteComponent).result.then((_result) => {
       this.deleteUser(id);
     });
   }
 
   public edit(id: number) {
-    this.router.navigate(['/admin/users', id]);
+    this.#router.navigate(['/admin/users', id]);
   }
 
   public patch(id: number, payload: any) {
     this.patchUser(id, payload);
-    this.location.back();
+    this.#location.back();
   }
 }

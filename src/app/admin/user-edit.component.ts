@@ -1,10 +1,10 @@
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ReplaySubject, takeUntil } from 'rxjs';
 
 import { UsersFacade } from '@facades/users.facade';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-user-edit',
@@ -45,7 +45,7 @@ import { UsersFacade } from '@facades/users.facade';
               <input type="radio" class="form-check-input" id="role1" value="admin" formControlName="role" />
               <label class="form-check-label" for="check1">Admin</label>
               @if (userEditForm.controls.role.errors?.required && userEditForm.controls.role.touched) {
-                <small class="text-danger">Role is required</small>
+              <small class="text-danger">Role is required</small>
               }
             </div>
             <div class="form-check col-sm-3">
@@ -55,12 +55,8 @@ import { UsersFacade } from '@facades/users.facade';
           </fieldset>
 
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
-            <button class="btn btn-primary me-sm-2" (click)="save()" title="Save" [disabled]="!userEditForm.valid">
-              <i class="bi bi-save"></i> Save
-            </button>
-            <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel">
-              <i class="bi bi-x-circle"></i> Cancel
-            </a>
+            <button class="btn btn-primary me-sm-2" (click)="save()" title="Save" [disabled]="!userEditForm.valid"><i class="bi bi-save"></i> Save</button>
+            <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel"> <i class="bi bi-x-circle"></i> Cancel </a>
           </div>
         </form>
         }
@@ -82,23 +78,23 @@ import { UsersFacade } from '@facades/users.facade';
     `,
   ],
 })
-export default class UserEditComponent implements OnInit, OnDestroy {
-  public facade = inject(UsersFacade);
-  private fb = inject(FormBuilder);
+export default class UserEditComponent implements OnInit {
+  protected readonly facade = inject(UsersFacade);
+  readonly #fb = inject(FormBuilder);
+  readonly #ref = inject(DestroyRef);
 
-  @Input() id;
-  userEditForm!: FormGroup;
-  destroy$ = new ReplaySubject<void>(1);
+  readonly id = input.required<string>();
+  protected userEditForm!: FormGroup;
 
   ngOnInit() {
-    this.userEditForm = this.fb.group({
+    this.userEditForm = this.#fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       role: ['', Validators.required],
     });
 
-    this.facade.loadUser(this.id);
-    this.facade.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
+    this.facade.loadUser(this.id());
+    this.facade.user$.pipe(takeUntilDestroyed(this.#ref)).subscribe((user) => {
       if (!user) return;
       this.userEditForm.get('name').setValue(user.name);
       this.userEditForm.get('email').setValue(user.email);
@@ -106,16 +102,12 @@ export default class UserEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-  }
-
-  save() {
+  protected save() {
     const patch = {
       name: this.userEditForm.controls.name.value,
       email: this.userEditForm.controls.email.value,
       role: this.userEditForm.controls.role.value,
     };
-    this.facade.patch(+this.id, patch);
+    this.facade.patch(+this.id(), patch);
   }
 }

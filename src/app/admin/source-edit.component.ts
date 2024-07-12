@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, inject, Input } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef, input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ReplaySubject, takeUntil } from 'rxjs';
 
 import { Source } from '@models/sources';
 import { SourcesFacade } from '@facades/sources.facade';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-source-edit',
@@ -29,12 +29,8 @@ import { SourcesFacade } from '@facades/sources.facade';
           </fieldset>
 
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
-            <button class="btn btn-primary mr-sm-2" (click)="save()" title="Save" [disabled]="!sourceEditForm.valid">
-              <i class="bi bi-save"></i> Save
-            </button>
-            <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel">
-              <i class="bi bi-x-circle"></i> Cancel
-            </a>
+            <button class="btn btn-primary mr-sm-2" (click)="save()" title="Save" [disabled]="!sourceEditForm.valid"><i class="bi bi-save"></i> Save</button>
+            <a class="btn btn-secondary" (click)="facade.cancel()" title="Cancel"> <i class="bi bi-x-circle"></i> Cancel </a>
           </div>
         </form>
         }
@@ -56,36 +52,32 @@ import { SourcesFacade } from '@facades/sources.facade';
     `,
   ],
 })
-export default class SourceEditComponent implements OnInit, OnDestroy {
-  public facade = inject(SourcesFacade);
-  private fb = inject(FormBuilder);
+export default class SourceEditComponent implements OnInit {
+  protected readonly facade = inject(SourcesFacade);
+  readonly #fb = inject(FormBuilder);
+  readonly #ref = inject(DestroyRef);
 
-  @Input() id;
-  destroy$ = new ReplaySubject<void>(1);
-  sourceEditForm!: FormGroup;
-  source: Source;
+  readonly id = input.required<string>();
+  protected sourceEditForm!: FormGroup;
+  #source: Source;
 
   ngOnInit() {
-    this.sourceEditForm = this.fb.group({
+    this.sourceEditForm = this.#fb.group({
       name: ['', Validators.required],
     });
 
-    if (this.id === 'New') return;
+    if (this.id() === 'New') return;
 
-    this.facade.loadSource(this.id);
-    this.facade.source$.pipe(takeUntil(this.destroy$)).subscribe((source) => {
+    this.facade.loadSource(this.id());
+    this.facade.source$.pipe(takeUntilDestroyed(this.#ref)).subscribe((source) => {
       if (!source) return;
-      this.source = { ...source };
-      this.sourceEditForm.get('name').setValue(this.source.name);
+      this.#source = { ...source };
+      this.sourceEditForm.get('name').setValue(this.#source.name);
     });
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-  }
-
-  save() {
-    this.source.name = this.sourceEditForm.controls.name.value;
-    this.facade.save(this.source);
+  protected save() {
+    this.#source.name = this.sourceEditForm.controls.name.value;
+    this.facade.save(this.#source);
   }
 }

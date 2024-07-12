@@ -12,84 +12,84 @@ import { UsersService } from '@services/users.service';
   providedIn: 'root',
 })
 export class DataServiceFacade {
-  private coursesService = inject(CoursesService);
-  private pathsService = inject(PathsService);
-  private sourcesService = inject(SourcesService);
-  private usersService = inject(UsersService);
+  readonly #coursesService = inject(CoursesService);
+  readonly #pathsService = inject(PathsService);
+  readonly #sourcesService = inject(SourcesService);
+  readonly #usersService = inject(UsersService);
 
   // course service methods
-  deleteCourse(id) {
-    return this.coursesService.deleteCourse(id);
+  public deleteCourse(id) {
+    return this.#coursesService.deleteCourse(id);
   }
 
-  getCourse(id) {
-    return this.coursesService.getCourse(id);
+  public getCourse(id) {
+    return this.#coursesService.getCourse(id);
   }
 
-  getCourses() {
-    return this.coursesService.getCourses();
+  public getCourses() {
+    return this.#coursesService.getCourses();
   }
 
-  getCoursesSorted() {
-    return this.coursesService.getCoursesSorted();
+  public getCoursesSorted() {
+    return this.#coursesService.getCoursesSorted();
   }
 
-  getCoursesPaged(current, pageSize) {
-    return this.coursesService.getCoursesPaged(current, pageSize);
+  public getCoursesPaged(current, pageSize) {
+    return this.#coursesService.getCoursesPaged(current, pageSize);
   }
 
-  saveCourse(course: Course) {
-    return this.coursesService.saveCourse(course);
+  public saveCourse(course: Course) {
+    return this.#coursesService.saveCourse(course);
   }
 
   // paths service methods
-  deletePath(id) {
-    return this.pathsService.deletePath(id);
+  public deletePath(id) {
+    return this.#pathsService.deletePath(id);
   }
 
-  getPath(id) {
-    return this.pathsService.getPath(id);
+  public getPath(id) {
+    return this.#pathsService.getPath(id);
   }
 
-  loadPaths() {
-    return this.pathsService.loadPaths();
+  public loadPaths() {
+    return this.#pathsService.loadPaths();
   }
 
-  savePath(path: Path) {
-    return this.pathsService.savePath(path);
+  public savePath(path: Path) {
+    return this.#pathsService.savePath(path);
   }
 
   // source service methods
-  deleteSource(id) {
-    return this.sourcesService.deleteSource(id);
+  public deleteSource(id) {
+    return this.#sourcesService.deleteSource(id);
   }
 
-  getSource(id) {
-    return this.sourcesService.getSource(id);
+  public getSource(id) {
+    return this.#sourcesService.getSource(id);
   }
 
-  loadSources() {
-    return this.sourcesService.loadSources();
+  public loadSources() {
+    return this.#sourcesService.loadSources();
   }
 
-  saveSource(source: Source) {
-    return this.sourcesService.saveSource(source);
+  public saveSource(source: Source) {
+    return this.#sourcesService.saveSource(source);
   }
 
   // user service methods
-  deleteUser(id) {
-    return this.usersService.deleteUser(id);
+  public deleteUser(id) {
+    return this.#usersService.deleteUser(id);
   }
 
-  getUser(id) {
-    return this.usersService.getUser(id);
+  public getUser(id) {
+    return this.#usersService.getUser(id);
   }
 
-  loadUsers() {
-    return this.usersService.loadUsers();
+  public loadUsers() {
+    return this.#usersService.loadUsers();
   }
 
-  patchUser(id: number, patch: any) {
-    return this.usersService.patchUser(id, patch);
+  public patchUser(id: number, patch: any) {
+    return this.#usersService.patchUser(id, patch);
   }
 }

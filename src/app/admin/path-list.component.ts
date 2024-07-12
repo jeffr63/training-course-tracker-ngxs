@@ -44,11 +44,11 @@ import { PathsFacade } from '@facades/paths.facade';
   ],
 })
 export default class PathListComponent implements OnInit {
-  public facade = inject(PathsFacade);
+  protected readonly facade = inject(PathsFacade);
 
-  columns = ['name'];
-  headers = ['Path'];
-  isAuthenticated = true;
+  protected readonly columns = ['name'];
+  protected readonly headers = ['Path'];
+  protected readonly isAuthenticated = true;
 
   ngOnInit() {
     this.facade.loadPaths();
