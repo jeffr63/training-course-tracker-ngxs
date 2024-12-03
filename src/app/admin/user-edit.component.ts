@@ -7,12 +7,10 @@ import { UsersFacade } from '@facades/users.facade';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-user-edit',
-  standalone: true,
-  imports: [NgbModule, ReactiveFormsModule],
-  providers: [UsersFacade],
-
-  template: `
+    selector: 'app-user-edit',
+    imports: [NgbModule, ReactiveFormsModule],
+    providers: [UsersFacade],
+    template: `
     <section class="container">
       <section class="card">
         @if (userEditForm) {
@@ -63,9 +61,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       </section>
     </section>
   `,
-
-  styles: [
-    `
+    styles: [
+        `
       section .card {
         margin-top: 30px;
         padding-left: 15px;
@@ -76,7 +73,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         margin-left: 3px;
       }
     `,
-  ],
+    ]
 })
 export default class UserEditComponent implements OnInit {
   protected readonly facade = inject(UsersFacade);

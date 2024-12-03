@@ -4,11 +4,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [NgbModule, ReactiveFormsModule],
-
-  template: `
+    selector: 'app-login',
+    imports: [NgbModule, ReactiveFormsModule],
+    template: `
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Login</h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -40,7 +38,7 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
       <button type="button" class="btn btn-warning" (click)="modal.dismiss()">Cancel</button>
     </div>
   `,
-  styles: [],
+    styles: []
 })
 export class LoginComponent implements OnInit {
   readonly #fb = inject(FormBuilder);

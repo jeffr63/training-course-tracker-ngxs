@@ -5,11 +5,9 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDataService } from '@modals/modal-data.service';
 
 @Component({
-  selector: 'app-delete',
-  standalone: true,
-  imports: [NgbModule],
-
-  template: `
+    selector: 'app-delete',
+    imports: [NgbModule],
+    template: `
     <div class="modal-header">
       <h5 class="modal-title">Delete?</h5>
     </div>
@@ -29,7 +27,7 @@ import { ModalDataService } from '@modals/modal-data.service';
       <button class="btn btn-secondary" (click)="modal.dismiss()" title="Cancel"><i class="bi bi-x-circle"></i> Cancel</button>
     </div>
   `,
-  styles: [],
+    styles: []
 })
 export class DeleteComponent implements OnInit {
   protected readonly modal = inject(NgbActiveModal);

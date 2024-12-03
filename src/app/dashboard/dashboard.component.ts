@@ -10,12 +10,10 @@ import { SourcesFacade } from '@facades/sources.facade';
 import { DataServiceFacade } from '@facades/data-service-facade';
 
 @Component({
-  selector: 'app-dashboard',
-  standalone: true,
-  imports: [NgbModule, NgxChartsModule],
-  providers: [DataServiceFacade, CoursesFacade, SourcesFacade],
-
-  template: `
+    selector: 'app-dashboard',
+    imports: [NgbModule, NgxChartsModule],
+    providers: [DataServiceFacade, CoursesFacade, SourcesFacade],
+    template: `
     <section>
       <div class="container-fluid">
         <div class="row first-row">
@@ -36,16 +34,15 @@ import { DataServiceFacade } from '@facades/data-service-facade';
       </div>
     </section>
   `,
-
-  styles: [
-    `
+    styles: [
+        `
       .container-fluid {
         margin-right: 10px;
         margin-left: 10px;
         margin-top: 20px;
       }
     `,
-  ],
+    ]
 })
 export class DashboardComponent implements OnInit {
   protected readonly facade = inject(DashboardFacade);

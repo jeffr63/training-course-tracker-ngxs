@@ -8,12 +8,10 @@ import { ListHeaderComponent } from '@components/list-header.component';
 import { PathsFacade } from '@facades/paths.facade';
 
 @Component({
-  selector: 'app-path-list',
-  standalone: true,
-  imports: [AsyncPipe, ListDisplayComponent, ListHeaderComponent, NgbModule],
-  providers: [PathsFacade],
-
-  template: `
+    selector: 'app-path-list',
+    imports: [AsyncPipe, ListDisplayComponent, ListHeaderComponent, NgbModule],
+    providers: [PathsFacade],
+    template: `
     <section>
       <section class="card">
         <header>
@@ -34,14 +32,13 @@ import { PathsFacade } from '@facades/paths.facade';
       </section>
     </section>
   `,
-
-  styles: [
-    `
+    styles: [
+        `
       header {
         padding-bottom: 10px;
       }
     `,
-  ],
+    ]
 })
 export default class PathListComponent implements OnInit {
   protected readonly facade = inject(PathsFacade);

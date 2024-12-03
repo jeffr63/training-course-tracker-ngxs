@@ -4,16 +4,13 @@ import { Component, OnInit, inject } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ListDisplayComponent } from '@components/list-display.component';
-import { ListHeaderComponent } from '@components/list-header.component';
 import { UsersFacade } from '@facades/users.facade';
 
 @Component({
-  selector: 'app-user-list',
-  standalone: true,
-  imports: [AsyncPipe, NgbModule, ListDisplayComponent, ListHeaderComponent],
-  providers: [UsersFacade],
-
-  template: `
+    selector: 'app-user-list',
+    imports: [AsyncPipe, NgbModule, ListDisplayComponent],
+    providers: [UsersFacade],
+    template: `
     <section>
       <section class="card">
         <header>
@@ -31,14 +28,13 @@ import { UsersFacade } from '@facades/users.facade';
       </section>
     </section>
   `,
-
-  styles: [
-    `
+    styles: [
+        `
       header {
         padding-bottom: 10px;
       }
     `,
-  ],
+    ]
 })
 export default class UserListComponent implements OnInit {
   protected readonly facade = inject(UsersFacade);

@@ -3,11 +3,9 @@ import { Component, input, output } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-list-display',
-  standalone: true,
-  imports: [NgbModule],
-
-  template: `
+    selector: 'app-list-display',
+    imports: [NgbModule],
+    template: `
     <table class="table table-striped">
       <thead>
         @for (header of headers(); track $index) {
@@ -37,8 +35,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       </tbody>
     </table>
   `,
-
-  styles: [],
+    styles: []
 })
 export class ListDisplayComponent {
   readonly columns = input.required<string[]>();

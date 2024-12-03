@@ -10,12 +10,10 @@ import { ListDisplayComponent } from '@components/list-display.component';
 import { PagerListHeaderComponent } from '@components/pager-list-header.component';
 
 @Component({
-  selector: 'app-course-list',
-  standalone: true,
-  imports: [AsyncPipe, ListDisplayComponent, PagerListHeaderComponent, NgbModule],
-  providers: [CoursesFacade],
-
-  template: `
+    selector: 'app-course-list',
+    imports: [AsyncPipe, ListDisplayComponent, PagerListHeaderComponent, NgbModule],
+    providers: [CoursesFacade],
+    template: `
     <section>
       <section class="card">
         <header>
@@ -44,8 +42,7 @@ import { PagerListHeaderComponent } from '@components/pager-list-header.componen
       </section>
     </section>
   `,
-
-  styles: [],
+    styles: []
 })
 export default class CourseListComponent implements OnInit {
   readonly #auth = inject(AuthService);

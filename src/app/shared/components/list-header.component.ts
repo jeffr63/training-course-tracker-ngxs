@@ -3,11 +3,9 @@ import { Component, output } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-list-header',
-  standalone: true,
-  imports: [NgbModule],
-
-  template: `
+    selector: 'app-list-header',
+    imports: [NgbModule],
+    template: `
     <header class="row">
       <div class="col">&nbsp;</div>
       <div class="col">
@@ -17,8 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       </div>
     </header>
   `,
-
-  styles: [],
+    styles: []
 })
 export class ListHeaderComponent {
   newItem = output();

@@ -9,12 +9,10 @@ import { CoursesFacade } from '@facades/courses.facade';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-course-edit',
-  standalone: true,
-  imports: [AsyncPipe, NgbModule, ReactiveFormsModule],
-  providers: [CoursesFacade],
-
-  template: `
+    selector: 'app-course-edit',
+    imports: [AsyncPipe, NgbModule, ReactiveFormsModule],
+    providers: [CoursesFacade],
+    template: `
     <section class="container">
       <section class="card">
         @if (courseEditForm) {
@@ -78,9 +76,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       </section>
     </section>
   `,
-
-  styles: [
-    `
+    styles: [
+        `
       section .card {
         margin-top: 30px;
         padding-left: 15px;
@@ -91,7 +88,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         margin-left: 3px;
       }
     `,
-  ],
+    ]
 })
 export default class CourseEditComponent implements OnInit {
   protected readonly facade = inject(CoursesFacade);

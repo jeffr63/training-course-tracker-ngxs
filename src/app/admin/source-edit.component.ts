@@ -8,12 +8,10 @@ import { SourcesFacade } from '@facades/sources.facade';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-source-edit',
-  standalone: true,
-  imports: [NgbModule, ReactiveFormsModule],
-  providers: [SourcesFacade],
-
-  template: `
+    selector: 'app-source-edit',
+    imports: [NgbModule, ReactiveFormsModule],
+    providers: [SourcesFacade],
+    template: `
     <section class="container">
       <section class="card">
         @if (sourceEditForm) {
@@ -37,9 +35,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       </section>
     </section>
   `,
-
-  styles: [
-    `
+    styles: [
+        `
       section .card {
         margin-top: 30px;
         padding-left: 15px;
@@ -50,7 +47,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         margin-left: 3px;
       }
     `,
-  ],
+    ]
 })
 export default class SourceEditComponent implements OnInit {
   protected readonly facade = inject(SourcesFacade);

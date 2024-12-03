@@ -8,12 +8,10 @@ import { PathsFacade } from '@facades/paths.facade';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-path-edit',
-  standalone: true,
-  imports: [NgbModule, ReactiveFormsModule],
-  providers: [PathsFacade],
-
-  template: `
+    selector: 'app-path-edit',
+    imports: [NgbModule, ReactiveFormsModule],
+    providers: [PathsFacade],
+    template: `
     <section class="container">
       <section class="card">
         @if (pathEditForm) {
@@ -37,9 +35,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
       </section>
     </section>
   `,
-
-  styles: [
-    `
+    styles: [
+        `
       section .card {
         margin-top: 30px;
         padding-left: 15px;
@@ -50,7 +47,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         margin-left: 3px;
       }
     `,
-  ],
+    ]
 })
 export default class PathEditComponent implements OnInit {
   protected readonly facade = inject(PathsFacade);

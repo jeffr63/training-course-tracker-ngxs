@@ -8,11 +8,9 @@ import { AuthService } from '@services/auth.service';
 import { LoginComponent } from '@modals/login.component';
 
 @Component({
-  selector: 'app-menu',
-  standalone: true,
-  imports: [NgbModule, ReactiveFormsModule, RouterLink],
-
-  template: `
+    selector: 'app-menu',
+    imports: [NgbModule, ReactiveFormsModule, RouterLink],
+    template: `
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <a class="navbar-brand" [routerLink]="['/']">Training Courses Tracker (with Ngxs)</a>
 
@@ -43,14 +41,13 @@ import { LoginComponent } from '@modals/login.component';
       </div>
     </nav>
   `,
-
-  styles: [
-    `
+    styles: [
+        `
       div .nav-item {
         cursor: pointer;
       }
     `,
-  ],
+    ]
 })
 export class MenuComponent {
   readonly #auth = inject(AuthService);

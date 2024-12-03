@@ -8,12 +8,10 @@ import { ListHeaderComponent } from '@components/list-header.component';
 import { SourcesFacade } from '@facades/sources.facade';
 
 @Component({
-  selector: 'app-source-list',
-  standalone: true,
-  imports: [AsyncPipe, NgbModule, ListDisplayComponent, ListHeaderComponent],
-  providers: [SourcesFacade],
-
-  template: `
+    selector: 'app-source-list',
+    imports: [AsyncPipe, NgbModule, ListDisplayComponent, ListHeaderComponent],
+    providers: [SourcesFacade],
+    template: `
     <section>
       <section class="card">
         <header>
@@ -33,14 +31,13 @@ import { SourcesFacade } from '@facades/sources.facade';
       </section>
     </section>
   `,
-
-  styles: [
-    `
+    styles: [
+        `
       header {
         padding-bottom: 10px;
       }
     `,
-  ],
+    ]
 })
 export default class SourceListComponent implements OnInit {
   protected readonly facade = inject(SourcesFacade);
