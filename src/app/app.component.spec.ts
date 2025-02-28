@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -17,11 +17,11 @@ describe('AppComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [AppComponent, DashboardComponent, MenuComponent],
-    schemas: [NO_ERRORS_SCHEMA],
-    imports: [NgbModule, RouterTestingModule],
-    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}).compileComponents();
+      declarations: [AppComponent, DashboardComponent, MenuComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [NgbModule, RouterTestingModule],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+    }).compileComponents();
 
     httpTestingController = TestBed.inject(HttpTestingController);
     service = TestBed.inject(AuthService);

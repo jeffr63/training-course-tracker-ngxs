@@ -6,9 +6,9 @@ import * as _ from 'lodash';
 
 import { Course, CourseData } from '@models/course';
 import { CourseActions } from './course.actions';
-import { DataServiceFacade } from '@facades/data-service-facade';
+import { CourseDataService } from '@services/course/course-data.service';
 
-export interface CoursesStateModel {
+export interface CourseStateModel {
   courses: Course[];
   coursesByPath: CourseData[];
   coursesBySource: CourseData[];
@@ -18,7 +18,7 @@ export interface CoursesStateModel {
   error: string;
 }
 
-@State<CoursesStateModel>({
+@State<CourseStateModel>({
   name: 'courses',
   defaults: {
     courses: [],
@@ -31,50 +31,50 @@ export interface CoursesStateModel {
   },
 })
 @Injectable()
-export class CoursesState {
-  dataFacade = inject(DataServiceFacade);
+export class CourseState {
+  #courseDataService = inject(CourseDataService);
 
-  @Selector([CoursesState])
-  static getCourse(state: CoursesStateModel): Course {
+  @Selector([CourseState])
+  static getCourse(state: CourseStateModel): Course {
     return state.currentCourse;
   }
 
-  @Selector([CoursesState])
-  static getCourses(state: CoursesStateModel): Course[] {
+  @Selector([CourseState])
+  static getCourses(state: CourseStateModel): Course[] {
     return state.courses;
   }
 
-  @Selector([CoursesState])
-  static getCoursesByPath(state: CoursesStateModel): CourseData[] {
+  @Selector([CourseState])
+  static getCoursesByPath(state: CourseStateModel): CourseData[] {
     return state.coursesByPath;
   }
 
-  @Selector([CoursesState])
-  static getCoursesBySource(state: CoursesStateModel): CourseData[] {
+  @Selector([CourseState])
+  static getCoursesBySource(state: CourseStateModel): CourseData[] {
     return state.coursesBySource;
   }
 
-  @Selector([CoursesState])
-  static getError(state: CoursesStateModel): string {
+  @Selector([CourseState])
+  static getError(state: CourseStateModel): string {
     return state.error;
   }
 
-  @Selector([CoursesState])
-  static getPagedCourses(state: CoursesStateModel): Course[] {
+  @Selector([CourseState])
+  static getPagedCourses(state: CourseStateModel): Course[] {
     return state.pagedCourses;
   }
 
-  @Selector([CoursesState])
-  static getTotalCourses(state: CoursesStateModel): number {
+  @Selector([CourseState])
+  static getTotalCourses(state: CourseStateModel): number {
     return state.totalCourses;
   }
 
   @Action(CourseActions.DeleteCourse)
-  public delete({ dispatch, patchState }: StateContext<CoursesStateModel>, { payload }: CourseActions.DeleteCourse) {
+  public delete({ dispatch, patchState }: StateContext<CourseStateModel>, { payload }: CourseActions.DeleteCourse) {
     patchState({
       error: '',
     });
-    return this.dataFacade.deleteCourse(payload.id).pipe(
+    return this.#courseDataService.deleteCourse(payload.id).pipe(
       map((_course) => {
         dispatch(new CourseActions.LoadCourses()).subscribe(() => {
           dispatch(
@@ -93,25 +93,25 @@ export class CoursesState {
   }
 
   @Action(CourseActions.DeleteCourseFail)
-  public deleteFail({ patchState }: StateContext<CoursesStateModel>, { payload }: CourseActions.DeleteCourseFail) {
+  public deleteFail({ patchState }: StateContext<CourseStateModel>, { payload }: CourseActions.DeleteCourseFail) {
     patchState({
       error: payload,
     });
   }
 
   @Action(CourseActions.DeleteCourseSuccess)
-  public deleteSuccess({ patchState }: StateContext<CoursesStateModel>) {
+  public deleteSuccess({ patchState }: StateContext<CourseStateModel>) {
     patchState({
       error: '',
     });
   }
 
   @Action(CourseActions.GetCourse)
-  public getCourse({ dispatch, patchState }: StateContext<CoursesStateModel>, { payload }: CourseActions.GetCourse) {
+  public getCourse({ dispatch, patchState }: StateContext<CourseStateModel>, { payload }: CourseActions.GetCourse) {
     patchState({
       error: '',
     });
-    return this.dataFacade.getCourse(payload).pipe(
+    return this.#courseDataService.getCourse(payload).pipe(
       map((course) => {
         return dispatch(new CourseActions.GetCourseSuccess(course));
       }),
@@ -122,7 +122,7 @@ export class CoursesState {
   }
 
   @Action(CourseActions.GetCourseFail)
-  public getCourseFail({ patchState }: StateContext<CoursesStateModel>, { payload }: CourseActions.GetCourseFail) {
+  public getCourseFail({ patchState }: StateContext<CourseStateModel>, { payload }: CourseActions.GetCourseFail) {
     patchState({
       currentCourse: null,
       error: payload,
@@ -130,10 +130,7 @@ export class CoursesState {
   }
 
   @Action(CourseActions.GetCourseSuccess)
-  public getCourseSuccess(
-    { patchState }: StateContext<CoursesStateModel>,
-    { payload }: CourseActions.GetCourseSuccess
-  ) {
+  public getCourseSuccess({ patchState }: StateContext<CourseStateModel>, { payload }: CourseActions.GetCourseSuccess) {
     patchState({
       currentCourse: payload,
       error: '',
@@ -141,7 +138,7 @@ export class CoursesState {
   }
 
   @Action(CourseActions.GetCourseData)
-  public getCourseData({ getState, patchState }: StateContext<CoursesStateModel>) {
+  public getCourseData({ getState, patchState }: StateContext<CourseStateModel>) {
     const state = getState();
     const courses = [...state.courses];
     let byPath = _.chain(courses)
@@ -184,7 +181,7 @@ export class CoursesState {
   }
 
   @Action(CourseActions.GetCoursesPage)
-  public getPage({ getState, patchState }: StateContext<CoursesStateModel>, { payload }: CourseActions.GetCoursesPage) {
+  public getPage({ getState, patchState }: StateContext<CourseStateModel>, { payload }: CourseActions.GetCoursesPage) {
     const state = getState();
     const offset = (payload.current - 1) * payload.pageSize;
     const courses = [...state.courses];
@@ -195,11 +192,11 @@ export class CoursesState {
   }
 
   @Action(CourseActions.LoadCourses)
-  public load({ dispatch, patchState }: StateContext<CoursesStateModel>) {
+  public load({ dispatch, patchState }: StateContext<CourseStateModel>) {
     patchState({
       error: '',
     });
-    return this.dataFacade.getCoursesSorted().pipe(
+    return this.#courseDataService.getCoursesSorted().pipe(
       map((courses: Course[]) => {
         return dispatch(new CourseActions.LoadCoursesSuccess(courses));
       }),
@@ -210,7 +207,7 @@ export class CoursesState {
   }
 
   @Action(CourseActions.LoadCoursesFail)
-  public loadFail({ patchState }: StateContext<CoursesStateModel>, { payload }: CourseActions.LoadCoursesFail) {
+  public loadFail({ patchState }: StateContext<CourseStateModel>, { payload }: CourseActions.LoadCoursesFail) {
     patchState({
       courses: [],
       pagedCourses: [],
@@ -221,7 +218,7 @@ export class CoursesState {
   }
 
   @Action(CourseActions.LoadCoursesSuccess)
-  public loadSuccess({ patchState }: StateContext<CoursesStateModel>, { payload }: CourseActions.LoadCoursesSuccess) {
+  public loadSuccess({ patchState }: StateContext<CourseStateModel>, { payload }: CourseActions.LoadCoursesSuccess) {
     patchState({
       courses: payload,
       totalCourses: payload.length,
@@ -230,7 +227,7 @@ export class CoursesState {
   }
 
   @Action(CourseActions.NewCourse)
-  public newCourse({ patchState }: StateContext<CoursesStateModel>) {
+  public newCourse({ patchState }: StateContext<CourseStateModel>) {
     const initCourse = {
       id: null,
       title: '',
@@ -244,11 +241,11 @@ export class CoursesState {
   }
 
   @Action(CourseActions.SaveCourse)
-  public save({ dispatch, patchState }: StateContext<CoursesStateModel>, { payload }: CourseActions.SaveCourse) {
+  public save({ dispatch, patchState }: StateContext<CourseStateModel>, { payload }: CourseActions.SaveCourse) {
     patchState({
       error: '',
     });
-    return this.dataFacade.saveCourse(payload).pipe(
+    return this.#courseDataService.saveCourse(payload).pipe(
       map((course: Course) => {
         return dispatch(new CourseActions.SaveCourseSuccess(course));
       }),
@@ -259,7 +256,7 @@ export class CoursesState {
   }
 
   @Action(CourseActions.SaveCourseFail)
-  public saveFail({ patchState }: StateContext<CoursesStateModel>, { payload }: CourseActions.SaveCourseFail) {
+  public saveFail({ patchState }: StateContext<CourseStateModel>, { payload }: CourseActions.SaveCourseFail) {
     patchState({
       courses: [],
       error: payload,
@@ -268,7 +265,7 @@ export class CoursesState {
 
   @Action(CourseActions.SaveCourseSuccess)
   public saveSuccess(
-    { getState, patchState }: StateContext<CoursesStateModel>,
+    { getState, patchState }: StateContext<CourseStateModel>,
     { payload }: CourseActions.SaveCourseSuccess
   ) {
     const state = getState();

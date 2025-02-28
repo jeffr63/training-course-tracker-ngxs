@@ -12,7 +12,7 @@ export const APP_ROUTES: Routes = [
   {
     path: 'courses',
     title: 'Courses',
-    loadChildren: () => import('./courses/course.routes'),
+    loadChildren: () => import('./course/course.routes'),
   },
   { path: 'home', title: 'Home', component: DashboardComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },

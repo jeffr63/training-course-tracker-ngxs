@@ -4,9 +4,9 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
-import { CoursesState, CoursesStateModel } from './course.state';
+import { CourseState, CourseStateModel } from './course.state';
 import { Course, CourseData } from '@models/course';
-import { DataServiceFacade } from '@facades/data-service-facade';
+import { DataServiceFacade } from '@services/data-service-facade';
 import { CourseActions } from './course.actions';
 
 const courseArray: Course[] = [
@@ -39,7 +39,7 @@ const currentCourse: Course = {
 };
 
 interface AppModel {
-  readonly courses: CoursesStateModel;
+  readonly courses: CourseStateModel;
 }
 
 describe('Courses', () => {
@@ -49,16 +49,16 @@ describe('Courses', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    imports: [NgxsModule.forRoot([CoursesState])],
-    providers: [DataServiceFacade, provideHttpClient(withInterceptorsFromDi())]
-}).compileComponents();
+      imports: [NgxsModule.forRoot([CourseState])],
+      providers: [DataServiceFacade, provideHttpClient(withInterceptorsFromDi())],
+    }).compileComponents();
     store = TestBed.inject(Store);
     service = TestBed.inject(DataServiceFacade);
     actions = TestBed.inject(Actions);
   }));
 
   it('should initialize values', () => {
-    const coursesState: CoursesStateModel = {
+    const coursesState: CourseStateModel = {
       courses: courseArray,
       coursesByPath: [],
       coursesBySource: [],
@@ -70,7 +70,7 @@ describe('Courses', () => {
     store.reset(coursesState);
 
     store
-      .selectOnce((state: CoursesStateModel) => state.courses)
+      .selectOnce((state: CourseStateModel) => state.courses)
       .subscribe((courses: Course[]) => {
         expect(courses).toEqual(courseArray);
       });
@@ -92,7 +92,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        expect(CoursesState.getCourse(appState.courses)).toEqual(currentCourse);
+        expect(CourseState.getCourse(appState.courses)).toEqual(currentCourse);
       }));
     });
 
@@ -111,7 +111,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        expect(CoursesState.getCourses(appState.courses)).toEqual(courseArray);
+        expect(CourseState.getCourses(appState.courses)).toEqual(courseArray);
       }));
     });
 
@@ -130,7 +130,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        expect(CoursesState.getCoursesByPath(appState.courses)).toEqual(byPathArray);
+        expect(CourseState.getCoursesByPath(appState.courses)).toEqual(byPathArray);
       }));
     });
 
@@ -149,7 +149,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        expect(CoursesState.getCoursesBySource(appState.courses)).toEqual(bySourceArray);
+        expect(CourseState.getCoursesBySource(appState.courses)).toEqual(bySourceArray);
       }));
     });
 
@@ -168,7 +168,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        expect(CoursesState.getError(appState.courses)).toEqual('Error');
+        expect(CourseState.getError(appState.courses)).toEqual('Error');
       }));
     });
 
@@ -187,7 +187,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        expect(CoursesState.getPagedCourses(appState.courses)).toEqual(courseArray);
+        expect(CourseState.getPagedCourses(appState.courses)).toEqual(courseArray);
       }));
     });
 
@@ -206,7 +206,7 @@ describe('Courses', () => {
         };
         store.reset(appState);
 
-        expect(CoursesState.getTotalCourses(appState.courses)).toEqual(3);
+        expect(CourseState.getTotalCourses(appState.courses)).toEqual(3);
       }));
     });
   });
