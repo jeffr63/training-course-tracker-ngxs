@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 
 import { CourseState, CourseStateModel } from './course.state';
 import { Course, CourseData } from '@models/course';
-import { DataServiceFacade } from '@services/data-service-facade';
+import { CourseDataService } from '@services/course/course-data.service';
 import { CourseActions } from './course.actions';
 
 const courseArray: Course[] = [
@@ -44,16 +44,16 @@ interface AppModel {
 
 describe('Courses', () => {
   let store: Store;
-  let service: DataServiceFacade;
+  let service: CourseDataService;
   let actions: Actions;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([CourseState])],
-      providers: [DataServiceFacade, provideHttpClient(withInterceptorsFromDi())],
+      providers: [CourseDataService, provideHttpClient(withInterceptorsFromDi())],
     }).compileComponents();
     store = TestBed.inject(Store);
-    service = TestBed.inject(DataServiceFacade);
+    service = TestBed.inject(CourseDataService);
     actions = TestBed.inject(Actions);
   }));
 

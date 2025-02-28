@@ -1,24 +1,24 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-
-import { SourcesDataService } from './source-data.service';
-import { Source } from '@models/sources';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+
+import { Source } from '@models/sources';
+import { SourceDataService } from './source-data.service';
 
 const baseUrl = 'http://localhost:3000';
 
 describe('SourcesService', () => {
   let httpTestingController: HttpTestingController;
-  let service: SourcesDataService;
+  let service: SourceDataService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [SourcesDataService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [SourceDataService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(SourcesDataService);
+    service = TestBed.inject(SourceDataService);
   });
 
   describe('deleteSource', () => {

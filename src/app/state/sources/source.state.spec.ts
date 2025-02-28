@@ -4,7 +4,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
-import { DataServiceFacade } from '@services/data-service-facade';
+import { SourceDataService } from '@services/source/source-data.service';
 import { SourcesActions } from './source.actions';
 import { SourceState, SourceStateModel } from './source.state';
 import { Source } from '@models/sources';
@@ -26,16 +26,16 @@ interface AppModel {
 
 describe('sources', () => {
   let store: Store;
-  let service: DataServiceFacade;
+  let service: SourceDataService;
   let actions: Actions;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([SourceState])],
-      providers: [DataServiceFacade, provideHttpClient(withInterceptorsFromDi())],
+      providers: [SourceDataService, provideHttpClient(withInterceptorsFromDi())],
     }).compileComponents();
     store = TestBed.inject(Store);
-    service = TestBed.inject(DataServiceFacade);
+    service = TestBed.inject(SourceDataService);
     actions = TestBed.inject(Actions);
   }));
 

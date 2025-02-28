@@ -4,7 +4,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
-import { DataServiceFacade } from '@services/data-service-facade';
+import { UserDataService } from '@services/user/user-data.service';
 import { UserActions } from './user.actions';
 import { UserState, UserStateModel } from './user.state';
 import { User } from '@models/user';
@@ -29,16 +29,16 @@ interface AppModel {
 
 describe('UsersState', () => {
   let store: Store;
-  let service: DataServiceFacade;
+  let service: UserDataService;
   let actions: Actions;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([UserState])],
-      providers: [DataServiceFacade, provideHttpClient(withInterceptorsFromDi())],
+      providers: [UserDataService, provideHttpClient(withInterceptorsFromDi())],
     }).compileComponents();
     store = TestBed.inject(Store);
-    service = TestBed.inject(DataServiceFacade);
+    service = TestBed.inject(UserDataService);
     actions = TestBed.inject(Actions);
   }));
 

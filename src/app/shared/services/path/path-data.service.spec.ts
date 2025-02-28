@@ -1,55 +1,50 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { PathsDataService } from './path-data.service';
+import { PathDataService } from './path-data.service';
 import { Path } from '@models/paths';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { DataService } from '@services/common/data.service';
+import { of } from 'rxjs';
 
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'http://localhost:3000/paths';
 
 describe('PathsService', () => {
-  let httpTestingController: HttpTestingController;
-  let service: PathsDataService;
+  let service: PathDataService;
+  let dataServiceSpy: jasmine.SpyObj<DataService>;
 
   beforeEach(() => {
+    const spy = jasmine.createSpyObj('DataService', ['add', 'delete', 'getById', 'getAll', 'update']);
     TestBed.configureTestingModule({
       imports: [],
-      providers: [PathsDataService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [PathDataService, { provide: DataService, useValue: spy }],
     });
 
-    httpTestingController = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(PathsDataService);
+    service = TestBed.inject(PathDataService);
+    dataServiceSpy = TestBed.inject(DataService) as jasmine.SpyObj<DataService>;
   });
 
   describe('deletePath', () => {
     it('should return deleted path with a delete call to the correct URL', () => {
       const path = { id: 1, name: 'ABC' };
+      dataServiceSpy.delete.and.returnValue(of(path));
 
       service.deletePath(1).subscribe((data: Path) => {
+        expect(dataServiceSpy.delete).toHaveBeenCalledWith(1, baseUrl);
         expect(data.id).toBe(1);
         expect(data).toEqual(path);
       });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/paths/1`);
-      req.flush(path);
-      expect(req.request.method).toBe('DELETE');
-      httpTestingController.verify();
     });
   });
 
   describe('getPath', () => {
     it('should return requested path with a get call to the correct URL', () => {
       const path = { id: 1, name: 'ABC' };
+      dataServiceSpy.getById.and.returnValue(of(path));
 
       service.getPath(1).subscribe((data: Path) => {
+        expect(dataServiceSpy.getById).toHaveBeenCalledWith(1, baseUrl);
         expect(data.id).toBe(1);
         expect(data).toEqual(path);
       });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/paths/1`);
-      req.flush(path);
-      expect(req.request.method).toBe('GET');
-      httpTestingController.verify();
     });
   });
 
@@ -59,32 +54,27 @@ describe('PathsService', () => {
         { id: 1, name: 'ABC' },
         { id: 2, name: 'DEF' },
       ];
+      const url = `${baseUrl}?_sort=name&_order=asc`;
+      dataServiceSpy.getAll.and.returnValue(of(paths));
 
       service.loadPaths().subscribe((data: Path[]) => {
+        expect(dataServiceSpy.getAll).toHaveBeenCalledWith(url);
         expect(data.length).toBe(2);
         expect(data).toEqual(paths);
       });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/paths?_sort=name&_order=asc`);
-      req.flush(paths);
-      expect(req.request.method).toBe('GET');
-      httpTestingController.verify();
     });
   });
 
   describe('savePath, with id', () => {
     it('should return requested path with a put call to the correct URL', () => {
       const path = { id: 1, name: 'ABC' };
+      dataServiceSpy.update.and.returnValue(of(path));
 
       service.savePath(path).subscribe((data: Path) => {
+        expect(dataServiceSpy.update).toHaveBeenCalledWith(1, path, baseUrl);
         expect(data.id).toBe(1);
         expect(data).toEqual(path);
       });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/paths/1`);
-      req.flush(path);
-      expect(req.request.method).toBe('PUT');
-      httpTestingController.verify();
     });
   });
 
@@ -92,16 +82,13 @@ describe('PathsService', () => {
     it('should return requested path with a post call to the correct URL', () => {
       const path = { id: null, name: 'ABC' };
       const returns = { id: 1, name: 'ABC' };
+      dataServiceSpy.add.and.returnValue(of(returns));
 
       service.savePath(path).subscribe((data: Path) => {
+        expect(dataServiceSpy.add).toHaveBeenCalledWith(path, baseUrl);
         expect(data.id).toBe(1);
         expect(data).toEqual(returns);
       });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/paths`);
-      req.flush(returns);
-      expect(req.request.method).toBe('POST');
-      httpTestingController.verify();
     });
   });
 });

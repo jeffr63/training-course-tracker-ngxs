@@ -4,7 +4,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
-import { DataServiceFacade } from '@services/data-service-facade';
+import { PathDataService } from '@services/path/path-data.service';
 import { PathActions } from './path.actions';
 import { PathState, PathStateModel } from './path.state';
 import { Path } from '@models/paths';
@@ -26,16 +26,16 @@ interface AppModel {
 
 describe('Paths', () => {
   let store: Store;
-  let service: DataServiceFacade;
+  let service: PathDataService;
   let actions: Actions;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([PathState])],
-      providers: [DataServiceFacade, provideHttpClient(withInterceptorsFromDi())],
+      providers: [PathDataService, provideHttpClient(withInterceptorsFromDi())],
     }).compileComponents();
     store = TestBed.inject(Store);
-    service = TestBed.inject(DataServiceFacade);
+    service = TestBed.inject(PathDataService);
     actions = TestBed.inject(Actions);
   }));
 
