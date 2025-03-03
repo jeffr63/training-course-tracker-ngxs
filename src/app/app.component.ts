@@ -8,9 +8,9 @@ import { MenuComponent } from './menu/menu.component';
   selector: 'app-root',
   imports: [MenuComponent, RouterOutlet],
   template: `
-    <app-menu></app-menu>
+    <app-menu />
     <main>
-      <router-outlet></router-outlet>
+      <router-outlet />
     </main>
   `,
   styles: [],
