@@ -8,17 +8,17 @@ import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 
 import { APP_ROUTES } from './app.routes';
-import { CoursesState } from '@state/course/course.state';
-import { CustomTitleStrategyService } from '@resolvers/custom-title-strategy.service';
-import { PathsState } from '@state/paths/paths.state';
-import { SourcesState } from '@state/sources/sources.state';
-import { UsersState } from '@state/users/users.state';
+import { CourseState } from '@state/course/course.state';
+import { CustomTitleStrategyService } from '@services/common/custom-title-strategy.service';
+import { PathState } from '@state/paths/path.state';
+import { SourceState } from '@state/sources/source.state';
+import { UserState } from '@state/users/user.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     importProvidersFrom(
-      NgxsModule.forRoot([CoursesState, SourcesState, PathsState, UsersState], {
+      NgxsModule.forRoot([CourseState, SourceState, PathState, UserState], {
         selectorOptions: { suppressErrors: false, injectContainerState: false },
       }),
       NgxsDispatchPluginModule.forRoot(),
