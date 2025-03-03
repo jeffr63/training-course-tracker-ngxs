@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import * as _ from 'lodash';
 
@@ -23,7 +22,7 @@ export class UserDataService {
   }
 
   public loadUsers() {
-    return this.#dataService.getAll<User[]>(`${this.#baseUrl}/users?_sort=name&_order=asc`);
+    return this.#dataService.getAll<User[]>(`${this.#baseUrl}?_sort=name&_order=asc`);
   }
 
   public patchUser(id: number, patch: any) {

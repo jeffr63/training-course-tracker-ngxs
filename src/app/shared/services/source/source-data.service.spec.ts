@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
+import { of } from 'rxjs';
+
 import { DataService } from '@services/common/data.service';
 import { Source } from '@models/sources';
 import { SourceDataService } from './source-data.service';
-import { of } from 'rxjs';
 
 const baseUrl = 'http://localhost:3000/sources';
 

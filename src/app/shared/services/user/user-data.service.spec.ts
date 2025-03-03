@@ -1,55 +1,51 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { UserDataService } from './user-data.service';
+import { of } from 'rxjs';
+
+import { DataService } from '@services/common/data.service';
 import { User } from '@models/user';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { UserDataService } from './user-data.service';
 
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'http://localhost:3000/users';
 
 describe('UsersService', () => {
-  let httpTestingController: HttpTestingController;
   let service: UserDataService;
+  let dataServiceSpy: jasmine.SpyObj<DataService>;
 
   beforeEach(() => {
+    const spy = jasmine.createSpyObj('DataService', ['add', 'delete', 'getById', 'getAll', 'patch']);
     TestBed.configureTestingModule({
       imports: [],
-      providers: [UserDataService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [UserDataService, { provide: DataService, useValue: spy }],
     });
 
-    httpTestingController = TestBed.inject(HttpTestingController);
     service = TestBed.inject(UserDataService);
+    dataServiceSpy = TestBed.inject(DataService) as jasmine.SpyObj<DataService>;
   });
 
   describe('deleteUser', () => {
     it('should return deleted user with a delete call to the correct URL', () => {
       const user = { id: 1, name: 'Joe', email: 'joe@joe.com', password: 'abc', role: 'admin' };
+      dataServiceSpy.delete.and.returnValue(of(user));
 
       service.deleteUser(1).subscribe((data: User) => {
+        expect(dataServiceSpy.delete).toHaveBeenCalledWith(1, baseUrl);
         expect(data.id).toBe(1);
         expect(data).toEqual(user);
       });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/users/1`);
-      req.flush(user);
-      expect(req.request.method).toBe('DELETE');
-      httpTestingController.verify();
     });
   });
 
   describe('getUser', () => {
     it('should return requested user with a get call to the correct URL', () => {
       const user = { id: 1, name: 'Joe', email: 'joe@joe.com', password: 'abc', role: 'admin' };
+      dataServiceSpy.getById.and.returnValue(of(user));
 
       service.getUser(1).subscribe((data: User) => {
+        expect(dataServiceSpy.getById).toHaveBeenCalledWith(1, baseUrl);
         expect(data.id).toBe(1);
         expect(data).toEqual(user);
       });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/users/1`);
-      req.flush(user);
-      expect(req.request.method).toBe('GET');
-      httpTestingController.verify();
     });
   });
 
@@ -59,16 +55,13 @@ describe('UsersService', () => {
         { id: 1, name: 'Joe', email: 'joe@joe.com', password: 'abc', role: 'admin' },
         { id: 2, name: 'Sam', email: 'sam@joe.com', password: 'abc', role: 'user' },
       ];
+      dataServiceSpy.getAll.and.returnValue(of(users));
 
       service.loadUsers().subscribe((data: User[]) => {
+        expect(dataServiceSpy.getAll).toHaveBeenCalledWith(`${baseUrl}?_sort=name&_order=asc`);
         expect(data.length).toBe(2);
         expect(data).toEqual(users);
       });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/users?_sort=name&_order=asc`);
-      req.flush(users);
-      expect(req.request.method).toBe('GET');
-      httpTestingController.verify();
     });
   });
 
@@ -76,16 +69,13 @@ describe('UsersService', () => {
     it('should return requested user with a put call to the correct URL', () => {
       const patch = { name: 'Jim' };
       const result = { id: 1, name: 'Jim', email: 'joe@joe.com', password: 'abc', role: 'admin' };
+      dataServiceSpy.patch.and.returnValue(of(result));
 
       service.patchUser(1, patch).subscribe((data: User) => {
+        expect(dataServiceSpy.patch).toHaveBeenCalledWith(1, patch, baseUrl);
         expect(data.id).toBe(1);
         expect(data).toEqual(result);
       });
-
-      const req = httpTestingController.expectOne(`${baseUrl}/users/1`);
-      req.flush(result);
-      expect(req.request.method).toBe('PATCH');
-      httpTestingController.verify();
     });
   });
 });
