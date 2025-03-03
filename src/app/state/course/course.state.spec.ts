@@ -577,7 +577,7 @@ describe('Courses', () => {
         // arrange
         const appState: AppModel = {
           courses: {
-            courses: [],
+            courses: courseArray,
             coursesByPath: [],
             coursesBySource: [],
             currentCourse: currentCourse,
@@ -587,7 +587,7 @@ describe('Courses', () => {
           },
         };
         store.reset(appState);
-        // const action = new CourseActions.SaveCourse();
+        const action = new CourseActions.SaveCourse(currentCourse);
         const expected = new CourseActions.SaveCourseSuccess(currentCourse);
         const callbacksCalled = [];
 
@@ -599,7 +599,7 @@ describe('Courses', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(actions);
+        store.dispatch(action);
         tick(1);
 
         // assert

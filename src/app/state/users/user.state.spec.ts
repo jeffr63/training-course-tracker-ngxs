@@ -378,7 +378,7 @@ describe('UsersState', () => {
         const expected = new UserActions.PatchUserSuccess(patchUser);
         const callbacksCalled = [];
 
-        spyOn(service, 'patchUser').and.returnValue(of(currentUser));
+        spyOn(service, 'patchUser').and.returnValue(of(patchUser));
         spyOn(service, 'loadUsers').and.returnValue(of(userArray));
 
         // action
