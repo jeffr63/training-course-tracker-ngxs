@@ -3,9 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { Path } from '@models/paths';
+import { Path } from '@models/paths-interface';
 import { PathActions } from './path.actions';
-import { PathDataService } from '@services/path/path-data.service';
+import { PathData } from '@services/path/path-data';
 
 export interface PathStateModel {
   paths: Path[];
@@ -23,7 +23,7 @@ export interface PathStateModel {
 })
 @Injectable()
 export class PathState {
-  #pathDataService = inject(PathDataService);
+  #pathDataService = inject(PathData);
 
   @Selector([PathState])
   static getPaths(state: PathStateModel): Path[] {

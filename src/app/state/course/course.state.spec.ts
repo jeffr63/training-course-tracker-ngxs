@@ -5,8 +5,8 @@ import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
 import { CourseState, CourseStateModel } from './course.state';
-import { Course, CourseData } from '@models/course';
-import { CourseDataService } from '@services/course/course-data.service';
+import { Course, CourseChartData } from '@models/course-interface';
+import { CourseData } from '@services/course/course-data';
 import { CourseActions } from './course.actions';
 
 const courseArray: Course[] = [
@@ -15,12 +15,12 @@ const courseArray: Course[] = [
   { id: 3, title: 'GHI', instructor: 'Bob', path: 'Test Path 2', source: 'Test Source 2' },
 ];
 
-const byPathArray: CourseData[] = [
+const byPathArray: CourseChartData[] = [
   { name: 'Test Path 1', value: 2 },
   { name: 'Test Path 2', value: 1 },
 ];
 
-const bySourceArray: CourseData[] = [
+const bySourceArray: CourseChartData[] = [
   { name: 'Test Source 2', value: 2 },
   { name: 'Test Source 1', value: 1 },
 ];
@@ -44,16 +44,16 @@ interface AppModel {
 
 describe('Courses', () => {
   let store: Store;
-  let service: CourseDataService;
+  let service: CourseData;
   let actions: Actions;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([CourseState])],
-      providers: [CourseDataService, provideHttpClient(withInterceptorsFromDi())],
+      providers: [CourseData, provideHttpClient(withInterceptorsFromDi())],
     }).compileComponents();
     store = TestBed.inject(Store);
-    service = TestBed.inject(CourseDataService);
+    service = TestBed.inject(CourseData);
     actions = TestBed.inject(Actions);
   }));
 

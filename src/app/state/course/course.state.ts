@@ -4,14 +4,14 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
-import { Course, CourseData } from '@models/course';
+import { Course, CourseChartData } from '@models/course-interface';
 import { CourseActions } from './course.actions';
-import { CourseDataService } from '@services/course/course-data.service';
+import { CourseData } from '@services/course/course-data';
 
 export interface CourseStateModel {
   courses: Course[];
-  coursesByPath: CourseData[];
-  coursesBySource: CourseData[];
+  coursesByPath: CourseChartData[];
+  coursesBySource: CourseChartData[];
   currentCourse: Course;
   pagedCourses: Course[];
   totalCourses: number;
@@ -32,7 +32,7 @@ export interface CourseStateModel {
 })
 @Injectable()
 export class CourseState {
-  #courseDataService = inject(CourseDataService);
+  #courseDataService = inject(CourseData);
 
   @Selector([CourseState])
   static getCourse(state: CourseStateModel): Course {
@@ -45,12 +45,12 @@ export class CourseState {
   }
 
   @Selector([CourseState])
-  static getCoursesByPath(state: CourseStateModel): CourseData[] {
+  static getCoursesByPath(state: CourseStateModel): CourseChartData[] {
     return state.coursesByPath;
   }
 
   @Selector([CourseState])
-  static getCoursesBySource(state: CourseStateModel): CourseData[] {
+  static getCoursesBySource(state: CourseStateModel): CourseChartData[] {
     return state.coursesBySource;
   }
 
