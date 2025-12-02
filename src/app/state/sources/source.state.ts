@@ -3,9 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { Source } from '@models/sources';
+import { Source } from '@models/sources-interface';
 import { SourcesActions } from './source.actions';
-import { SourceDataService } from '@services/source/source-data.service';
+import { SourceData } from '@services/source/source-data';
 
 export interface SourceStateModel {
   sources: Source[];
@@ -23,7 +23,7 @@ export interface SourceStateModel {
 })
 @Injectable()
 export class SourceState {
-  readonly #sourceDataService = inject(SourceDataService);
+  readonly #sourceDataService = inject(SourceData);
 
   @Selector([SourceState])
   static getSources(state: SourceStateModel): Source[] {

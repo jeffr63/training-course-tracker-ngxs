@@ -3,9 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { catchError, map } from 'rxjs/operators';
 
-import { User } from '@models/user';
+import { User } from '@models/user-interface';
 import { UserActions } from './user.actions';
-import { UserDataService } from '@services/user/user-data.service';
+import { UserData } from '@services/user/user-data';
 
 export interface UserStateModel {
   users: User[];
@@ -23,7 +23,7 @@ export interface UserStateModel {
 })
 @Injectable()
 export class UserState {
-  readonly #userDataService = inject(UserDataService);
+  readonly #userDataService = inject(UserData);
 
   @Selector([UserState])
   static getUsers(state: UserStateModel): User[] {

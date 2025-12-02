@@ -9,7 +9,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 
 import { APP_ROUTES } from './app.routes';
 import { CourseState } from '@state/course/course.state';
-import { CustomTitleStrategyService } from '@services/common/custom-title-strategy.service';
+import { CustomTitleStrategyService } from '@services/common/custom-title-strategy';
 import { PathState } from '@state/paths/path.state';
 import { SourceState } from '@state/sources/source.state';
 import { UserState } from '@state/users/user.state';

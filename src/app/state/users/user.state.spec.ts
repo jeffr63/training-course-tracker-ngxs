@@ -4,10 +4,10 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
-import { UserDataService } from '@services/user/user-data.service';
+import { UserData } from '@services/user/user-data';
 import { UserActions } from './user.actions';
 import { UserState, UserStateModel } from './user.state';
-import { User } from '@models/user';
+import { User } from '@models/user-interface';
 
 const userArray: User[] = [
   { id: 1, name: 'Joe', email: 'joe@joe.com', password: 'abc', role: 'admin' },
@@ -29,16 +29,16 @@ interface AppModel {
 
 describe('UsersState', () => {
   let store: Store;
-  let service: UserDataService;
+  let service: UserData;
   let actions: Actions;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([UserState])],
-      providers: [UserDataService, provideHttpClient(withInterceptorsFromDi())],
+      providers: [UserData, provideHttpClient(withInterceptorsFromDi())],
     }).compileComponents();
     store = TestBed.inject(Store);
-    service = TestBed.inject(UserDataService);
+    service = TestBed.inject(UserData);
     actions = TestBed.inject(Actions);
   }));
 
