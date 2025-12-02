@@ -20,7 +20,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
           <td>{{ item[column] }}</td>
           }
           <!-- action buttons -->
-          @if (isAuthenticated) {
+          @if (isAuthenticated()) {
           <td>
             <button class="btn btn-info btn-sm me-2" (click)="editClicked(item.id)" title="Edit">
               <i class="bi bi-pencil-fill"></i>

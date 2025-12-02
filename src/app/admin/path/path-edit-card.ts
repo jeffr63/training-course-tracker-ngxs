@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   template: `
     <section class="container">
       <section class="card">
-        @if (pathEditForm) {
+        @if (pathEditForm()) {
         <form [formGroup]="pathEditForm()">
           <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="name">Path Name</label>
