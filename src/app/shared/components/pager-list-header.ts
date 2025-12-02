@@ -17,7 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
           [(page)]="current"
           (pageChange)="onPageChange()" />
       </div>
-      @if (isAuthenticated) {
+      @if (isAuthenticated()) {
       <div class="col">
         <button class="btn btn-sm" (click)="newClicked()" title="Add">
           <i class="bi bi-plus-circle-fill display-6 text-success"></i>

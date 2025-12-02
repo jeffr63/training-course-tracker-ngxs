@@ -12,7 +12,7 @@ import { Source } from '@models/sources-interface';
   template: `
     <section class="container">
       <section class="card">
-        @if (courseEditForm) {
+        @if (courseEditForm()) {
         <form [formGroup]="courseEditForm()">
           <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="title">Title</label>

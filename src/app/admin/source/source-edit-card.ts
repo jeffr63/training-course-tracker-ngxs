@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   template: `
     <section class="container">
       <section class="card">
-        @if (sourceEditForm) {
+        @if (sourceEditForm()) {
         <form [formGroup]="sourceEditForm()">
           <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="name">Source Name</label>
