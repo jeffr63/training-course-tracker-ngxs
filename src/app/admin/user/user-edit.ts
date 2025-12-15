@@ -1,10 +1,10 @@
 import { Component, inject, input } from '@angular/core';
+import { form } from '@angular/forms/signals';
+import { rxResource } from '@angular/core/rxjs-interop';
 
+import { User, USER_EDIT_SCHEMA } from '@models/user-interface';
 import { UserStore } from '@services/user/user-store';
 import { UserEditCard } from './user-edit-card';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { User, USER_EDIT_SCHEMA } from '@models/user-interface';
-import { form } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-user-edit',
