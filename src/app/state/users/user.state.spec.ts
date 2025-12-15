@@ -1,6 +1,7 @@
 import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
+import { expect, it, describe, beforeEach, vi } from 'vitest';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
@@ -112,7 +113,7 @@ describe('UsersState', () => {
         const expected = new UserActions.DeleteUserSuccess(3);
         const callbacksCalled = [];
 
-        spyOn(service, 'deleteUser').and.returnValue(of(currentUser));
+        vi.spyOn(service, 'deleteUser').mockReturnValue(of(currentUser));
 
         // action
         actions.pipe(ofActionSuccessful(UserActions.DeleteUserSuccess)).subscribe((x) => {
@@ -131,7 +132,7 @@ describe('UsersState', () => {
         const expected = new UserActions.DeleteUserFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'deleteUser').and.returnValue(throwError(() => 'Error'));
+        vi.spyOn(service, 'deleteUser').mockReturnValue(throwError(() => 'Error'));
 
         // action
         actions.pipe(ofActionSuccessful(UserActions.DeleteUserFail)).subscribe((x) => {
@@ -199,7 +200,7 @@ describe('UsersState', () => {
         const expected = new UserActions.GetUserSuccess(currentUser);
         const callbacksCalled = [];
 
-        spyOn(service, 'getUser').and.returnValue(of(currentUser));
+        vi.spyOn(service, 'getUser').mockReturnValue(of(currentUser));
 
         // action
         actions.pipe(ofActionSuccessful(UserActions.GetUserSuccess)).subscribe((x) => {
@@ -218,7 +219,7 @@ describe('UsersState', () => {
         const expected = new UserActions.GetUserFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'getUser').and.returnValue(throwError(() => 'Error'));
+        vi.spyOn(service, 'getUser').mockReturnValue(throwError(() => 'Error'));
 
         // action
         actions.pipe(ofActionSuccessful(UserActions.GetUserFail)).subscribe((x) => {
@@ -284,7 +285,7 @@ describe('UsersState', () => {
         const expected = new UserActions.LoadUsersSuccess(userArray);
         const callbacksCalled = [];
 
-        spyOn(service, 'loadUsers').and.returnValue(of(userArray));
+        vi.spyOn(service, 'loadUsers').mockReturnValue(of(userArray));
 
         // action
         actions.pipe(ofActionSuccessful(UserActions.LoadUsersSuccess)).subscribe((x) => {
@@ -303,7 +304,7 @@ describe('UsersState', () => {
         const expected = new UserActions.LoadUsersFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'loadUsers').and.returnValue(throwError(() => 'Error'));
+        vi.spyOn(service, 'loadUsers').mockReturnValue(throwError(() => 'Error'));
 
         // action
         actions.pipe(ofActionSuccessful(UserActions.LoadUsersFail)).subscribe((x) => {
@@ -378,8 +379,8 @@ describe('UsersState', () => {
         const expected = new UserActions.PatchUserSuccess(patchUser);
         const callbacksCalled = [];
 
-        spyOn(service, 'patchUser').and.returnValue(of(patchUser));
-        spyOn(service, 'loadUsers').and.returnValue(of(userArray));
+        vi.spyOn(service, 'patchUser').mockReturnValue(of(patchUser));
+        vi.spyOn(service, 'loadUsers').mockReturnValue(of(userArray));
 
         // action
         actions.pipe(ofActionSuccessful(UserActions.PatchUserSuccess)).subscribe((x) => {
@@ -408,7 +409,7 @@ describe('UsersState', () => {
         const expected = new UserActions.PatchUserFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'patchUser').and.returnValue(throwError(() => 'Error'));
+        vi.spyOn(service, 'patchUser').mockReturnValue(throwError(() => 'Error'));
 
         // action
         actions.pipe(ofActionSuccessful(UserActions.PatchUserFail)).subscribe((x) => {

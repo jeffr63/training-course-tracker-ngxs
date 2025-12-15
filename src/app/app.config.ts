@@ -1,7 +1,10 @@
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import { TitleStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient } from '@angular/common/http';
 
 import { NgxsModule } from '@ngxs/store';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
@@ -16,7 +19,6 @@ import { UserState } from '@state/users/user.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
     importProvidersFrom(
       NgxsModule.forRoot([CourseState, SourceState, PathState, UserState], {
         selectorOptions: { suppressErrors: false, injectContainerState: false },
@@ -25,8 +27,7 @@ export const appConfig: ApplicationConfig = {
       NgxsReduxDevtoolsPluginModule.forRoot()
     ),
     { provide: TitleStrategy, useClass: CustomTitleStrategyService },
-    provideAnimations(),
-    provideHttpClient(),
+    provideZonelessChangeDetection(),
     provideRouter(APP_ROUTES, withComponentInputBinding()),
   ],
 };

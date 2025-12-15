@@ -1,6 +1,7 @@
 import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
+import { expect, it, describe, beforeEach, vi } from 'vitest';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
@@ -109,7 +110,7 @@ describe('Paths', () => {
         const expected = new PathActions.DeletePathSuccess(3);
         const callbacksCalled = [];
 
-        spyOn(service, 'deletePath').and.returnValue(of(currentPath));
+        vi.spyOn(service, 'deletePath').mockReturnValue(of(currentPath));
 
         // action
         actions.pipe(ofActionSuccessful(PathActions.DeletePathSuccess)).subscribe((x) => {
@@ -128,7 +129,7 @@ describe('Paths', () => {
         const expected = new PathActions.DeletePathFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'deletePath').and.returnValue(throwError('Error'));
+        vi.spyOn(service, 'deletePath').mockReturnValue(throwError('Error'));
 
         // action
         actions.pipe(ofActionSuccessful(PathActions.DeletePathFail)).subscribe((x) => {
@@ -196,7 +197,7 @@ describe('Paths', () => {
         const expected = new PathActions.GetPathSuccess(currentPath);
         const callbacksCalled = [];
 
-        spyOn(service, 'getPath').and.returnValue(of(currentPath));
+        vi.spyOn(service, 'getPath').mockReturnValue(of(currentPath));
 
         // action
         actions.pipe(ofActionSuccessful(PathActions.GetPathSuccess)).subscribe((x) => {
@@ -215,7 +216,7 @@ describe('Paths', () => {
         const expected = new PathActions.GetPathFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'getPath').and.returnValue(throwError('Error'));
+        vi.spyOn(service, 'getPath').mockReturnValue(throwError('Error'));
 
         // action
         actions.pipe(ofActionSuccessful(PathActions.GetPathFail)).subscribe((x) => {
@@ -303,7 +304,7 @@ describe('Paths', () => {
         const expected = new PathActions.LoadPathsSuccess(pathsArray);
         const callbacksCalled = [];
 
-        spyOn(service, 'loadPaths').and.returnValue(of(pathsArray));
+        vi.spyOn(service, 'loadPaths').mockReturnValue(of(pathsArray));
 
         // action
         actions.pipe(ofActionSuccessful(PathActions.LoadPathsSuccess)).subscribe((x) => {
@@ -322,7 +323,7 @@ describe('Paths', () => {
         const expected = new PathActions.LoadPathsFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'loadPaths').and.returnValue(throwError('Error'));
+        vi.spyOn(service, 'loadPaths').mockReturnValue(throwError('Error'));
 
         // action
         actions.pipe(ofActionSuccessful(PathActions.LoadPathsFail)).subscribe((x) => {
@@ -396,8 +397,8 @@ describe('Paths', () => {
         const expected = new PathActions.SavePathSuccess(currentPath);
         const callbacksCalled = [];
 
-        spyOn(service, 'savePath').and.returnValue(of(currentPath));
-        spyOn(service, 'loadPaths').and.returnValue(of(pathsArray));
+        vi.spyOn(service, 'savePath').mockReturnValue(of(currentPath));
+        vi.spyOn(service, 'loadPaths').mockReturnValue(of(pathsArray));
 
         // action
         actions.pipe(ofActionSuccessful(PathActions.SavePathSuccess)).subscribe((x) => {
@@ -416,7 +417,7 @@ describe('Paths', () => {
         const expected = new PathActions.SavePathFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'savePath').and.returnValue(throwError(() => 'Error'));
+        vi.spyOn(service, 'savePath').mockReturnValue(throwError(() => 'Error'));
 
         // action
         actions.pipe(ofActionSuccessful(PathActions.SavePathFail)).subscribe((x) => {

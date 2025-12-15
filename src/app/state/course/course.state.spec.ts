@@ -1,6 +1,7 @@
 import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
+import { expect, it, describe, beforeEach, vi } from 'vitest';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
@@ -219,8 +220,8 @@ describe('Courses', () => {
         const expected = new CourseActions.DeleteCourseSuccess();
         const callbacksCalled = [];
 
-        spyOn(service, 'deleteCourse').and.returnValue(of(currentCourse));
-        spyOn(service, 'getCoursesSorted').and.returnValue(of(courseArray));
+        vi.spyOn(service, 'deleteCourse').mockReturnValue(of(currentCourse));
+        vi.spyOn(service, 'getCoursesSorted').mockReturnValue(of(courseArray));
 
         // action
         actions.pipe(ofActionSuccessful(CourseActions.DeleteCourseSuccess)).subscribe((x) => {
@@ -239,7 +240,7 @@ describe('Courses', () => {
         const expected = new CourseActions.DeleteCourseFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'deleteCourse').and.returnValue(throwError('Error'));
+        vi.spyOn(service, 'deleteCourse').mockReturnValue(throwError('Error'));
 
         // action
         actions.pipe(ofActionSuccessful(CourseActions.DeleteCourseFail)).subscribe((x) => {
@@ -311,7 +312,7 @@ describe('Courses', () => {
         const expected = new CourseActions.GetCourseSuccess(currentCourse);
         const callbacksCalled = [];
 
-        spyOn(service, 'getCourse').and.returnValue(of(currentCourse));
+        vi.spyOn(service, 'getCourse').mockReturnValue(of(currentCourse));
 
         // action
         actions.pipe(ofActionSuccessful(CourseActions.GetCourseSuccess)).subscribe((x) => {
@@ -330,7 +331,7 @@ describe('Courses', () => {
         const expected = new CourseActions.GetCourseFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'getCourse').and.returnValue(throwError('Error'));
+        vi.spyOn(service, 'getCourse').mockReturnValue(throwError('Error'));
 
         // action
         actions.pipe(ofActionSuccessful(CourseActions.GetCourseFail)).subscribe((x) => {
@@ -455,7 +456,7 @@ describe('Courses', () => {
         const expected = new CourseActions.LoadCoursesSuccess(courseArray);
         const callbacksCalled = [];
 
-        spyOn(service, 'getCoursesSorted').and.returnValue(of(courseArray));
+        vi.spyOn(service, 'getCoursesSorted').mockReturnValue(of(courseArray));
 
         // action
         actions.pipe(ofActionSuccessful(CourseActions.LoadCoursesSuccess)).subscribe((x) => {
@@ -474,7 +475,7 @@ describe('Courses', () => {
         const expected = new CourseActions.LoadCoursesFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'getCoursesSorted').and.returnValue(throwError('Error'));
+        vi.spyOn(service, 'getCoursesSorted').mockReturnValue(throwError('Error'));
 
         // action
         actions.pipe(ofActionSuccessful(CourseActions.LoadCoursesFail)).subscribe((x) => {
@@ -591,8 +592,8 @@ describe('Courses', () => {
         const expected = new CourseActions.SaveCourseSuccess(currentCourse);
         const callbacksCalled = [];
 
-        spyOn(service, 'saveCourse').and.returnValue(of(currentCourse));
-        spyOn(service, 'getCourses').and.returnValue(of(courseArray));
+        vi.spyOn(service, 'saveCourse').mockReturnValue(of(currentCourse));
+        vi.spyOn(service, 'getCourses').mockReturnValue(of(courseArray));
 
         // action
         actions.pipe(ofActionSuccessful(CourseActions.SaveCourseSuccess)).subscribe((x) => {
@@ -611,7 +612,7 @@ describe('Courses', () => {
         const expected = new CourseActions.SaveCourseFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'saveCourse').and.returnValue(throwError(() => 'Error'));
+        vi.spyOn(service, 'saveCourse').mockReturnValue(throwError(() => 'Error'));
 
         // action
         actions.pipe(ofActionSuccessful(CourseActions.SaveCourseFail)).subscribe((x) => {

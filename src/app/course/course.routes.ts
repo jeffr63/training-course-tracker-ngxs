@@ -8,7 +8,7 @@ export default [
   {
     path: '',
     children: [
-      { path: '', loadComponent: () => import('./course-list') },
+      { path: '', loadComponent: () => import('./course.routes') },
       {
         path: ':id',
         title: courseTitleResolver,
