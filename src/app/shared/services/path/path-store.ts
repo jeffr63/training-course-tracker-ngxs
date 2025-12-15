@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -16,7 +15,6 @@ import { PathState } from '@state/paths/path.state';
 export class PathsStore {
   readonly #modal = inject(NgbModal);
   readonly #router = inject(Router);
-  readonly #location = inject(Location);
   readonly #modalDataService = inject(ModalService);
 
   public readonly path$ = inject(Store).select(PathState.getCurrentPath);
@@ -28,7 +26,7 @@ export class PathsStore {
   @Dispatch() public savePath = (path: Path) => new PathActions.SavePath(path);
 
   public cancel() {
-    this.#location.back();
+    this.#router.navigateByUrl('/admin/paths');
   }
 
   public delete(id: number) {
@@ -53,6 +51,6 @@ export class PathsStore {
 
   public save = (path: Path) => {
     this.savePath(path);
-    this.#location.back();
+    this.#router.navigateByUrl('/admin/paths');
   };
 }

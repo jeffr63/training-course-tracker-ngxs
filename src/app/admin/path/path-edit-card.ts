@@ -1,32 +1,31 @@
-import { Component, model, output } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, input, output } from '@angular/core';
+import { Field, FieldTree } from '@angular/forms/signals';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { Path } from '@models/paths-interface';
+import { ValidationErrors } from '@components/validation-errors';
+
 @Component({
   selector: 'app-path-edit-card',
-  imports: [NgbModule, ReactiveFormsModule],
+  imports: [NgbModule, Field, ValidationErrors],
   template: `
     <section class="container">
       <section class="card">
-        @if (pathEditForm()) {
-        <form [formGroup]="pathEditForm()">
+        @if (form()) {
+        <form>
           <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="name">Path Name</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control" formControlName="name" placeholder="Enter path name" />
-              @if (pathEditForm().controls.name.errors?.required && pathEditForm().controls.name.touched) {
-              <small class="text-danger">Path Name is required</small>
+              <input type="text" class="form-control" [field]="form().name" placeholder="Enter path name" />
+              @let fname = form().name(); @if(fname.invalid() && fname.touched()) {
+              <app-validation-errors [errors]="fname.errors()" />
               }
             </div>
           </fieldset>
 
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
-            <button
-              class="btn btn-primary me-sm-2"
-              (click)="save.emit()"
-              title="Save"
-              [disabled]="!pathEditForm().valid">
+            <button class="btn btn-primary me-sm-2" (click)="save.emit()" title="Save" [disabled]="form()().invalid()">
               <i class="bi bi-save"></i> Save
             </button>
             <a class="btn btn-secondary" (click)="cancel.emit()" title="Cancel">
@@ -51,7 +50,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     `,
 })
 export class PathEditCard {
-  pathEditForm = model.required<FormGroup>();
+  form = input.required<FieldTree<Path>>();
   cancel = output();
   save = output();
 }

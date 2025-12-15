@@ -1,47 +1,41 @@
-import { Component, OnInit, inject, input, DestroyRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, input } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { form } from '@angular/forms/signals';
 
-import { Path } from '@models/paths-interface';
+import { of } from 'rxjs';
+
+import { Path, PATH_EDIT_SCHEMA } from '@models/paths-interface';
 import { PathsStore } from '@services/path/path-store';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PathEditCard } from './path-edit-card';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-path-edit',
   imports: [PathEditCard],
   providers: [PathsStore],
-  template: ` <app-path-edit-card [(pathEditForm)]="pathEditForm" (cancel)="cancel()" (save)="save()" /> `,
+  template: ` <app-path-edit-card [form]="form" (cancel)="cancel()" (save)="save()" /> `,
 })
-export default class PathEdit implements OnInit {
+export default class PathEdit {
   readonly #store = inject(PathsStore);
-  readonly #fb = inject(FormBuilder);
-  readonly #ref = inject(DestroyRef);
 
   protected readonly id = input.required<string>();
-  #path: Path;
-  protected pathEditForm!: FormGroup;
+  readonly #path = rxResource<Path, string>({
+    params: () => this.id(),
+    stream: ({ params: id }) => {
+      if (id === 'new') return of({ name: '' });
 
-  ngOnInit() {
-    this.pathEditForm = this.#fb.group({
-      name: ['', Validators.required],
-    });
+      this.#store.loadPath(this.id());
+      return this.#store.path$;
+    },
+  });
 
-    if (this.id() === 'New') return;
-
-    this.#store.loadPath(this.id());
-    this.#store.path$.pipe(takeUntilDestroyed(this.#ref)).subscribe((path) => {
-      if (!path) return;
-      this.#path = { ...path };
-      this.pathEditForm.get('name').setValue(this.#path.name);
-    });
-  }
+  form = form(this.#path.value, PATH_EDIT_SCHEMA);
 
   protected cancel() {
     this.#store.cancel();
   }
 
   protected save() {
-    this.#path.name = this.pathEditForm.controls.name.value;
-    this.#store.save(this.#path);
+    this.#store.save(this.#path.value());
   }
 }

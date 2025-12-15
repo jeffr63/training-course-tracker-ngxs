@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
@@ -15,7 +14,6 @@ import { UserState } from '@state/users/user.state';
 export class UserStore {
   readonly #router = inject(Router);
   readonly #modal = inject(NgbModal);
-  readonly #location = inject(Location);
   readonly #modalDataService = inject(ModalService);
 
   public readonly user$ = inject(Store).select(UserState.getCurrentUser);
@@ -27,7 +25,7 @@ export class UserStore {
   @Dispatch() public patchUser = (id: number, payload: any) => new UserActions.PatchUser(id, payload);
 
   public cancel() {
-    this.#location.back();
+    this.#router.navigateByUrl('/admin/users');
   }
 
   public delete(id: number) {
@@ -48,6 +46,6 @@ export class UserStore {
 
   public patch(id: number, payload: any) {
     this.patchUser(id, payload);
-    this.#location.back();
+    this.#router.navigateByUrl('/admin/users');
   }
 }

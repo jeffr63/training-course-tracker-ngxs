@@ -5,6 +5,6 @@ export interface Source {
   name: string;
 }
 
-export const PATH_EDIT_SCHEMA = schema<Source>((schemaPath) => {
+export const SOURCE_EDIT_SCHEMA = schema<Source>((schemaPath) => {
   required(schemaPath.name, { message: 'Please enter path name' });
 });
