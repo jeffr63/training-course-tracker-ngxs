@@ -1,7 +1,8 @@
 import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { form } from '@angular/forms/signals';
 
-import { Course } from '@models/course-interface';
+import { Course, COURSE_EDIT_SCHEMA } from '@models/course-interface';
 import { CourseStore } from '@services/course/course-store';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
@@ -43,6 +44,8 @@ export default class CourseEdit implements OnInit {
   protected courseEditForm!: FormGroup;
   paths = toSignal(this.#store.paths$);
   sources = toSignal(this.#store.sources$);
+
+  //readonly form = form(this.#course, COURSE_EDIT_SCHEMA);
 
   ngOnInit(): void {
     this.courseEditForm = this.#fb.group({
