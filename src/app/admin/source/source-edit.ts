@@ -1,47 +1,41 @@
-import { Component, OnInit, inject, DestroyRef, input } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, input } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 
-import { Source } from '@models/sources-interface';
+import { of } from 'rxjs';
+
+import { Source, SOURCE_EDIT_SCHEMA } from '@models/sources-interface';
 import { SourceStore } from '@services/source/source-store';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SourceEditCard } from './source-edit-card';
+import { form } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-source-edit',
   imports: [SourceEditCard],
   providers: [SourceStore],
-  template: ` <app-source-edit-card [(sourceEditForm)]="sourceEditForm" (cancel)="cancel()" (save)="save()" /> `,
+  template: ` <app-source-edit-card [form]="form" (cancel)="cancel()" (save)="save()" /> `,
 })
-export default class SourceEdit implements OnInit {
+export default class SourceEdit {
   readonly #store = inject(SourceStore);
-  readonly #fb = inject(FormBuilder);
-  readonly #ref = inject(DestroyRef);
 
   readonly id = input.required<string>();
-  protected sourceEditForm!: FormGroup;
-  #source: Source;
 
-  ngOnInit() {
-    this.sourceEditForm = this.#fb.group({
-      name: ['', Validators.required],
-    });
+  readonly #source = rxResource<Source, string>({
+    params: () => this.id(),
+    stream: ({ params: id }) => {
+      if (id === 'new') return of({ name: '' });
 
-    if (this.id() === 'New') return;
+      this.#store.loadSource(id);
+      return this.#store.source$;
+    },
+  });
 
-    this.#store.loadSource(this.id());
-    this.#store.source$.pipe(takeUntilDestroyed(this.#ref)).subscribe((source) => {
-      if (!source) return;
-      this.#source = { ...source };
-      this.sourceEditForm.get('name').setValue(this.#source.name);
-    });
-  }
+  form = form(this.#source.value, SOURCE_EDIT_SCHEMA);
 
   protected cancel() {
     this.#store.cancel();
   }
 
   protected save() {
-    this.#source.name = this.sourceEditForm.controls.name.value;
-    this.#store.save(this.#source);
+    this.#store.save(this.#source.value());
   }
 }

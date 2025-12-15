@@ -10,7 +10,7 @@ import { ListDisplay } from '@components/list-display';
 import { PagerListHeader } from '@components/pager-list-header';
 
 @Component({
-  selector: 'app-course-list',
+  selector: 'app-training-course-tracker',
   imports: [AsyncPipe, ListDisplay, PagerListHeader, NgbModule],
   providers: [CourseStore],
   template: `

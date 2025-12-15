@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
@@ -20,7 +19,6 @@ import { SourceState } from '@state/sources/source.state';
 export class CourseStore {
   readonly #actions = inject(Actions);
   readonly #modal = inject(NgbModal);
-  readonly #location = inject(Location);
   readonly #router = inject(Router);
   readonly #modalDataService = inject(ModalService);
 
@@ -52,7 +50,7 @@ export class CourseStore {
   @Dispatch() public saveCourse = (course) => new CourseActions.SaveCourse(course);
 
   public cancel() {
-    this.#location.back();
+    this.#router.navigateByUrl('/courses');
   }
 
   public delete(id) {
@@ -91,7 +89,7 @@ export class CourseStore {
   public save(id: string, course: Course) {
     this.saveCourse(course);
     this.#actions.pipe(ofActionSuccessful(CourseActions.SaveCourse)).subscribe(() => {
-      if (id === 'New') {
+      if (id === 'new') {
         this.loadCourses();
         this.#actions.pipe(ofActionSuccessful(CourseActions.LoadCourses)).subscribe(() => {
           this.refreshTable();
@@ -100,6 +98,6 @@ export class CourseStore {
         this.refreshTable();
       }
     });
-    this.#location.back();
+    this.#router.navigateByUrl('/courses');
   }
 }

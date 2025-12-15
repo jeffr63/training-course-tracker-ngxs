@@ -1,32 +1,31 @@
-import { Component, model, output } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, input, output } from '@angular/core';
+import { Field, FieldTree } from '@angular/forms/signals';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { Source } from '@models/sources-interface';
+import { ValidationErrors } from '@components/validation-errors';
+
 @Component({
   selector: 'app-source-edit-card',
-  imports: [NgbModule, ReactiveFormsModule],
+  imports: [NgbModule, Field, ValidationErrors],
   template: `
     <section class="container">
       <section class="card">
-        @if (sourceEditForm()) {
-        <form [formGroup]="sourceEditForm()">
+        @if (form()) {
+        <form>
           <fieldset class="m-2 row">
             <label class="col-form-label col-sm-2" for="name">Source Name</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control" formControlName="name" placeholder="Enter source name" />
-              @if (sourceEditForm().controls.name.errors?.required && sourceEditForm().controls.name.touched) {
-              <small class="text-danger">Source Name is required</small>
+              <input type="text" class="form-control" [field]="form().name" placeholder="Enter source name" />
+              @let fname = form().name(); @if (fname.invalid() && fname.touched()) {
+              <app-validation-errors [errors]="fname.errors()" />
               }
             </div>
           </fieldset>
 
           <div class="d-grid gap-2 m-2 d-sm-flex justify-content-sm-end">
-            <button
-              class="btn btn-primary mr-sm-2"
-              (click)="save.emit()"
-              title="Save"
-              [disabled]="!sourceEditForm().valid">
+            <button class="btn btn-primary mr-sm-2" (click)="save.emit()" title="Save" [disabled]="form()().invalid()">
               <i class="bi bi-save"></i> Save
             </button>
             <a class="btn btn-secondary" (click)="cancel.emit()" title="Cancel">
@@ -51,7 +50,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     `,
 })
 export class SourceEditCard {
-  sourceEditForm = model.required<FormGroup>();
+  form = input.required<FieldTree<Source>>();
   cancel = output();
   save = output();
 }

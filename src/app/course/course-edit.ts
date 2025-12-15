@@ -1,10 +1,11 @@
-import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, inject, input } from '@angular/core';
+import { form } from '@angular/forms/signals';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 
-import { Course } from '@models/course-interface';
+import { of } from 'rxjs';
+
+import { Course, COURSE_EDIT_SCHEMA } from '@models/course-interface';
 import { CourseStore } from '@services/course/course-store';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-
 import { CourseEditCard } from './course-edit-card';
 
 @Component({
@@ -13,7 +14,7 @@ import { CourseEditCard } from './course-edit-card';
   providers: [CourseStore],
   template: `
     <app-course-edit-card
-      [(courseEditForm)]="courseEditForm"
+      [form]="form"
       [paths]="paths()"
       [sources]="sources()"
       (cancel)="cancel()"
@@ -33,47 +34,29 @@ import { CourseEditCard } from './course-edit-card';
     `,
   ],
 })
-export default class CourseEdit implements OnInit {
+export default class CourseEdit {
   readonly #store = inject(CourseStore);
-  readonly #fb = inject(FormBuilder);
-  readonly #ref = inject(DestroyRef);
 
   readonly id = input.required<string>();
-  #course: Course;
-  protected courseEditForm!: FormGroup;
   paths = toSignal(this.#store.paths$);
   sources = toSignal(this.#store.sources$);
+  readonly #course = rxResource<Course, string>({
+    params: () => this.id(),
+    stream: ({ params: id }) => {
+      if (id === 'new') return of({ title: '', instructor: '', path: '', source: '' });
 
-  ngOnInit(): void {
-    this.courseEditForm = this.#fb.group({
-      title: ['', Validators.required],
-      instructor: ['', Validators.required],
-      path: ['', Validators.required],
-      source: ['', Validators.required],
-    });
+      this.#store.loadCourse(this.id());
+      return this.#store.course$;
+    }
+  });
 
-    if (this.id() === 'New') return;
-
-    this.#store.loadCourse(this.id());
-    this.#store.course$.pipe(takeUntilDestroyed(this.#ref)).subscribe((course) => {
-      if (!course) return;
-      this.#course = { ...course };
-      this.courseEditForm.get('title').setValue(course.title);
-      this.courseEditForm.get('instructor').setValue(course.instructor);
-      this.courseEditForm.get('path').setValue(course.path);
-      this.courseEditForm.get('source').setValue(course.source);
-    });
-  }
+  readonly form = form(this.#course.value, COURSE_EDIT_SCHEMA);
 
   protected cancel() {
     this.#store.cancel();
   }
 
   protected save() {
-    this.#course.title = this.courseEditForm.controls.title.value;
-    this.#course.instructor = this.courseEditForm.controls.instructor.value;
-    this.#course.path = this.courseEditForm.controls.path.value;
-    this.#course.source = this.courseEditForm.controls.source.value;
-    this.#store.save(this.id(), this.#course);
+    this.#store.save(this.id(), this.#course.value());
   }
 }

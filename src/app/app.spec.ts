@@ -1,19 +1,24 @@
+import type { MockedObject } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
+
+import { expect, it, describe, beforeEach, vi } from 'vitest';
 
 import { App } from './app';
 import { AuthService } from '@services/auth/auth-service';
 
 describe('AppComponent', () => {
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let authServiceSpy: MockedObject<AuthService>;
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('AuthService', ['checkLogin']);
+    const spy = {
+      checkLogin: vi.fn().mockName('AuthService.checkLogin'),
+    };
     await TestBed.configureTestingModule({
       imports: [App, RouterModule.forRoot([])],
       providers: [{ provide: AuthService, useValue: spy }],
     }).compileComponents();
-    authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
+    authServiceSpy = TestBed.inject(AuthService) as MockedObject<AuthService>;
   });
 
   it('should create the app', () => {

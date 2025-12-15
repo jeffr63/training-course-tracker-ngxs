@@ -1,18 +1,27 @@
+import type { MockedObject } from 'vitest';
 import { TestBed } from '@angular/core/testing';
+
+import { expect, it, describe, beforeEach, vi } from 'vitest';
+import { of } from 'rxjs';
 
 import { Course } from '@models/course-interface';
 import { CourseData } from './course-data';
 import { DataService } from '@services/common/data-service';
-import { of } from 'rxjs';
 
 const baseUrl = 'http://localhost:3000/courses';
 
 describe('CourseService', () => {
   let service: CourseData;
-  let dataServiceSpy: jasmine.SpyObj<DataService>;
+  let dataServiceSpy: MockedObject<DataService>;
 
   beforeEach(() => {
-    const spy = jasmine.createSpyObj('DataService', ['add', 'delete', 'getById', 'getAll', 'update']);
+    const spy = {
+      add: vi.fn().mockName('DataService.add'),
+      delete: vi.fn().mockName('DataService.delete'),
+      getById: vi.fn().mockName('DataService.getById'),
+      getAll: vi.fn().mockName('DataService.getAll'),
+      update: vi.fn().mockName('DataService.update'),
+    };
 
     TestBed.configureTestingModule({
       imports: [],
@@ -20,13 +29,13 @@ describe('CourseService', () => {
     });
 
     service = TestBed.inject(CourseData);
-    dataServiceSpy = TestBed.inject(DataService) as jasmine.SpyObj<DataService>;
+    dataServiceSpy = TestBed.inject(DataService) as MockedObject<DataService>;
   });
 
   describe('deleteCourse', () => {
     it('should return deleted course with a delete call to the correct URL', () => {
       const course = { id: 1, title: 'ABC', instructor: 'John', path: 'A', source: 'B' };
-      dataServiceSpy.delete.and.returnValue(of(course));
+      dataServiceSpy.delete.mockReturnValue(of(course));
 
       service.deleteCourse(1).subscribe((data: Course) => {
         expect(dataServiceSpy.delete).toHaveBeenCalledWith(1, baseUrl);
@@ -39,7 +48,7 @@ describe('CourseService', () => {
   describe('getCourse', () => {
     it('should return requested course with a get call to the correct URL', () => {
       const course = { id: 1, title: 'ABC', instructor: 'John', path: 'A', source: 'B' };
-      dataServiceSpy.getById.and.returnValue(of(course));
+      dataServiceSpy.getById.mockReturnValue(of(course));
 
       service.getCourse(1).subscribe((data: Course) => {
         expect(dataServiceSpy.getById).toHaveBeenCalledWith(1, baseUrl);
@@ -56,7 +65,7 @@ describe('CourseService', () => {
         { id: 2, title: 'GHI', instructor: 'Jack', path: 'A', source: 'B' },
         { id: 3, title: 'DEF', instructor: 'Jim', path: 'A', source: 'B' },
       ];
-      dataServiceSpy.getAll.and.returnValue(of(courses));
+      dataServiceSpy.getAll.mockReturnValue(of(courses));
 
       service.getCourses().subscribe((data: Course[]) => {
         expect(dataServiceSpy.getAll).toHaveBeenCalledWith(baseUrl);
@@ -76,7 +85,7 @@ describe('CourseService', () => {
         { id: 3, title: 'DEF', instructor: 'Jim', path: 'A', source: 'B' },
         { id: 2, title: 'GHI', instructor: 'Jack', path: 'A', source: 'B' },
       ];
-      dataServiceSpy.getAll.and.returnValues(of(courses));
+      dataServiceSpy.getAll.mockReturnValueOnce(of(courses));
       const url = `${baseUrl}?_sort=title&_order=asc`;
 
       service.getCoursesSorted().subscribe((data: Course[]) => {
@@ -97,7 +106,7 @@ describe('CourseService', () => {
         { id: 3, title: 'DEF', instructor: 'Jim', path: 'A', source: 'B' },
         { id: 2, title: 'GHI', instructor: 'Jack', path: 'A', source: 'B' },
       ];
-      dataServiceSpy.getAll.and.returnValues(of(courses));
+      dataServiceSpy.getAll.mockReturnValueOnce(of(courses));
       const current = 1;
       const pageSize = 3;
       const url = `${baseUrl}?_sort=title&_order=asc&_page=${current}&_limit=${pageSize}`;
@@ -116,10 +125,11 @@ describe('CourseService', () => {
   describe('saveCourse, with id', () => {
     it('should return requested course with a put call to the correct URL', () => {
       const course = { id: 1, title: 'ABC', instructor: 'John', path: 'A', source: 'B' };
-      dataServiceSpy.update.and.returnValue(of(course));
+      dataServiceSpy.update.mockReturnValue(of(course));
 
       service.saveCourse(course).subscribe((data: Course) => {
-        expect(dataServiceSpy.update).toHaveBeenCalledOnceWith(1, course, baseUrl);
+        expect(dataServiceSpy.update).toHaveBeenCalledTimes(1);
+        expect(dataServiceSpy.update).toHaveBeenCalledWith(1, course, baseUrl);
         expect(data.id).toBe(1);
         expect(data).toEqual(course);
       });
@@ -130,7 +140,7 @@ describe('CourseService', () => {
     it('should return requested course with a post call to the correct URL', () => {
       const course = { id: null, title: 'ABC', instructor: 'John', path: 'A', source: 'B' };
       const result = { id: 1, title: 'ABC', instructor: 'John', path: 'A', source: 'B' };
-      dataServiceSpy.add.and.returnValue(of(result));
+      dataServiceSpy.add.mockReturnValue(of(result));
 
       service.saveCourse(course).subscribe((data: Course) => {
         expect(dataServiceSpy.add).toHaveBeenCalledWith(course, baseUrl);

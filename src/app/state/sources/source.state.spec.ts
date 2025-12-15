@@ -1,6 +1,7 @@
 import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
+import { expect, it, describe, beforeEach, vi } from 'vitest';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
@@ -109,7 +110,7 @@ describe('sources', () => {
         const expected = new SourcesActions.DeleteSourceSuccess(3);
         const callbacksCalled = [];
 
-        spyOn(service, 'deleteSource').and.returnValue(of(currentSource));
+        vi.spyOn(service, 'deleteSource').mockReturnValue(of(currentSource));
 
         // action
         actions.pipe(ofActionSuccessful(SourcesActions.DeleteSourceSuccess)).subscribe((x) => {
@@ -128,7 +129,7 @@ describe('sources', () => {
         const expected = new SourcesActions.DeleteSourceFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'deleteSource').and.returnValue(throwError('Error'));
+        vi.spyOn(service, 'deleteSource').mockReturnValue(throwError('Error'));
 
         // action
         actions.pipe(ofActionSuccessful(SourcesActions.DeleteSourceFail)).subscribe((x) => {
@@ -196,7 +197,7 @@ describe('sources', () => {
         const expected = new SourcesActions.GetSourceSuccess(currentSource);
         const callbacksCalled = [];
 
-        spyOn(service, 'getSource').and.returnValue(of(currentSource));
+        vi.spyOn(service, 'getSource').mockReturnValue(of(currentSource));
 
         // action
         actions.pipe(ofActionSuccessful(SourcesActions.GetSourceSuccess)).subscribe((x) => {
@@ -215,7 +216,7 @@ describe('sources', () => {
         const expected = new SourcesActions.GetSourceFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'getSource').and.returnValue(throwError('Error'));
+        vi.spyOn(service, 'getSource').mockReturnValue(throwError('Error'));
 
         // action
         actions.pipe(ofActionSuccessful(SourcesActions.GetSourceFail)).subscribe((x) => {
@@ -303,7 +304,7 @@ describe('sources', () => {
         const expected = new SourcesActions.LoadSourcesSuccess(sourceArray);
         const callbacksCalled = [];
 
-        spyOn(service, 'loadSources').and.returnValue(of(sourceArray));
+        vi.spyOn(service, 'loadSources').mockReturnValue(of(sourceArray));
 
         // action
         actions.pipe(ofActionSuccessful(SourcesActions.LoadSourcesSuccess)).subscribe((x) => {
@@ -322,7 +323,7 @@ describe('sources', () => {
         const expected = new SourcesActions.LoadSourcesFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'loadSources').and.returnValue(throwError('Error'));
+        vi.spyOn(service, 'loadSources').mockReturnValue(throwError('Error'));
 
         // action
         actions.pipe(ofActionSuccessful(SourcesActions.LoadSourcesFail)).subscribe((x) => {
@@ -396,8 +397,8 @@ describe('sources', () => {
         const expected = new SourcesActions.SaveSourceSuccess(currentSource);
         const callbacksCalled = [];
 
-        spyOn(service, 'saveSource').and.returnValue(of(currentSource));
-        spyOn(service, 'loadSources').and.returnValue(of(sourceArray));
+        vi.spyOn(service, 'saveSource').mockReturnValue(of(currentSource));
+        vi.spyOn(service, 'loadSources').mockReturnValue(of(sourceArray));
 
         // action
         actions.pipe(ofActionSuccessful(SourcesActions.SaveSourceSuccess)).subscribe((x) => {
@@ -417,7 +418,7 @@ describe('sources', () => {
         const expected = new SourcesActions.SaveSourceFail('Error');
         const callbacksCalled = [];
 
-        spyOn(service, 'saveSource').and.returnValue(throwError('Error'));
+        vi.spyOn(service, 'saveSource').mockReturnValue(throwError('Error'));
 
         // action
         actions.pipe(ofActionSuccessful(SourcesActions.SaveSourceFail)).subscribe((x) => {

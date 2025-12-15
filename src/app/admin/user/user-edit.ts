@@ -1,39 +1,31 @@
-import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, input } from '@angular/core';
+import { form } from '@angular/forms/signals';
+import { rxResource } from '@angular/core/rxjs-interop';
 
+import { User, USER_EDIT_SCHEMA } from '@models/user-interface';
 import { UserStore } from '@services/user/user-store';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserEditCard } from './user-edit-card';
 
 @Component({
   selector: 'app-user-edit',
   imports: [UserEditCard],
   providers: [UserStore],
-  template: ` <app-user-edit-card [(userEditForm)]="userEditForm" (cancel)="cancel()" (save)="save()" /> `,
+  template: ` <app-user-edit-card [form]="form" (cancel)="cancel()" (save)="save()" /> `,
 })
-export default class UserEdit implements OnInit {
+export default class UserEdit {
   readonly #store = inject(UserStore);
-  readonly #fb = inject(FormBuilder);
-  readonly #ref = inject(DestroyRef);
 
   readonly id = input.required<string>();
-  protected userEditForm!: FormGroup;
 
-  ngOnInit() {
-    this.userEditForm = this.#fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      role: ['', Validators.required],
-    });
+  readonly #user = rxResource<User, string>({
+    params: () => this.id(),
+    stream: ({ params: id }) => {
+      this.#store.loadUser(id);
+      return this.#store.user$;
+    },
+  });
 
-    this.#store.loadUser(this.id());
-    this.#store.user$.pipe(takeUntilDestroyed(this.#ref)).subscribe((user) => {
-      if (!user) return;
-      this.userEditForm.get('name').setValue(user.name);
-      this.userEditForm.get('email').setValue(user.email);
-      this.userEditForm.get('role').setValue(user.role);
-    });
-  }
+  form = form<User>(this.#user.value, USER_EDIT_SCHEMA);
 
   protected cancel() {
     this.#store.cancel();
@@ -41,9 +33,9 @@ export default class UserEdit implements OnInit {
 
   protected save() {
     const patch = {
-      name: this.userEditForm.controls.name.value,
-      email: this.userEditForm.controls.email.value,
-      role: this.userEditForm.controls.role.value,
+      name: this.#user.value().name,
+      email: this.#user.value().email,
+      role: this.#user.value().role,
     };
     this.#store.patch(+this.id(), patch);
   }
