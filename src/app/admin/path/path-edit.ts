@@ -24,7 +24,7 @@ export default class PathEdit {
     stream: ({ params: id }) => {
       if (id === 'new') return of({ name: '' });
 
-      this.#store.loadPath(this.id());
+      this.#store.loadPath(id);
       return this.#store.path$;
     },
   });
