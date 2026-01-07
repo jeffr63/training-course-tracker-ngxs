@@ -1,7 +1,7 @@
-import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-import { expect, it, describe, beforeEach, vi } from 'vitest';
+import { expect, it, describe, beforeEach, afterEach, vitest, vi } from 'vitest';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
@@ -30,7 +30,7 @@ describe('sources', () => {
   let service: SourceData;
   let actions: Actions;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([SourceState])],
       providers: [SourceData, provideHttpClient(withInterceptorsFromDi())],
@@ -38,15 +38,21 @@ describe('sources', () => {
     store = TestBed.inject(Store);
     service = TestBed.inject(SourceData);
     actions = TestBed.inject(Actions);
-  }));
+    vitest.useFakeTimers();
+  });
 
-  it('should initialize values', () => {
-    const sourcesState: SourceStateModel = {
+  afterEach(() => {
+    vitest.resetAllMocks();
+  });
+
+  it('should initialize values', async () => {
+    const appState: SourceStateModel = {
       sources: sourceArray,
       error: '',
       currentSource: null,
     };
-    store.reset(sourcesState);
+    Promise.resolve().then(() => store.reset(appState));
+    await vitest.runAllTimersAsync();
 
     store
       .selectOnce((state: SourceStateModel) => state.sources)
@@ -57,7 +63,7 @@ describe('sources', () => {
 
   describe('Selector', () => {
     describe('getSources', () => {
-      it('should return an array of Sources', waitForAsync(() => {
+      it('should return an array of Sources', async () => {
         const appState: AppModel = {
           sources: {
             sources: sourceArray,
@@ -65,14 +71,15 @@ describe('sources', () => {
             currentSource: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(SourceState.getSources(appState.sources)).toEqual(sourceArray);
-      }));
+      });
     });
 
     describe('getcurrentSource', () => {
-      it('should return an object', waitForAsync(() => {
+      it('should return an object', async () => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -80,14 +87,15 @@ describe('sources', () => {
             currentSource: currentSource,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(SourceState.getCurrentSource(appState.sources)).toEqual(currentSource);
-      }));
+      });
     });
 
     describe('getError', () => {
-      it('should return an string', waitForAsync(() => {
+      it('should return an string', async () => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -95,16 +103,17 @@ describe('sources', () => {
             currentSource: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(SourceState.getError(appState.sources)).toEqual('Error');
-      }));
+      });
     });
   });
 
   describe('Action', () => {
     describe('Delete', () => {
-      it('should dispatch DeleteSuccess when successful', fakeAsync(() => {
+      it('should dispatch DeleteSuccess when successful', async () => {
         // arrange
         const action = new SourcesActions.DeleteSource(3);
         const expected = new SourcesActions.DeleteSourceSuccess(3);
@@ -117,14 +126,14 @@ describe('sources', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch DeleteFail when errors', fakeAsync(() => {
+      it('should dispatch DeleteFail when errors', async () => {
         const action = new SourcesActions.DeleteSource(3);
         const expected = new SourcesActions.DeleteSourceFail('Error');
         const callbacksCalled = [];
@@ -136,16 +145,16 @@ describe('sources', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('DeleteFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -153,7 +162,8 @@ describe('sources', () => {
             currentSource: currentSource,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new SourcesActions.DeleteSourceFail('Error'));
 
@@ -163,11 +173,11 @@ describe('sources', () => {
             expect(actual.error).toEqual('Error');
             expect(actual.currentSource).toEqual(null);
           });
-      }));
+      });
     });
 
     describe('DeleteSuccess', () => {
-      it('should remove requested item from sources array', waitForAsync(() => {
+      it('should remove requested item from sources array', async () => {
         const appState: AppModel = {
           sources: {
             sources: sourceArray,
@@ -175,7 +185,8 @@ describe('sources', () => {
             currentSource: currentSource,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new SourcesActions.DeleteSourceSuccess(3));
 
@@ -187,11 +198,11 @@ describe('sources', () => {
             expect(actual.sources[1].id).toBe(2);
             expect(actual.currentSource).toEqual(null);
           });
-      }));
+      });
     });
 
     describe('Get', () => {
-      it('should dispatch GetSuccusss when successful', fakeAsync(() => {
+      it('should dispatch GetSuccusss when successful', async () => {
         // arrange
         const action = new SourcesActions.GetSource(3);
         const expected = new SourcesActions.GetSourceSuccess(currentSource);
@@ -204,14 +215,14 @@ describe('sources', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch GetFail when errors', fakeAsync(() => {
+      it('should dispatch GetFail when errors', async () => {
         const action = new SourcesActions.GetSource(3);
         const expected = new SourcesActions.GetSourceFail('Error');
         const callbacksCalled = [];
@@ -223,16 +234,16 @@ describe('sources', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('GetFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -240,7 +251,8 @@ describe('sources', () => {
             currentSource: currentSource,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new SourcesActions.GetSourceFail('Error'));
 
@@ -250,11 +262,11 @@ describe('sources', () => {
             expect(actual.error).toEqual('Error');
             expect(actual.currentSource).toEqual(null);
           });
-      }));
+      });
     });
 
     describe('GetSuccess', () => {
-      it('should set currentSource with requested record and clear error', waitForAsync(() => {
+      it('should set currentSource with requested record and clear error', async () => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -262,7 +274,8 @@ describe('sources', () => {
             currentSource: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new SourcesActions.GetSourceSuccess(currentSource));
 
@@ -272,11 +285,11 @@ describe('sources', () => {
             expect(actual.currentSource).toEqual(currentSource);
             expect(actual.error).toEqual('');
           });
-      }));
+      });
     });
 
     describe('New Source', () => {
-      it('should initialize currentSource values for a new record', waitForAsync(() => {
+      it('should initialize currentSource values for a new record', async () => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -284,7 +297,8 @@ describe('sources', () => {
             currentSource: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new SourcesActions.NewSource());
 
@@ -294,11 +308,11 @@ describe('sources', () => {
             expect(current.id).toEqual(null);
             expect(current.name).toEqual('');
           });
-      }));
+      });
     });
 
     describe('Load', () => {
-      it('should dispatch LoadSuccusss when successful', fakeAsync(() => {
+      it('should dispatch LoadSuccusss when successful', async () => {
         // arrange
         const action = new SourcesActions.LoadSources();
         const expected = new SourcesActions.LoadSourcesSuccess(sourceArray);
@@ -311,14 +325,14 @@ describe('sources', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch LoadFail when errors', fakeAsync(() => {
+      it('should dispatch LoadFail when errors', async () => {
         const action = new SourcesActions.LoadSources();
         const expected = new SourcesActions.LoadSourcesFail('Error');
         const callbacksCalled = [];
@@ -330,16 +344,16 @@ describe('sources', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('LoadFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           sources: {
             sources: sourceArray,
@@ -347,7 +361,8 @@ describe('sources', () => {
             currentSource: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new SourcesActions.LoadSourcesFail('Error'));
 
@@ -357,11 +372,11 @@ describe('sources', () => {
             expect(actual.sources.length).toEqual(0);
             expect(actual.error).toEqual('Error');
           });
-      }));
+      });
     });
 
     describe('LoadSuccess', () => {
-      it('should set the sources array to returned values and clear error', waitForAsync(() => {
+      it('should set the sources array to returned values and clear error', async () => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -369,7 +384,8 @@ describe('sources', () => {
             currentSource: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new SourcesActions.LoadSourcesSuccess(sourceArray));
 
@@ -379,11 +395,11 @@ describe('sources', () => {
             expect(actual.sources).toEqual(sourceArray);
             expect(actual.error).toEqual('');
           });
-      }));
+      });
     });
 
     describe('Save', () => {
-      it('should dispatch SaveSuccuss when successful', fakeAsync(() => {
+      it('should dispatch SaveSuccuss when successful', async () => {
         // arrange
         const appState: AppModel = {
           sources: {
@@ -405,14 +421,14 @@ describe('sources', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch SaveFail when errors', fakeAsync(() => {
+      it('should dispatch SaveFail when errors', async () => {
         // arrange
         const action = new SourcesActions.SaveSource(currentSource);
         const expected = new SourcesActions.SaveSourceFail('Error');
@@ -425,16 +441,16 @@ describe('sources', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('SaveFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           sources: {
             sources: [],
@@ -442,7 +458,8 @@ describe('sources', () => {
             currentSource: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new SourcesActions.SaveSourceFail('Error'));
 
@@ -451,11 +468,11 @@ describe('sources', () => {
           .subscribe((actual) => {
             expect(actual.error).toEqual('Error');
           });
-      }));
+      });
     });
 
     describe('SaveSuccess', () => {
-      it('should update the source array with new value', waitForAsync(() => {
+      it('should update the source array with new value', async () => {
         const appState: AppModel = {
           sources: {
             sources: sourceArray,
@@ -463,7 +480,8 @@ describe('sources', () => {
             currentSource: currentSource,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         const expected: Source = {
           id: 3,
@@ -479,7 +497,7 @@ describe('sources', () => {
             expect(actual.error).toEqual('');
             expect(actual.currentSource).toEqual(null);
           });
-      }));
+      });
     });
   });
 });

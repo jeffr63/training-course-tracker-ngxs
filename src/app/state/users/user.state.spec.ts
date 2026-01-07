@@ -1,7 +1,7 @@
-import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-import { expect, it, describe, beforeEach, vi } from 'vitest';
+import { expect, it, describe, beforeEach, afterEach, vi, vitest } from 'vitest';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
@@ -33,7 +33,7 @@ describe('UsersState', () => {
   let service: UserData;
   let actions: Actions;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([UserState])],
       providers: [UserData, provideHttpClient(withInterceptorsFromDi())],
@@ -41,7 +41,12 @@ describe('UsersState', () => {
     store = TestBed.inject(Store);
     service = TestBed.inject(UserData);
     actions = TestBed.inject(Actions);
-  }));
+    vitest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vitest.resetAllMocks();
+  });
 
   it('should initialize values', () => {
     const UsersState: UserStateModel = {
@@ -60,7 +65,7 @@ describe('UsersState', () => {
 
   describe('Selector', () => {
     describe('getUsers', () => {
-      it('should return an array of Users', waitForAsync(() => {
+      it('should return an array of Users', async () => {
         const appState: AppModel = {
           users: {
             users: userArray,
@@ -68,14 +73,15 @@ describe('UsersState', () => {
             currentUser: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(UserState.getUsers(appState.users)).toEqual(userArray);
-      }));
+      });
     });
 
     describe('getcurrentUser', () => {
-      it('should return an object', waitForAsync(() => {
+      it('should return an object', async () => {
         const appState: AppModel = {
           users: {
             users: [],
@@ -83,14 +89,15 @@ describe('UsersState', () => {
             currentUser: currentUser,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(UserState.getCurrentUser(appState.users)).toEqual(currentUser);
-      }));
+      });
     });
 
     describe('getError', () => {
-      it('should return an string', waitForAsync(() => {
+      it('should return an string', async () => {
         const appState: AppModel = {
           users: {
             users: [],
@@ -98,16 +105,17 @@ describe('UsersState', () => {
             currentUser: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(UserState.getError(appState.users)).toEqual('Error');
-      }));
+      });
     });
   });
 
   describe('Action', () => {
     describe('Delete', () => {
-      it('should dispatch DeleteSuccess when successful', fakeAsync(() => {
+      it('should dispatch DeleteSuccess when successful', async () => {
         // arrange
         const action = new UserActions.DeleteUser(3);
         const expected = new UserActions.DeleteUserSuccess(3);
@@ -120,14 +128,14 @@ describe('UsersState', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch DeleteFail when errors', fakeAsync(() => {
+      it('should dispatch DeleteFail when errors', async () => {
         const action = new UserActions.DeleteUser(3);
         const expected = new UserActions.DeleteUserFail('Error');
         const callbacksCalled = [];
@@ -139,16 +147,16 @@ describe('UsersState', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('DeleteFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           users: {
             users: [],
@@ -156,9 +164,11 @@ describe('UsersState', () => {
             currentUser: currentUser,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
 
         store.dispatch(new UserActions.DeleteUserFail('Error'));
+
+        await vitest.runAllTimersAsync();
 
         store
           .selectOnce((state: AppModel) => state.users)
@@ -166,11 +176,11 @@ describe('UsersState', () => {
             expect(actual.error).toEqual('Error');
             expect(actual.currentUser).toEqual(null);
           });
-      }));
+      });
     });
 
     describe('DeleteSuccess', () => {
-      it('should remove requested item from users array', waitForAsync(() => {
+      it('should remove requested item from users array', async () => {
         const appState: AppModel = {
           users: {
             users: userArray,
@@ -178,9 +188,11 @@ describe('UsersState', () => {
             currentUser: currentUser,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
 
         store.dispatch(new UserActions.DeleteUserSuccess(3));
+
+        await vitest.runAllTimersAsync();
 
         store
           .selectOnce((state: AppModel) => state.users)
@@ -190,11 +202,11 @@ describe('UsersState', () => {
             expect(actual.users[1].id).toBe(2);
             expect(actual.currentUser).toEqual(null);
           });
-      }));
+      });
     });
 
     describe('Get', () => {
-      it('should dispatch GetSuccusss when successful', fakeAsync(() => {
+      it('should dispatch GetSuccusss when successful', async () => {
         // arrange
         const action = new UserActions.GetUser(3);
         const expected = new UserActions.GetUserSuccess(currentUser);
@@ -207,14 +219,14 @@ describe('UsersState', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch GetFail when errors', fakeAsync(() => {
+      it('should dispatch GetFail when errors', async () => {
         const action = new UserActions.GetUser(3);
         const expected = new UserActions.GetUserFail('Error');
         const callbacksCalled = [];
@@ -226,16 +238,16 @@ describe('UsersState', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('GetFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           users: {
             users: [],
@@ -243,7 +255,8 @@ describe('UsersState', () => {
             currentUser: currentUser,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new UserActions.GetUserFail('Error'));
 
@@ -253,11 +266,11 @@ describe('UsersState', () => {
             expect(actual.error).toEqual('Error');
             expect(actual.currentUser).toEqual(null);
           });
-      }));
+      });
     });
 
     describe('GetSuccess', () => {
-      it('should set currentUser with requested record and clear error', waitForAsync(() => {
+      it('should set currentUser with requested record and clear error', async () => {
         const appState: AppModel = {
           users: {
             users: [],
@@ -265,7 +278,8 @@ describe('UsersState', () => {
             currentUser: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new UserActions.GetUserSuccess(currentUser));
 
@@ -275,11 +289,11 @@ describe('UsersState', () => {
             expect(actual.currentUser).toEqual(currentUser);
             expect(actual.error).toEqual('');
           });
-      }));
+      });
     });
 
     describe('Load', () => {
-      it('should dispatch LoadSuccusss when successful', fakeAsync(() => {
+      it('should dispatch LoadSuccusss when successful', async () => {
         // arrange
         const action = new UserActions.LoadUsers();
         const expected = new UserActions.LoadUsersSuccess(userArray);
@@ -292,14 +306,14 @@ describe('UsersState', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch LoadFail when errors', fakeAsync(() => {
+      it('should dispatch LoadFail when errors', async () => {
         const action = new UserActions.LoadUsers();
         const expected = new UserActions.LoadUsersFail('Error');
         const callbacksCalled = [];
@@ -311,16 +325,16 @@ describe('UsersState', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('LoadFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           users: {
             users: userArray,
@@ -328,7 +342,8 @@ describe('UsersState', () => {
             currentUser: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new UserActions.LoadUsersFail('Error'));
 
@@ -338,11 +353,11 @@ describe('UsersState', () => {
             expect(actual.users.length).toEqual(0);
             expect(actual.error).toEqual('Error');
           });
-      }));
+      });
     });
 
     describe('LoadSuccess', () => {
-      it('should set the users array to returned values and clear error', waitForAsync(() => {
+      it('should set the users array to returned values and clear error', async () => {
         const appState: AppModel = {
           users: {
             users: [],
@@ -350,7 +365,8 @@ describe('UsersState', () => {
             currentUser: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new UserActions.LoadUsersSuccess(userArray));
 
@@ -360,11 +376,11 @@ describe('UsersState', () => {
             expect(actual.users).toEqual(userArray);
             expect(actual.error).toEqual('');
           });
-      }));
+      });
     });
 
     describe('Patch', () => {
-      it('should dispatch PatchSuccuss when successful', fakeAsync(() => {
+      it('should dispatch PatchSuccuss when successful', async () => {
         // arrange
         const patchUser: User = { id: 3, name: 'Joan', email: 'joan@joe.com', password: 'abc', role: 'user' };
         const appState: AppModel = {
@@ -374,7 +390,8 @@ describe('UsersState', () => {
             currentUser: patchUser,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
         const action = new UserActions.PatchUser(3, patchUser);
         const expected = new UserActions.PatchUserSuccess(patchUser);
         const callbacksCalled = [];
@@ -387,14 +404,14 @@ describe('UsersState', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch PatchFail when errors', fakeAsync(() => {
+      it('should dispatch PatchFail when errors', async () => {
         // arrange
         const patchUser: User = { id: 3, name: 'Joan', email: 'joan@joe.com', password: 'abc', role: 'user' };
         const appState: AppModel = {
@@ -404,7 +421,8 @@ describe('UsersState', () => {
             currentUser: patchUser,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
         const action = new UserActions.PatchUser(3, patchUser);
         const expected = new UserActions.PatchUserFail('Error');
         const callbacksCalled = [];
@@ -416,16 +434,16 @@ describe('UsersState', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('PatchFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           users: {
             users: [],
@@ -433,7 +451,8 @@ describe('UsersState', () => {
             currentUser: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new UserActions.PatchUserFail('Error'));
 
@@ -442,11 +461,11 @@ describe('UsersState', () => {
           .subscribe((actual) => {
             expect(actual.error).toEqual('Error');
           });
-      }));
+      });
     });
 
     describe('PatchSuccess', () => {
-      it('should update the source array with new value', waitForAsync(() => {
+      it('should update the source array with new value', async () => {
         const appState: AppModel = {
           users: {
             users: userArray,
@@ -454,7 +473,8 @@ describe('UsersState', () => {
             currentUser: currentUser,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         const expected: User = {
           id: 3,
@@ -473,7 +493,7 @@ describe('UsersState', () => {
             expect(actual.error).toEqual('');
             expect(actual.currentUser).toEqual(null);
           });
-      }));
+      });
     });
   });
 });

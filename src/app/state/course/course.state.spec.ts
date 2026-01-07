@@ -1,7 +1,7 @@
-import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-import { expect, it, describe, beforeEach, vi } from 'vitest';
+import { expect, it, describe, beforeEach, vi, vitest, afterEach } from 'vitest';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
@@ -48,7 +48,7 @@ describe('Courses', () => {
   let service: CourseData;
   let actions: Actions;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([CourseState])],
       providers: [CourseData, provideHttpClient(withInterceptorsFromDi())],
@@ -56,7 +56,12 @@ describe('Courses', () => {
     store = TestBed.inject(Store);
     service = TestBed.inject(CourseData);
     actions = TestBed.inject(Actions);
-  }));
+    vitest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vitest.resetAllMocks();
+  });
 
   it('should initialize values', () => {
     const coursesState: CourseStateModel = {
@@ -79,7 +84,7 @@ describe('Courses', () => {
 
   describe('Selectors', () => {
     describe('getCourse', () => {
-      it('should return an object', waitForAsync(() => {
+      it('should return an object', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -91,14 +96,15 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(CourseState.getCourse(appState.courses)).toEqual(currentCourse);
-      }));
+      });
     });
 
     describe('getCourses', () => {
-      it('should return an array of Courses', waitForAsync(() => {
+      it('should return an array of Courses', async () => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -110,14 +116,15 @@ describe('Courses', () => {
             totalCourses: 3,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(CourseState.getCourses(appState.courses)).toEqual(courseArray);
-      }));
+      });
     });
 
     describe('getCoursesByPath', () => {
-      it('should return an array', waitForAsync(() => {
+      it('should return an array', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -129,14 +136,15 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(CourseState.getCoursesByPath(appState.courses)).toEqual(byPathArray);
-      }));
+      });
     });
 
     describe('getCoursesBySource', () => {
-      it('should return an array', waitForAsync(() => {
+      it('should return an array', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -148,14 +156,15 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(CourseState.getCoursesBySource(appState.courses)).toEqual(bySourceArray);
-      }));
+      });
     });
 
     describe('getError', () => {
-      it('should return an string', waitForAsync(() => {
+      it('should return an string', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -167,14 +176,15 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(CourseState.getError(appState.courses)).toEqual('Error');
-      }));
+      });
     });
 
     describe('getPagedCourses', () => {
-      it('should return an string', waitForAsync(() => {
+      it('should return an string', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -186,14 +196,15 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(CourseState.getPagedCourses(appState.courses)).toEqual(courseArray);
-      }));
+      });
     });
 
     describe('getTotalCourses', () => {
-      it('should return a number', waitForAsync(() => {
+      it('should return a number', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -205,16 +216,17 @@ describe('Courses', () => {
             totalCourses: 3,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(CourseState.getTotalCourses(appState.courses)).toEqual(3);
-      }));
+      });
     });
   });
 
   describe('Action', () => {
     describe('Delete', () => {
-      it('should dispatch DeleteSuccess when successful', fakeAsync(() => {
+      it('should dispatch DeleteSuccess when successful', async () => {
         // arrange
         const action = new CourseActions.DeleteCourse({ id: 3, current: 1, pageSize: 10 });
         const expected = new CourseActions.DeleteCourseSuccess();
@@ -228,14 +240,14 @@ describe('Courses', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch DeleteFail when errors', fakeAsync(() => {
+      it('should dispatch DeleteFail when errors', async () => {
         const action = new CourseActions.DeleteCourse({ id: 3, current: 1, pageSize: 10 });
         const expected = new CourseActions.DeleteCourseFail('Error');
         const callbacksCalled = [];
@@ -247,16 +259,16 @@ describe('Courses', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('DeleteFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -268,7 +280,8 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new CourseActions.DeleteCourseFail('Error'));
 
@@ -277,11 +290,11 @@ describe('Courses', () => {
           .subscribe((error) => {
             expect(error).toEqual('Error');
           });
-      }));
+      });
     });
 
     describe('DeleteSuccess', () => {
-      it('should remove requested item from courses array', waitForAsync(() => {
+      it('should remove requested item from courses array', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -293,7 +306,8 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new CourseActions.DeleteCourseSuccess());
 
@@ -302,11 +316,11 @@ describe('Courses', () => {
           .subscribe((error) => {
             expect(error).toEqual('');
           });
-      }));
+      });
     });
 
     describe('GetCourse', () => {
-      it('should dispatch GetCourseSuccusss when successful', fakeAsync(() => {
+      it('should dispatch GetCourseSuccusss when successful', async () => {
         // arrange
         const action = new CourseActions.GetCourse(3);
         const expected = new CourseActions.GetCourseSuccess(currentCourse);
@@ -319,14 +333,14 @@ describe('Courses', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch GetCourseFail when errors', fakeAsync(() => {
+      it('should dispatch GetCourseFail when errors', async () => {
         const action = new CourseActions.GetCourse(3);
         const expected = new CourseActions.GetCourseFail('Error');
         const callbacksCalled = [];
@@ -338,16 +352,16 @@ describe('Courses', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('GetCourseFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -359,7 +373,8 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new CourseActions.GetCourseFail('Error'));
 
@@ -369,11 +384,11 @@ describe('Courses', () => {
             expect(actual.error).toEqual('Error');
             expect(actual.currentCourse).toEqual(null);
           });
-      }));
+      });
     });
 
     describe('GetCourseSuccess', () => {
-      it('should set currentCourse with requested record and clear error', waitForAsync(() => {
+      it('should set currentCourse with requested record and clear error', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -385,7 +400,8 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new CourseActions.GetCourseSuccess(currentCourse));
 
@@ -395,11 +411,11 @@ describe('Courses', () => {
             expect(actual.currentCourse).toEqual(currentCourse);
             expect(actual.error).toEqual('');
           });
-      }));
+      });
     });
 
     describe('GetPage', () => {
-      it('should update the pagedCourses with request page info ', waitForAsync(() => {
+      it('should update the pagedCourses with request page info ', async () => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -411,7 +427,8 @@ describe('Courses', () => {
             totalCourses: 3,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new CourseActions.GetCoursesPage({ current: 1, pageSize: 2 }));
 
@@ -420,11 +437,11 @@ describe('Courses', () => {
           .subscribe((actual) => {
             expect(actual.pagedCourses).toEqual(pagedCourseArray);
           });
-      }));
+      });
     });
 
     describe('GetCourseData', () => {
-      it('should update the coursesByPath and coursesBySource store values', waitForAsync(() => {
+      it('should update the coursesByPath and coursesBySource store values', async () => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -436,7 +453,8 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new CourseActions.GetCourseData());
 
@@ -446,11 +464,11 @@ describe('Courses', () => {
             expect(actual.coursesByPath).toEqual(byPathArray);
             expect(actual.coursesBySource).toEqual(bySourceArray);
           });
-      }));
+      });
     });
 
     describe('Load', () => {
-      it('should dispatch LoadSuccusss when successful', fakeAsync(() => {
+      it('should dispatch LoadSuccusss when successful', async () => {
         // arrange
         const action = new CourseActions.LoadCourses();
         const expected = new CourseActions.LoadCoursesSuccess(courseArray);
@@ -463,14 +481,14 @@ describe('Courses', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch LoadFail when errors', fakeAsync(() => {
+      it('should dispatch LoadFail when errors', async () => {
         const action = new CourseActions.LoadCourses();
         const expected = new CourseActions.LoadCoursesFail('Error');
         const callbacksCalled = [];
@@ -482,16 +500,16 @@ describe('Courses', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('LoadFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -503,8 +521,8 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
-
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
         store.dispatch(new CourseActions.LoadCoursesFail('Error'));
 
         store
@@ -516,11 +534,11 @@ describe('Courses', () => {
             expect(actual.pagedCourses.length).toEqual(0);
             expect(actual.error).toEqual('Error');
           });
-      }));
+      });
     });
 
     describe('LoadSuccess', () => {
-      it('should set the courses array to returned values and clear error', waitForAsync(() => {
+      it('should set the courses array to returned values and clear error', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -532,7 +550,8 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new CourseActions.LoadCoursesSuccess(courseArray));
 
@@ -543,11 +562,11 @@ describe('Courses', () => {
             expect(actual.totalCourses).toEqual(3);
             expect(actual.error).toEqual('');
           });
-      }));
+      });
     });
 
     describe('New Course', () => {
-      it('should initialize currentCourse values for a new record', waitForAsync(() => {
+      it('should initialize currentCourse values for a new record', async () => {
         const appState: AppModel = {
           courses: {
             courses: [],
@@ -559,7 +578,8 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         const expected: Course = { id: null, title: '', instructor: '', path: '', source: '' };
 
@@ -570,11 +590,11 @@ describe('Courses', () => {
           .subscribe((current) => {
             expect(current).toEqual(expected);
           });
-      }));
+      });
     });
 
     describe('Save', () => {
-      it('should dispatch SaveSuccuss when successful', fakeAsync(() => {
+      it('should dispatch SaveSuccuss when successful', async () => {
         // arrange
         const appState: AppModel = {
           courses: {
@@ -600,14 +620,14 @@ describe('Courses', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch SaveFail when errors', fakeAsync(() => {
+      it('should dispatch SaveFail when errors', async () => {
         const action = new CourseActions.SaveCourse(currentCourse);
         const expected = new CourseActions.SaveCourseFail('Error');
         const callbacksCalled = [];
@@ -619,16 +639,16 @@ describe('Courses', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('SaveFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -640,7 +660,8 @@ describe('Courses', () => {
             totalCourses: 0,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new CourseActions.SaveCourseFail('Error'));
 
@@ -650,11 +671,11 @@ describe('Courses', () => {
             expect(actual.courses.length).toBe(0);
             expect(actual.error).toEqual('Error');
           });
-      }));
+      });
     });
 
     describe('SaveSuccess', () => {
-      it('should update the course array with new value', waitForAsync(() => {
+      it('should update the course array with new value', async () => {
         const appState: AppModel = {
           courses: {
             courses: courseArray,
@@ -666,7 +687,8 @@ describe('Courses', () => {
             totalCourses: 3,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         const expected: Course = { id: 2, title: 'XYZ', instructor: 'Joe', path: 'Updated', source: 'Updated' };
         store.dispatch(new CourseActions.SaveCourseSuccess(expected));
@@ -681,7 +703,7 @@ describe('Courses', () => {
             expect(actual.error).toEqual('');
             expect(actual.currentCourse).toEqual(null);
           });
-      }));
+      });
     });
   });
 });

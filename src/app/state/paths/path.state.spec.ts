@@ -1,7 +1,7 @@
-import { TestBed, waitForAsync, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-import { expect, it, describe, beforeEach, vi } from 'vitest';
+import { expect, it, describe, beforeEach, afterEach, vi, vitest } from 'vitest';
 import { NgxsModule, Store, Actions, ofActionSuccessful } from '@ngxs/store';
 import { of, throwError } from 'rxjs';
 
@@ -30,7 +30,7 @@ describe('Paths', () => {
   let service: PathData;
   let actions: Actions;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([PathState])],
       providers: [PathData, provideHttpClient(withInterceptorsFromDi())],
@@ -38,15 +38,21 @@ describe('Paths', () => {
     store = TestBed.inject(Store);
     service = TestBed.inject(PathData);
     actions = TestBed.inject(Actions);
-  }));
+    vitest.useFakeTimers();
+  });
 
-  it('should initialize values', () => {
-    const pathsState: PathStateModel = {
+  afterEach(() => {
+    vitest.resetAllMocks();
+  });
+
+  it('should initialize values', async () => {
+    const appState: PathStateModel = {
       paths: pathsArray,
       error: '',
       currentPath: null,
     };
-    store.reset(pathsState);
+    Promise.resolve().then(() => store.reset(appState));
+    await vitest.runAllTimersAsync();
 
     store
       .selectOnce((state: PathStateModel) => state.paths)
@@ -57,7 +63,7 @@ describe('Paths', () => {
 
   describe('Selector', () => {
     describe('getPaths', () => {
-      it('should return an array of Paths', waitForAsync(() => {
+      it('should return an array of Paths', async () => {
         const appState: AppModel = {
           paths: {
             paths: pathsArray,
@@ -65,14 +71,15 @@ describe('Paths', () => {
             currentPath: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(PathState.getPaths(appState.paths)).toEqual(pathsArray);
-      }));
+      });
     });
 
     describe('getCurrentPath', () => {
-      it('should return an object', waitForAsync(() => {
+      it('should return an object', async () => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -80,14 +87,15 @@ describe('Paths', () => {
             currentPath: currentPath,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(PathState.getCurrentPath(appState.paths)).toEqual(currentPath);
-      }));
+      });
     });
 
     describe('getError', () => {
-      it('should return an string', waitForAsync(() => {
+      it('should return an string', async () => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -95,16 +103,17 @@ describe('Paths', () => {
             currentPath: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         expect(PathState.getError(appState.paths)).toEqual('Error');
-      }));
+      });
     });
   });
 
   describe('Action', () => {
     describe('Delete', () => {
-      it('should dispatch DeleteSuccess when successful', fakeAsync(() => {
+      it('should dispatch DeleteSuccess when successful', async () => {
         // arrange
         const action = new PathActions.DeletePath(3);
         const expected = new PathActions.DeletePathSuccess(3);
@@ -117,14 +126,14 @@ describe('Paths', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch DeleteFail when errors', fakeAsync(() => {
+      it('should dispatch DeleteFail when errors', async () => {
         const action = new PathActions.DeletePath(3);
         const expected = new PathActions.DeletePathFail('Error');
         const callbacksCalled = [];
@@ -136,16 +145,16 @@ describe('Paths', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('DeleteFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -153,7 +162,8 @@ describe('Paths', () => {
             currentPath: currentPath,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new PathActions.DeletePathFail('Error'));
 
@@ -163,11 +173,11 @@ describe('Paths', () => {
             expect(actual.error).toEqual('Error');
             expect(actual.currentPath).toEqual(null);
           });
-      }));
+      });
     });
 
     describe('DeleteSuccess', () => {
-      it('should remove requested item from paths array', waitForAsync(() => {
+      it('should remove requested item from paths array', async () => {
         const appState: AppModel = {
           paths: {
             paths: pathsArray,
@@ -175,7 +185,8 @@ describe('Paths', () => {
             currentPath: currentPath,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new PathActions.DeletePathSuccess(3));
 
@@ -187,11 +198,11 @@ describe('Paths', () => {
             expect(actual.paths[1].id).toBe(2);
             expect(actual.currentPath).toEqual(null);
           });
-      }));
+      });
     });
 
     describe('Get', () => {
-      it('should dispatch GetSuccusss when successful', fakeAsync(() => {
+      it('should dispatch GetSuccusss when successful', async () => {
         // arrange
         const action = new PathActions.GetPath(3);
         const expected = new PathActions.GetPathSuccess(currentPath);
@@ -204,14 +215,14 @@ describe('Paths', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch GetFail when errors', fakeAsync(() => {
+      it('should dispatch GetFail when errors', async () => {
         const action = new PathActions.GetPath(3);
         const expected = new PathActions.GetPathFail('Error');
         const callbacksCalled = [];
@@ -223,16 +234,16 @@ describe('Paths', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('GetFail', () => {
-      it('should return string in Error', fakeAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -240,7 +251,8 @@ describe('Paths', () => {
             currentPath: currentPath,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new PathActions.GetPathFail('Error'));
 
@@ -250,11 +262,11 @@ describe('Paths', () => {
             expect(actual.error).toEqual('Error');
             expect(actual.currentPath).toEqual(null);
           });
-      }));
+      });
     });
 
     describe('GetSuccess', () => {
-      it('should set currentPath with requested record and clear error', waitForAsync(() => {
+      it('should set currentPath with requested record and clear error', async () => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -262,7 +274,8 @@ describe('Paths', () => {
             currentPath: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new PathActions.GetPathSuccess(currentPath));
 
@@ -272,11 +285,11 @@ describe('Paths', () => {
             expect(actual.currentPath).toEqual(currentPath);
             expect(actual.error).toEqual('');
           });
-      }));
+      });
     });
 
     describe('New Path', () => {
-      it('should initialize currentPath values for a new record', waitForAsync(() => {
+      it('should initialize currentPath values for a new record', async () => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -284,7 +297,8 @@ describe('Paths', () => {
             currentPath: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new PathActions.NewPath());
 
@@ -294,11 +308,11 @@ describe('Paths', () => {
             expect(current.id).toEqual(null);
             expect(current.name).toEqual('');
           });
-      }));
+      });
     });
 
     describe('Load', () => {
-      it('should dispatch LoadSuccusss when successful', fakeAsync(() => {
+      it('should dispatch LoadSuccusss when successful', async () => {
         // arrange
         const action = new PathActions.LoadPaths();
         const expected = new PathActions.LoadPathsSuccess(pathsArray);
@@ -311,14 +325,14 @@ describe('Paths', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch LoadFail when errors', fakeAsync(() => {
+      it('should dispatch LoadFail when errors', async () => {
         const action = new PathActions.LoadPaths();
         const expected = new PathActions.LoadPathsFail('Error');
         const callbacksCalled = [];
@@ -330,16 +344,16 @@ describe('Paths', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('LoadFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           paths: {
             paths: pathsArray,
@@ -347,7 +361,8 @@ describe('Paths', () => {
             currentPath: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new PathActions.LoadPathsFail('Error'));
 
@@ -357,11 +372,11 @@ describe('Paths', () => {
             expect(actual.paths.length).toEqual(0);
             expect(actual.error).toEqual('Error');
           });
-      }));
+      });
     });
 
     describe('LoadSuccess', () => {
-      it('should set the paths array to returned values and clear error', waitForAsync(() => {
+      it('should set the paths array to returned values and clear error', async () => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -369,7 +384,8 @@ describe('Paths', () => {
             currentPath: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new PathActions.LoadPathsSuccess(pathsArray));
 
@@ -379,11 +395,11 @@ describe('Paths', () => {
             expect(actual.paths).toEqual(pathsArray);
             expect(actual.error).toEqual('');
           });
-      }));
+      });
     });
 
     describe('Save', () => {
-      it('should dispatch SaveSuccuss when successful', fakeAsync(() => {
+      it('should dispatch SaveSuccuss when successful', async () => {
         // arrange
         const appState: AppModel = {
           paths: {
@@ -392,7 +408,8 @@ describe('Paths', () => {
             currentPath: currentPath,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
         const action = new PathActions.SavePath(currentPath);
         const expected = new PathActions.SavePathSuccess(currentPath);
         const callbacksCalled = [];
@@ -405,14 +422,14 @@ describe('Paths', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
 
-      it('should dispatch SaveFail when errors', fakeAsync(() => {
+      it('should dispatch SaveFail when errors', async () => {
         const action = new PathActions.SavePath(currentPath);
         const expected = new PathActions.SavePathFail('Error');
         const callbacksCalled = [];
@@ -424,16 +441,16 @@ describe('Paths', () => {
           callbacksCalled.push(x);
         });
 
-        store.dispatch(action);
-        tick(1);
+        Promise.resolve().then(() => store.dispatch(action));
+        await vitest.runAllTimersAsync();
 
         // assert
         expect(callbacksCalled).toEqual([expected]);
-      }));
+      });
     });
 
     describe('SaveFail', () => {
-      it('should return string in Error', waitForAsync(() => {
+      it('should return string in Error', async () => {
         const appState: AppModel = {
           paths: {
             paths: [],
@@ -441,7 +458,8 @@ describe('Paths', () => {
             currentPath: null,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         store.dispatch(new PathActions.SavePathFail('Error'));
 
@@ -450,11 +468,11 @@ describe('Paths', () => {
           .subscribe((actual) => {
             expect(actual.error).toEqual('Error');
           });
-      }));
+      });
     });
 
     describe('SaveSuccess', () => {
-      it('should update the path array with new value', waitForAsync(() => {
+      it('should update the path array with new value', async () => {
         const appState: AppModel = {
           paths: {
             paths: pathsArray,
@@ -462,7 +480,8 @@ describe('Paths', () => {
             currentPath: currentPath,
           },
         };
-        store.reset(appState);
+        Promise.resolve().then(() => store.reset(appState));
+        await vitest.runAllTimersAsync();
 
         const expected: Path = {
           id: 3,
@@ -478,7 +497,7 @@ describe('Paths', () => {
             expect(actual.error).toEqual('');
             expect(actual.currentPath).toEqual(null);
           });
-      }));
+      });
     });
   });
 });
