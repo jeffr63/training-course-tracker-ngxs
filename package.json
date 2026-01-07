@@ -36,8 +36,6 @@
     "@angular/cli": "^21.0.1",
     "@angular/compiler-cli": "^21.0.2",
     "@ngxs/devtools-plugin": "^18.0.0",
-    "@types/jasmine": "~5.1.0",
-    "jasmine-core": "~5.1.0",
     "jsdom": "^27.3.0",
     "prettier": "^3.7.4",
     "typescript": "~5.9.3",
