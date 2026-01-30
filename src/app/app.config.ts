@@ -1,9 +1,4 @@
-import {
-  ApplicationConfig,
-  importProvidersFrom,
-  provideZoneChangeDetection,
-  provideZonelessChangeDetection,
-} from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { TitleStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { NgxsModule } from '@ngxs/store';
@@ -24,10 +19,9 @@ export const appConfig: ApplicationConfig = {
         selectorOptions: { suppressErrors: false, injectContainerState: false },
       }),
       NgxsDispatchPluginModule.forRoot(),
-      NgxsReduxDevtoolsPluginModule.forRoot()
+      NgxsReduxDevtoolsPluginModule.forRoot(),
     ),
     { provide: TitleStrategy, useClass: CustomTitleStrategyService },
-    provideZonelessChangeDetection(),
     provideRouter(APP_ROUTES, withComponentInputBinding()),
   ],
 };

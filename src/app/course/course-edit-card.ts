@@ -1,16 +1,16 @@
 import { Component, input, output } from '@angular/core';
-import { Field, FieldTree } from '@angular/forms/signals';
+import { FormField, FieldTree, ValidationError } from '@angular/forms/signals';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { Path } from '@models/paths-interface';
 import { Source } from '@models/sources-interface';
 import { Course } from '@models/course-interface';
-import { ValidationErrors } from '@components/validation-errors';
+import * as validate from '@services/common/validation-error';
 
 @Component({
   selector: 'app-course-edit-card',
-  imports: [NgbModule, Field, ValidationErrors],
+  imports: [NgbModule, FormField],
   template: `
     <section class="container">
       <section class="card">
@@ -22,11 +22,15 @@ import { ValidationErrors } from '@components/validation-errors';
                 <input
                   type="text"
                   class="form-control"
-                  [field]="form().title"
+                  [formField]="form().title"
                   placeholder="Enter title of course taken" />
                 @let ftitle = form().title();
                 @if (ftitle.invalid() && ftitle.touched()) {
-                  <app-validation-errors [errors]="ftitle.errors()" />
+                  <div style="display:flex: flex-direction: column;">
+                    @for (error of ftitle.errors(); track error.kind) {
+                      <div style="flex:1;color:red">{{ getError(error) }}</div>
+                    }
+                  </div>
                 }
               </div>
             </fieldset>
@@ -37,11 +41,15 @@ import { ValidationErrors } from '@components/validation-errors';
                 <input
                   type="text"
                   class="form-control"
-                  [field]="form().instructor"
+                  [formField]="form().instructor"
                   placeholder="Enter name of course's intructor" />
                 @let finstructor = form().instructor();
                 @if (finstructor.invalid() && finstructor.touched()) {
-                  <app-validation-errors [errors]="finstructor.errors()" />
+                  <div style="display:flex: flex-direction: column;">
+                    @for (error of finstructor.errors(); track error.kind) {
+                      <div style="flex:1;color:red">{{ getError(error) }}</div>
+                    }
+                  </div>
                 }
               </div>
             </fieldset>
@@ -52,7 +60,7 @@ import { ValidationErrors } from '@components/validation-errors';
                 <input
                   type="text"
                   class="form-control"
-                  [field]="form().path"
+                  [formField]="form().path"
                   list="path-helpers"
                   placeholder="Enter technical path of course (ex: Angular or React)" />
                 <datalist id="path-helpers">
@@ -62,7 +70,11 @@ import { ValidationErrors } from '@components/validation-errors';
                 </datalist>
                 @let fpath = form().path();
                 @if (fpath.invalid() && fpath.touched()) {
-                  <app-validation-errors [errors]="fpath.errors()" />
+                  <div style="display:flex: flex-direction: column;">
+                    @for (error of fpath.errors(); track error.kind) {
+                      <div style="flex:1;color:red">{{ getError(error) }}</div>
+                    }
+                  </div>
                 }
               </div>
             </fieldset>
@@ -73,7 +85,7 @@ import { ValidationErrors } from '@components/validation-errors';
                 <input
                   type="text"
                   class="form-control"
-                  [field]="form().source"
+                  [formField]="form().source"
                   list="source-helpers"
                   placeholder="Enter where the course was sourced from (ex: Pluralsite)" />
                 <datalist id="source-helpers">
@@ -83,7 +95,11 @@ import { ValidationErrors } from '@components/validation-errors';
                 </datalist>
                 @let fsource = form().source();
                 @if (fsource.invalid() && fsource.touched()) {
-                  <app-validation-errors [errors]="fsource.errors()" />
+                  <div style="display:flex: flex-direction: column;">
+                    @for (error of fsource.errors(); track error.kind) {
+                      <div style="flex:1;color:red">{{ getError(error) }}</div>
+                    }
+                  </div>
                 }
               </div>
             </fieldset>
@@ -113,4 +129,8 @@ export class CourseEditCard {
   sources = input.required<Source[]>();
   cancel = output();
   save = output();
+
+  getError(error: ValidationError) {
+    return validate.getError(error);
+  }
 }
