@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { form } from '@angular/forms/signals';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 
@@ -13,12 +13,7 @@ import { CourseEditCard } from './course-edit-card';
   imports: [CourseEditCard],
   providers: [CourseStore],
   template: `
-    <app-course-edit-card
-      [form]="form"
-      [paths]="paths()"
-      [sources]="sources()"
-      (cancel)="cancel()"
-      (save)="save()" />
+    <app-course-edit-card [form]="form" [paths]="paths()" [sources]="sources()" (cancel)="cancel()" (save)="save()" />
   `,
   styles: [
     `
@@ -38,8 +33,8 @@ export default class CourseEdit {
   readonly #store = inject(CourseStore);
 
   readonly id = input.required<string>();
-  paths = toSignal(this.#store.paths$);
-  sources = toSignal(this.#store.sources$);
+  paths = toSignal(this.#store.paths$, { requireSync: true });
+  sources = toSignal(this.#store.sources$, { requireSync: true });
   readonly #course = rxResource<Course, string>({
     params: () => this.id(),
     stream: ({ params: id }) => {
@@ -47,7 +42,7 @@ export default class CourseEdit {
 
       this.#store.loadCourse(this.id());
       return this.#store.course$;
-    }
+    },
   });
 
   readonly form = form(this.#course.value, COURSE_EDIT_SCHEMA);

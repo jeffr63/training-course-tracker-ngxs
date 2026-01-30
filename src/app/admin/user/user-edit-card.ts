@@ -1,13 +1,13 @@
 import { Component, input, output } from '@angular/core';
-import { Field, FieldTree } from '@angular/forms/signals';
+import { FormField, FieldTree, ValidationError } from '@angular/forms/signals';
 import { User } from '@models/user-interface';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ValidationErrors } from '@components/validation-errors';
+import * as validate from '@services/common/validation-error';
 
 @Component({
   selector: 'app-user-edit-card',
-  imports: [NgbModule, Field, ValidationErrors],
+  imports: [NgbModule, FormField],
   template: `
     <section class="container">
       <section class="card">
@@ -16,10 +16,14 @@ import { ValidationErrors } from '@components/validation-errors';
             <fieldset class="m-2 row">
               <label class="col-form-label col-sm-2" for="name">Name</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" [field]="form().name" placeholder="Enter user's name" />
+                <input type="text" class="form-control" [formField]="form().name" placeholder="Enter user's name" />
                 @let fname = form().name();
                 @if (fname.invalid() && fname.touched()) {
-                  <app-validation-errors [errors]="fname.errors()" />
+                  <div style="display:flex: flex-direction: column;">
+                    @for (error of fname.errors(); track error.kind) {
+                      <div style="flex:1;color:red">{{ getError(error) }}</div>
+                    }
+                  </div>
                 }
               </div>
             </fieldset>
@@ -27,10 +31,14 @@ import { ValidationErrors } from '@components/validation-errors';
             <fieldset class="m-2 row">
               <label class="col-form-label col-sm-2" for="email">Email</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" [field]="form().email" placeholder="Enter email address" />
+                <input type="text" class="form-control" [formField]="form().email" placeholder="Enter email address" />
                 @let femail = form().email();
                 @if (femail.invalid() && femail.touched()) {
-                  <app-validation-errors [errors]="femail.errors()" />
+                  <div style="display:flex: flex-direction: column;">
+                    @for (error of femail.errors(); track error.kind) {
+                      <div style="flex:1;color:red">{{ getError(error) }}</div>
+                    }
+                  </div>
                 }
               </div>
             </fieldset>
@@ -38,11 +46,11 @@ import { ValidationErrors } from '@components/validation-errors';
             <fieldset class="m-2 row">
               <label class="col-form-label col-sm-2" for="email">Roles</label>
               <div class="form-check col-sm-3" style="margin-left:20px">
-                <input type="radio" class="form-check-input" id="role1" value="admin" [field]="form().role" />
+                <input type="radio" class="form-check-input" id="role1" value="admin" [formField]="form().role" />
                 <label class="form-check-label" for="check1">Admin</label>
               </div>
               <div class="form-check col-sm-3">
-                <input type="radio" class="form-check-input" value="user" id="role2" [field]="form().role" />
+                <input type="radio" class="form-check-input" value="user" id="role2" [formField]="form().role" />
                 <label class="form-check-label" for="check1">User</label>
               </div>
             </fieldset>
@@ -50,7 +58,11 @@ import { ValidationErrors } from '@components/validation-errors';
             @if (frole.invalid() && frole.touched()) {
               <div class="m-2 mt-0 row">
                 <div class="col-sm-8 offset-sm-2">
-                  <app-validation-errors [errors]="frole.errors()" />
+                  <div style="display:flex: flex-direction: column;">
+                    @for (error of frole.errors(); track error.kind) {
+                      <div style="flex:1;color:red">{{ getError(error) }}</div>
+                    }
+                  </div>
                 </div>
               </div>
             }
@@ -87,4 +99,8 @@ export class UserEditCard {
   form = input.required<FieldTree<User>>();
   cancel = output();
   save = output();
+
+  getError(error: ValidationError) {
+    return validate.getError(error);
+  }
 }
