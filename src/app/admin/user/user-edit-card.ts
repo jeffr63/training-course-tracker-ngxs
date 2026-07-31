@@ -1,12 +1,17 @@
-import { Component, input, output } from '@angular/core';
-import { FormField, FieldTree, ValidationError } from '@angular/forms/signals';
-import { User } from '@models/user-interface';
+import {
+  Component,
+  input,
+  output,
+  ChangeDetectionStrategy,
+} from "@angular/core";
+import { FormField, FieldTree, ValidationError } from "@angular/forms/signals";
+import { User } from "@models/user-interface";
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import * as validate from '@services/common/validation-error';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import * as validate from "@services/common/validation-error";
 
 @Component({
-  selector: 'app-user-edit-card',
+  selector: "app-user-edit-card",
   imports: [NgbModule, FormField],
   template: `
     <section class="container">
@@ -16,7 +21,12 @@ import * as validate from '@services/common/validation-error';
             <fieldset class="m-2 row">
               <label class="col-form-label col-sm-2" for="name">Name</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" [formField]="form().name" placeholder="Enter user's name" />
+                <input
+                  type="text"
+                  class="form-control"
+                  [formField]="form().name"
+                  placeholder="Enter user's name"
+                />
                 @let fname = form().name();
                 @if (fname.invalid() && fname.touched()) {
                   <div style="display:flex: flex-direction: column;">
@@ -31,7 +41,12 @@ import * as validate from '@services/common/validation-error';
             <fieldset class="m-2 row">
               <label class="col-form-label col-sm-2" for="email">Email</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" [formField]="form().email" placeholder="Enter email address" />
+                <input
+                  type="text"
+                  class="form-control"
+                  [formField]="form().email"
+                  placeholder="Enter email address"
+                />
                 @let femail = form().email();
                 @if (femail.invalid() && femail.touched()) {
                   <div style="display:flex: flex-direction: column;">
@@ -46,11 +61,23 @@ import * as validate from '@services/common/validation-error';
             <fieldset class="m-2 row">
               <label class="col-form-label col-sm-2" for="email">Roles</label>
               <div class="form-check col-sm-3" style="margin-left:20px">
-                <input type="radio" class="form-check-input" id="role1" value="admin" [formField]="form().role" />
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  id="role1"
+                  value="admin"
+                  [formField]="form().role"
+                />
                 <label class="form-check-label" for="check1">Admin</label>
               </div>
               <div class="form-check col-sm-3">
-                <input type="radio" class="form-check-input" value="user" id="role2" [formField]="form().role" />
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  value="user"
+                  id="role2"
+                  [formField]="form().role"
+                />
                 <label class="form-check-label" for="check1">User</label>
               </div>
             </fieldset>
@@ -71,10 +98,15 @@ import * as validate from '@services/common/validation-error';
                 class="btn btn-primary me-sm-2"
                 (click)="save.emit()"
                 title="Save"
-                [disabled]="form()().invalid()">
+                [disabled]="form()().invalid()"
+              >
                 <i class="bi bi-save"></i> Save
               </button>
-              <a class="btn btn-secondary" (click)="cancel.emit()" title="Cancel">
+              <a
+                class="btn btn-secondary"
+                (click)="cancel.emit()"
+                title="Cancel"
+              >
                 <i class="bi bi-x-circle"></i> Cancel
               </a>
             </div>
@@ -83,6 +115,7 @@ import * as validate from '@services/common/validation-error';
       </section>
     </section>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     section .card {
       margin-top: 30px;

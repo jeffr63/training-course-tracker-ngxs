@@ -1,6 +1,6 @@
 # Training Course Tracker - Ngxs
 
-[Angular CLI](https://github.com/angular/angular-cli) version 21.
+[Angular CLI](https://github.com/angular/angular-cli) version 22.
 
 ## Technologies included
 

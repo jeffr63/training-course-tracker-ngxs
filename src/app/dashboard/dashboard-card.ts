@@ -1,10 +1,10 @@
-import { Component, input } from '@angular/core';
-import { CourseChartData } from '@models/course-interface';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { Component, input, ChangeDetectionStrategy } from "@angular/core";
+import { CourseChartData } from "@models/course-interface";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgxChartsModule } from "@swimlane/ngx-charts";
 
 @Component({
-  selector: 'app-dashboard-card',
+  selector: "app-dashboard-card",
   imports: [NgbModule, NgxChartsModule],
   template: `
     <section>
@@ -18,7 +18,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
                 [results]="courses()"
                 [labels]="true"
                 [doughnut]="true"
-                [arcWidth]="0.5">
+                [arcWidth]="0.5"
+              >
               </ngx-charts-pie-chart>
             </div>
           </div>
@@ -31,7 +32,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
                 [results]="sources()"
                 [labels]="true"
                 [doughnut]="true"
-                [arcWidth]="0.5">
+                [arcWidth]="0.5"
+              >
               </ngx-charts-pie-chart>
             </div>
           </div>
@@ -39,6 +41,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
       </div>
     </section>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     .container-fluid {
       margin-right: 10px;

@@ -1,16 +1,24 @@
-import { Component, inject, input } from '@angular/core';
-import { form } from '@angular/forms/signals';
-import { rxResource } from '@angular/core/rxjs-interop';
+import {
+  Component,
+  inject,
+  input,
+  ChangeDetectionStrategy,
+} from "@angular/core";
+import { form } from "@angular/forms/signals";
+import { rxResource } from "@angular/core/rxjs-interop";
 
-import { User, USER_EDIT_SCHEMA } from '@models/user-interface';
-import { UserStore } from '@services/user/user-store';
-import { UserEditCard } from './user-edit-card';
+import { User, USER_EDIT_SCHEMA } from "@models/user-interface";
+import { UserStore } from "@services/user/user-store";
+import { UserEditCard } from "./user-edit-card";
 
 @Component({
-  selector: 'app-user-edit',
+  selector: "app-user-edit",
   imports: [UserEditCard],
   providers: [UserStore],
-  template: ` <app-user-edit-card [form]="form" (cancel)="cancel()" (save)="save()" /> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `
+    <app-user-edit-card [form]="form" (cancel)="cancel()" (save)="save()" />
+  `,
 })
 export default class UserEdit {
   readonly #store = inject(UserStore);

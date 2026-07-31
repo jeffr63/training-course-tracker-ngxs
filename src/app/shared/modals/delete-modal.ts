@@ -1,11 +1,16 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
-import { ModalService } from '@modals/modal-service';
+import { ModalService } from "@modals/modal-service";
 
 @Component({
-  selector: 'app-delete-modal',
+  selector: "app-delete-modal",
   imports: [NgbModule],
   template: `
     <div class="modal-header">
@@ -18,19 +23,28 @@ import { ModalService } from '@modals/modal-service';
       <p>
         {{ modalOptions.body }}
         @if (modalOptions.warning) {
-        <span class="text-danger">{{ modalOptions.warning }}</span>
+          <span class="text-danger">{{ modalOptions.warning }}</span>
         }
       </p>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-danger" (click)="modal.close('delete')" title="Delete">
+      <button
+        class="btn btn-danger"
+        (click)="modal.close('delete')"
+        title="Delete"
+      >
         <i class="bi bi-trash3-fill"></i> Delete
       </button>
-      <button class="btn btn-secondary" (click)="modal.dismiss()" title="Cancel">
+      <button
+        class="btn btn-secondary"
+        (click)="modal.dismiss()"
+        title="Cancel"
+      >
         <i class="bi bi-x-circle"></i> Cancel
       </button>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [],
 })
 export class DeleteModal implements OnInit {
@@ -38,9 +52,9 @@ export class DeleteModal implements OnInit {
   readonly #modalDataService = inject(ModalService);
 
   protected modalOptions = {
-    title: '',
-    body: '',
-    warning: '',
+    title: "",
+    body: "",
+    warning: "",
   };
 
   ngOnInit() {

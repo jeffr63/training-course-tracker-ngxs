@@ -1,16 +1,21 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { AsyncPipe } from "@angular/common";
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
-import { AuthService } from '../shared/services/auth/auth-service';
+import { AuthService } from "../shared/services/auth/auth-service";
 
-import { CourseStore } from '@services/course/course-store';
-import { ListDisplay } from '@components/list-display';
-import { PagerListHeader } from '@components/pager-list-header';
+import { CourseStore } from "@services/course/course-store";
+import { ListDisplay } from "@components/list-display";
+import { PagerListHeader } from "@components/pager-list-header";
 
 @Component({
-  selector: 'app-training-course-tracker',
+  selector: "app-training-course-tracker",
   imports: [AsyncPipe, ListDisplay, PagerListHeader, NgbModule],
   providers: [CourseStore],
   template: `
@@ -28,7 +33,8 @@ import { PagerListHeader } from '@components/pager-list-header';
             [(current)]="facade.current"
             [isAuthenticated]="isLoggedIn()"
             (refreshTable)="facade.refreshTable()"
-            (newCourse)="facade.new()">
+            (newCourse)="facade.new()"
+          >
           </app-pager-list-header>
 
           <app-list-display
@@ -37,19 +43,21 @@ import { PagerListHeader } from '@components/pager-list-header';
             [items]="facade.courses$ | async"
             [isAuthenticated]="isLoggedIn()"
             (deleteItem)="facade.delete($event)"
-            (editItem)="facade.edit($event)"></app-list-display>
+            (editItem)="facade.edit($event)"
+          ></app-list-display>
         </section>
       </section>
     </section>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [],
 })
 export default class CourseList implements OnInit {
   readonly #auth = inject(AuthService);
   protected readonly facade = inject(CourseStore);
 
-  protected readonly columns = ['title', 'instructor', 'path', 'source'];
-  protected readonly headers = ['Title', 'Instructor', 'Path', 'Source'];
+  protected readonly columns = ["title", "instructor", "path", "source"];
+  protected readonly headers = ["Title", "Instructor", "Path", "Source"];
   protected readonly isLoggedIn = this.#auth.isLoggedIn;
 
   ngOnInit() {

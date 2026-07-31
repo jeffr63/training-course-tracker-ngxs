@@ -1,20 +1,33 @@
-import { Component, inject, input, OnInit } from '@angular/core';
-import { form } from '@angular/forms/signals';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import {
+  Component,
+  inject,
+  input,
+  OnInit,
+  ChangeDetectionStrategy,
+} from "@angular/core";
+import { form } from "@angular/forms/signals";
+import { rxResource, toSignal } from "@angular/core/rxjs-interop";
 
-import { of } from 'rxjs';
+import { of } from "rxjs";
 
-import { Course, COURSE_EDIT_SCHEMA } from '@models/course-interface';
-import { CourseStore } from '@services/course/course-store';
-import { CourseEditCard } from './course-edit-card';
+import { Course, COURSE_EDIT_SCHEMA } from "@models/course-interface";
+import { CourseStore } from "@services/course/course-store";
+import { CourseEditCard } from "./course-edit-card";
 
 @Component({
-  selector: 'app-course-edit',
+  selector: "app-course-edit",
   imports: [CourseEditCard],
   providers: [CourseStore],
   template: `
-    <app-course-edit-card [form]="form" [paths]="paths()" [sources]="sources()" (cancel)="cancel()" (save)="save()" />
+    <app-course-edit-card
+      [form]="form"
+      [paths]="paths()"
+      [sources]="sources()"
+      (cancel)="cancel()"
+      (save)="save()"
+    />
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       section .card {
@@ -38,7 +51,8 @@ export default class CourseEdit {
   readonly #course = rxResource<Course, string>({
     params: () => this.id(),
     stream: ({ params: id }) => {
-      if (id === 'new') return of({ title: '', instructor: '', path: '', source: '' });
+      if (id === "new")
+        return of({ title: "", instructor: "", path: "", source: "" });
 
       this.#store.loadCourse(this.id());
       return this.#store.course$;

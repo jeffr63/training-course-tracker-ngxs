@@ -1,14 +1,19 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { AsyncPipe } from "@angular/common";
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
-import { ListDisplay } from '@components/list-display';
-import { ListHeader } from '@components/list-header';
-import { SourceStore } from '@services/source/source-store';
+import { ListDisplay } from "@components/list-display";
+import { ListHeader } from "@components/list-header";
+import { SourceStore } from "@services/source/source-store";
 
 @Component({
-  selector: 'app-source-list',
+  selector: "app-source-list",
   imports: [AsyncPipe, NgbModule, ListDisplay, ListHeader],
   providers: [SourceStore],
   template: `
@@ -26,11 +31,13 @@ import { SourceStore } from '@services/source/source-store';
             [items]="facade.sources$ | async"
             [isAuthenticated]="isAuthenticated"
             (deleteItem)="facade.delete($event)"
-            (editItem)="facade.edit($event)"></app-list-display>
+            (editItem)="facade.edit($event)"
+          ></app-list-display>
         </section>
       </section>
     </section>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       header {
@@ -42,8 +49,8 @@ import { SourceStore } from '@services/source/source-store';
 export default class SourceList implements OnInit {
   protected readonly facade = inject(SourceStore);
 
-  protected readonly columns = ['name'];
-  protected readonly headers = ['Source'];
+  protected readonly columns = ["name"];
+  protected readonly headers = ["Source"];
   protected readonly isAuthenticated = true;
 
   ngOnInit() {

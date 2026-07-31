@@ -1,13 +1,18 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { AsyncPipe } from "@angular/common";
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
-import { ListDisplay } from '@components/list-display';
-import { UserStore } from '@services/user/user-store';
+import { ListDisplay } from "@components/list-display";
+import { UserStore } from "@services/user/user-store";
 
 @Component({
-  selector: 'app-user-list',
+  selector: "app-user-list",
   imports: [AsyncPipe, NgbModule, ListDisplay],
   providers: [UserStore],
   template: `
@@ -23,11 +28,13 @@ import { UserStore } from '@services/user/user-store';
             [items]="store.users$ | async"
             [isAuthenticated]="isAuthenticated"
             (deleteItem)="store.delete($event)"
-            (editItem)="store.edit($event)"></app-list-display>
+            (editItem)="store.edit($event)"
+          ></app-list-display>
         </section>
       </section>
     </section>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       header {
@@ -39,8 +46,8 @@ import { UserStore } from '@services/user/user-store';
 export default class UserList implements OnInit {
   protected readonly store = inject(UserStore);
 
-  protected readonly columns = ['name', 'email', 'role'];
-  protected readonly headers = ['Name', 'Email', 'Role'];
+  protected readonly columns = ["name", "email", "role"];
+  protected readonly headers = ["Name", "Email", "Role"];
   protected readonly isAuthenticated = true;
 
   ngOnInit() {

@@ -1,9 +1,15 @@
-import { Component, model, input, output } from '@angular/core';
+import {
+  Component,
+  model,
+  input,
+  output,
+  ChangeDetectionStrategy,
+} from "@angular/core";
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-  selector: 'app-pager-list-header',
+  selector: "app-pager-list-header",
   imports: [NgbModule],
   template: `
     <header class="row">
@@ -15,17 +21,19 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
           [maxSize]="maxSize()"
           [rotate]="true"
           [(page)]="current"
-          (pageChange)="onPageChange()" />
+          (pageChange)="onPageChange()"
+        />
       </div>
       @if (isAuthenticated()) {
-      <div class="col">
-        <button class="btn btn-sm" (click)="newClicked()" title="Add">
-          <i class="bi bi-plus-circle-fill display-6 text-success"></i>
-        </button>
-      </div>
+        <div class="col">
+          <button class="btn btn-sm" (click)="newClicked()" title="Add">
+            <i class="bi bi-plus-circle-fill display-6 text-success"></i>
+          </button>
+        </div>
       }
     </header>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [],
 })
 export class PagerListHeader {

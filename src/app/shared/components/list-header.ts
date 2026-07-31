@@ -1,9 +1,9 @@
-import { Component, output } from '@angular/core';
+import { Component, output, ChangeDetectionStrategy } from "@angular/core";
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-  selector: 'app-list-header',
+  selector: "app-list-header",
   imports: [NgbModule],
   template: `
     <header class="row">
@@ -15,6 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       </div>
     </header>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [],
 })
 export class ListHeader {
