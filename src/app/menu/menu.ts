@@ -1,22 +1,29 @@
-import { Component, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  Component,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from "@angular/core";
+import { Router } from "@angular/router";
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
-import { AuthService } from '@services/auth/auth-service';
-import { LoginComponent } from '@modals/login-modal';
-import { MenuNavbar } from './menu-navbar';
+import { AuthService } from "@services/auth/auth-service";
+import { LoginComponent } from "@modals/login-modal";
+import { MenuNavbar } from "./menu-navbar";
 
 @Component({
-  selector: 'app-menu',
+  selector: "app-menu",
   imports: [MenuNavbar],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-menu-navbar
       [isAdmin]="isAdmin()"
       [isLoggedIn]="isLoggedIn()"
       [(isNavbarCollapsed)]="isNavbarCollapsed"
       (logout)="logout()"
-      (open)="open()" />
+      (open)="open()"
+    />
   `,
 })
 export class Menu {
@@ -30,14 +37,16 @@ export class Menu {
 
   protected logout() {
     this.#auth.logout();
-    this.#router.navigate(['/']);
+    this.#router.navigate(["/"]);
   }
 
   protected open() {
-    this.#modalService.open(LoginComponent, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      if (result) {
-        this.#auth.login(result.email, result.password).subscribe();
-      }
-    });
+    this.#modalService
+      .open(LoginComponent, { ariaLabelledBy: "modal-basic-title" })
+      .result.then((result) => {
+        if (result) {
+          this.#auth.login(result.email, result.password).subscribe();
+        }
+      });
   }
 }
