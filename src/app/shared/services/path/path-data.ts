@@ -1,11 +1,9 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 
 import { Path } from '@models/paths-interface';
 import { DataService } from '@services/common/data-service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class PathData {
   readonly #dataService = inject(DataService);
 

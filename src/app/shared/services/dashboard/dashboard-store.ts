@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Store } from '@ngxs/store';
@@ -6,9 +6,7 @@ import { Store } from '@ngxs/store';
 import { CourseActions } from '@state/course/course.actions';
 import { CourseState } from '@state/course/course.state';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class DashboardStore {
   readonly #store = inject(Store);
 

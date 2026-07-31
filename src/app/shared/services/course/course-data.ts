@@ -1,11 +1,9 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 
 import { Course } from '@models/course-interface';
 import { DataService } from '@services/common/data-service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class CourseData {
   readonly #dataService = inject(DataService);
 
@@ -33,7 +31,7 @@ export class CourseData {
 
   public getCoursesPaged(current, pageSize) {
     return this.#dataService.getAll<Course[]>(
-      `${this.#baseUrl}?_sort=title&_order=asc&_page=${current}&_limit=${pageSize}`
+      `${this.#baseUrl}?_sort=title&_order=asc&_page=${current}&_limit=${pageSize}`,
     );
   }
 

@@ -1,13 +1,11 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 
 import * as _ from 'lodash';
 
 import { User } from '@models/user-interface';
 import { DataService } from '@services/common/data-service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class UserData {
   readonly #dataService = inject(DataService);
 

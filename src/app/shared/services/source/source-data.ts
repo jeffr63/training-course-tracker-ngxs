@@ -1,11 +1,9 @@
-import { Injectable, inject } from '@angular/core';
+import { Service, inject } from '@angular/core';
 
 import { Source } from '@models/sources-interface';
 import { DataService } from '@services/common/data-service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class SourceData {
   readonly #dataService = inject(DataService);
 
